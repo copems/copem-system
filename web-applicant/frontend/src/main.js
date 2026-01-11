@@ -1,12 +1,36 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+/**
+ * main.js
+ *
+ * Bootstraps Vuetify and other plugins then mounts the App`
+ */
 
-import App from './App.vue'
-import router from './router'
+// Plugins
+import { registerPlugins } from "@/plugins";
 
-const app = createApp(App)
+// Components
+import App from "./App.vue";
 
-app.use(createPinia())
-app.use(router)
+// Composables
+import { createApp } from "vue";
+import router from "@/router";
+import { useAuthStore } from "@/stores/auth";
 
-app.mount('#app')
+// Styles
+import "unfonts.css";
+
+const app = createApp(App);
+
+registerPlugins(app);
+app.use(router);
+
+app.mount("#app");
+
+// Initialize auth store and check for existing authentication after mount
+app.config.globalProperties.$nextTick(() => {
+  try {
+    const authStore = useAuthStore();
+    authStore.checkAuth();
+  } catch (error) {
+    console.warn("Auth store initialization warning:", error);
+  }
+});
