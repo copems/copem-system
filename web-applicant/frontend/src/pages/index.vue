@@ -8,8 +8,8 @@
               Streamline Your Construction Permits
             </h1>
             <p class="subtitle-1 mb-6 hero-lead">
-              Apply, track, and manage construction permits online with our comprehensive
-              digital platform.<br />
+              Apply, track, and manage construction permits online with our comprehensive digital
+              platform.<br />
               <span class="text-primary-lighten-2"
                 >Fast, secure, and efficient permit processing for all your construction
                 needs.</span
@@ -24,9 +24,7 @@
 
       <v-container class="my-16">
         <div class="text-center mb-10" ref="servicesSection">
-          <h1 class="display-1 font-weight-bold gradient-section-title">
-            One Stop Shop Services
-          </h1>
+          <h1 class="display-1 font-weight-bold gradient-section-title">One Stop Shop Services</h1>
           <p class="subtitle-1 text-secondary font-italic">
             Complete your construction requirements efficiently
           </p>
@@ -39,18 +37,12 @@
                 Building Permit Application
               </v-card-title>
               <v-card-text class="pb-2">
-                Submit and process your building permit applications with ease. Ensure
-                compliance with building codes and regulations.
+                Submit and process your building permit applications with ease. Ensure compliance
+                with building codes and regulations.
               </v-card-text>
               <v-card-actions>
-                <v-btn color="primary" class="ma-2 rounded-pill" to="Applicant-Login"
-                  >Apply Now</v-btn
-                >
-                <v-btn
-                  color="primary"
-                  outlined
-                  class="ma-2 rounded-pill to"
-                  to="/Applicant-bpInquiry"
+                <v-btn color="primary" class="ma-2 rounded-pill" to="/login">Apply Now</v-btn>
+                <v-btn color="primary" outlined class="ma-2 rounded-pill to" to="/bpinquiry"
                   >Inquiry
                 </v-btn>
               </v-card-actions>
@@ -63,18 +55,12 @@
                 Occupancy Permit Application
               </v-card-title>
               <v-card-text class="pb-2">
-                Apply for occupancy permits for your completed construction projects.
-                Ensure safety and compliance standards.
+                Apply for occupancy permits for your completed construction projects. Ensure safety
+                and compliance standards.
               </v-card-text>
               <v-card-actions>
-                <v-btn color="primary" class="ma-2 rounded-pill" to="/Applicant-Login"
-                  >Apply Now</v-btn
-                >
-                <v-btn
-                  color="primary"
-                  outlined
-                  class="ma-2 rounded-pill"
-                  to="/Applicant-opInquiry"
+                <v-btn color="primary" class="ma-2 rounded-pill" to="/login">Apply Now</v-btn>
+                <v-btn color="primary" outlined class="ma-2 rounded-pill" to="/opinquiry"
                   >Inquiry</v-btn
                 >
               </v-card-actions>
@@ -93,15 +79,13 @@
         <v-row justify="center" align="stretch" class="gap-y">
           <v-col cols="12" sm="6" md="3">
             <v-card class="text-center pa-6 rounded-xl elevation-2 feature-card" outlined>
-              <v-icon size="64" color="blue" class="feature-icon-bg"
-                >mdi-file-document</v-icon
-              >
+              <v-icon size="64" color="blue" class="feature-icon-bg">mdi-file-document</v-icon>
               <v-card-title class="justify-center text-h6 font-weight-bold mt-4">
                 Online Application
               </v-card-title>
               <v-card-text>
-                Submit permit applications online with our user-friendly digital forms and
-                document upload system.
+                Submit permit applications online with our user-friendly digital forms and document
+                upload system.
               </v-card-text>
             </v-card>
           </v-col>
@@ -112,8 +96,8 @@
                 Status Tracking
               </v-card-title>
               <v-card-text>
-                Track your permit application status in real-time with detailed progress
-                updates and notifications.
+                Track your permit application status in real-time with detailed progress updates and
+                notifications.
               </v-card-text>
             </v-card>
           </v-col>
@@ -124,8 +108,8 @@
                 Document Management
               </v-card-title>
               <v-card-text>
-                Securely upload, store, and manage all required documents for your
-                construction permits.
+                Securely upload, store, and manage all required documents for your construction
+                permits.
               </v-card-text>
             </v-card>
           </v-col>
@@ -148,12 +132,8 @@
 
       <v-container class="my-16">
         <div class="text-center mb-10">
-          <h2 class="display-1 font-weight-bold gradient-section-title">
-            Application Process
-          </h2>
-          <p class="subtitle-1 text-secondary">
-            Simple steps to get your construction permit
-          </p>
+          <h2 class="display-1 font-weight-bold gradient-section-title">Application Process</h2>
+          <p class="subtitle-1 text-secondary">Simple steps to get your construction permit</p>
         </div>
         <v-row justify="center" class="text-center gap-y process-row">
           <v-col cols="12" sm="6" md="3">
@@ -211,15 +191,9 @@
             <p class="text-caption">Contact us at info@naga.gov.ph</p>
             <p class="text-caption">Governance Team | City Government of Naga</p>
             <div class="mt-2">
-              <v-btn icon color="white" href="#" class="mr-2"
-                ><v-icon>mdi-facebook</v-icon></v-btn
-              >
-              <v-btn icon color="white" href="#" class="mr-2"
-                ><v-icon>mdi-youtube</v-icon></v-btn
-              >
-              <v-btn icon color="white" href="#" class="mr-2"
-                ><v-icon>mdi-instagram</v-icon></v-btn
-              >
+              <v-btn icon color="white" href="#" class="mr-2"><v-icon>mdi-facebook</v-icon></v-btn>
+              <v-btn icon color="white" href="#" class="mr-2"><v-icon>mdi-youtube</v-icon></v-btn>
+              <v-btn icon color="white" href="#" class="mr-2"><v-icon>mdi-instagram</v-icon></v-btn>
             </div>
           </v-col>
           <v-col cols="12" md="3" class="mb-4">
@@ -245,8 +219,8 @@
           <v-col cols="12" md="3" class="mb-4">
             <h4 class="font-weight-bold">ABOUT GOVPH</h4>
             <p class="text-caption">
-              Learn more about the Philippine government, its structure, how government
-              works and the people behind it.
+              Learn more about the Philippine government, its structure, how government works and
+              the people behind it.
             </p>
             <h4 class="font-weight-bold mt-4">GOVPH</h4>
             <p class="text-caption footer-link">Open Data Portal</p>
@@ -269,9 +243,9 @@
 </template>
 
 <script>
-import tabletImage from "../assets/construction.png";
-import bpImage from "../assets/bp.png";
-import opImage from "../assets/op.jpg";
+import tabletImage from '../assets/construction.png'
+import bpImage from '../assets/bp.png'
+import opImage from '../assets/op.jpg'
 
 export default {
   data() {
@@ -280,18 +254,18 @@ export default {
       bpImage,
       opImage,
       officialSeal:
-        "https://www2.naga.gov.ph/wp-content/uploads/2022/05/Naga_City_Official_Seal-1.png",
-    };
+        'https://www2.naga.gov.ph/wp-content/uploads/2022/05/Naga_City_Official_Seal-1.png',
+    }
   },
   methods: {
     scrollToServices() {
-      const servicesSection = this.$refs.servicesSection;
+      const servicesSection = this.$refs.servicesSection
       if (servicesSection) {
-        servicesSection.scrollIntoView({ behavior: "smooth" });
+        servicesSection.scrollIntoView({ behavior: 'smooth' })
       }
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -338,13 +312,13 @@ export default {
   min-height: 460px;
 }
 .hero-bg::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../assets/crane.jpg");
+  background-image: url('../assets/crane.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
