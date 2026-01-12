@@ -1,4 +1,4 @@
-import pool from "../congig/database.js";
+import pool from "../config/database.js";
 
 /**
  * Save a new barangay record
@@ -75,7 +75,7 @@ export const getBarangaysByCityMun = async (citymunId) => {
             [citymunId]
         );
 
-        return rows[0] || [];
+        return rows || [];
     } catch (error) {
         throw new Error(`Error fetching barangays by city/municipality: ${error.message}`);
     }

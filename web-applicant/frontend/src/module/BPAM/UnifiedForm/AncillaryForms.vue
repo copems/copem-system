@@ -1,13 +1,9 @@
 <template>
   <v-app>
+    <Header />
     <v-main class="no-scroll">
       <v-row no-gutters class="fill-height" style="height: 100vh">
-        <v-col
-          cols="12"
-          md="3"
-          class="pa-0"
-          style="overflow: hidden; max-height: 100vh"
-        >
+        <v-col cols="12" md="3" class="pa-0" style="overflow: hidden; max-height: 100vh">
           <v-card
             flat
             class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
@@ -76,9 +72,7 @@
               <v-col cols="12" md="4">
                 <v-card class="pa-4 rounded-xl card-shadow">
                   <v-card-title class="text-h6 font-weight-bold mb-2">
-                    <v-icon left color="#1565c0" class="mr-2"
-                      >mdi-information-outline</v-icon
-                    >
+                    <v-icon left color="#1565c0" class="mr-2">mdi-information-outline</v-icon>
                     Construction Type Guide
                   </v-card-title>
                   <v-expansion-panels flat multiple>
@@ -88,12 +82,8 @@
                       class="bg-transparent"
                       elevation="0"
                     >
-                      <v-expansion-panel-title
-                        class="font-weight-medium text-primary"
-                      >
-                        <v-icon left small color="#0000CC" class="mr-2"
-                          >mdi-domain</v-icon
-                        >
+                      <v-expansion-panel-title class="font-weight-medium text-primary">
+                        <v-icon left small color="#0000CC" class="mr-2">mdi-domain</v-icon>
                         {{ item.title }}
                       </v-expansion-panel-title>
                       <v-expansion-panel-text>
@@ -122,9 +112,7 @@
                     >
                     Ancillary Forms
                   </v-card-title>
-                  <v-card-subtitle
-                    class="mt-1 text-wrap mb-4 text-grey-darken-1"
-                  >
+                  <v-card-subtitle class="mt-1 text-wrap mb-4 text-grey-darken-1">
                     Click on a document type to download its specific forms.
                   </v-card-subtitle>
                   <v-row class="mt-1" align="stretch" justify="center">
@@ -139,30 +127,29 @@
                       <v-card
                         elevation="2"
                         class="d-flex flex-column align-center justify-center pa-4 text-center rounded-lg hoverable-card transition-ease doc-card"
+                        :class="{ 'downloaded-card': form.downloaded }"
                         @click="downloadForm(form.title)"
                       >
                         <div
                           class="icon-bg mb-2 d-flex align-center justify-center"
+                          :class="{ 'downloaded-icon-bg': form.downloaded }"
                         >
-                          <v-icon size="44" color="#0000CC">{{
-                            form.icon
-                          }}</v-icon>
+                          <v-icon size="44" color="#0000CC">{{ form.icon }}</v-icon>
                         </div>
-                        <v-card-text
-                          class="pa-0 font-weight-medium form-title-text"
-                        >
+                        <v-card-text class="pa-0 font-weight-medium form-title-text">
                           {{ form.title }}
                         </v-card-text>
+                        <v-chip v-if="form.downloaded" size="x-small" color="green" class="mt-2">
+                          <v-icon left size="12">mdi-check</v-icon>
+                          Downloaded
+                        </v-chip>
                       </v-card>
                     </v-col>
                   </v-row>
                 </v-card>
 
                 <div class="d-flex justify-end mt-6 mb-8">
-                  <router-link
-                    to="/Applicant/bpuploadingofplans"
-                    style="text-decoration: none"
-                  >
+                  <router-link to="/Applicant/bpuploadingofplans" style="text-decoration: none">
                     <v-btn
                       color="blue-grey-lighten-4"
                       class="mr-2 btn-rounded"
@@ -179,7 +166,7 @@
                     elevation="2"
                     @click="handleSaveAndRedirect"
                     variant="elevated"
-                    to="/applicant/bpportal"
+                    to="/applicant/bpadetails"
                     size="large"
                   >
                     Save
@@ -195,101 +182,144 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Header from './header.vue'
 
-const router = useRouter();
-const sidebarStep = ref(2);
+const router = useRouter()
+const sidebarStep = ref(2)
 const sidebarSteps = ref([
-  "Fill up the Unified Application Form",
-  "Upload Building Plans & Lot Plans",
-  "Download Filled-up Unified Application Form and Required Ancillary Permits ",
-]);
+  'Fill up the Unified Application Form',
+  'Upload Building Plans & Lot Plans',
+  'Download Filled-up Unified Application Form and Required Ancillary Permits ',
+])
 
 const handleLogout = () => {
-  console.log("User logged out");
-  router.push("/login");
-};
+  console.log('User logged out')
+  router.push('/login')
+}
 
 // Handle Save Button
-const handleSaveAndRedirect = () => {
-  console.log("Application Saved");
-  router.push("/portal");
-};
+const handleSaveAndRedirect = async () => {
+  const saved = await saveAncillaryForms()
+  if (saved) {
+    console.log('Application Saved')
+    router.push('/applicant/bpadetails')
+  }
+}
 
 const goToSidebarStep = (index) => {
-  sidebarStep.value = index;
+  sidebarStep.value = index
   if (index === 0) {
-    router.push("/applicant/applicantdetails");
+    router.push('/applicant/applicantdetails')
   } else if (index === 2) {
-    router.push("/applicant/uploadingofplans");
+    router.push('/applicant/uploadingofplans')
   }
-};
+}
 
 const constructionTypes = ref([
   {
-    title: "NEW CONSTRUCTION",
+    title: 'NEW CONSTRUCTION',
     forms: [
-      "Architectural",
-      "Civil/Structural",
-      "Sanitary/Plumbing",
-      "Mechanical",
-      "Electrical",
-      "Electronics",
+      'Architectural',
+      'Civil/Structural',
+      'Sanitary/Plumbing',
+      'Mechanical',
+      'Electrical',
+      'Electronics',
     ],
   },
   {
-    title: "ERECTION",
+    title: 'ERECTION',
     forms: [
-      "Civil/Structural",
-      "Architectural",
-      "Electrical",
-      "Mechanical",
-      "Electronics",
-      "Sanitary",
+      'Civil/Structural',
+      'Architectural',
+      'Electrical',
+      'Mechanical',
+      'Electronics',
+      'Sanitary',
     ],
   },
   {
-    title: "ADDITION",
+    title: 'ADDITION',
     forms: [
-      "Civil/Structural",
-      "Architectural",
-      "Electrical",
-      "Mechanical",
-      "Electronics",
-      "Sanitary",
+      'Civil/Structural',
+      'Architectural',
+      'Electrical',
+      'Mechanical',
+      'Electronics',
+      'Sanitary',
     ],
   },
   {
-    title: "ALTERATION",
-    forms: ["Architectural", "Civil/Structural", "Electrical"],
+    title: 'ALTERATION',
+    forms: ['Architectural', 'Civil/Structural', 'Electrical'],
   },
-  { title: "RENOVATION", forms: ["Architectural", "Structural"] },
+  { title: 'RENOVATION', forms: ['Architectural', 'Structural'] },
   {
-    title: "CONVERSION",
-    forms: ["Architectural", "Structural", "Electrical", "Electronics"],
+    title: 'CONVERSION',
+    forms: ['Architectural', 'Structural', 'Electrical', 'Electronics'],
   },
-  { title: "REPAIR", forms: ["Architectural", "Structural"] },
-  { title: "MOVING", forms: ["Architectural/Structural", "Mechanical"] },
-  { title: "RAISING", forms: ["Architectural", "Structural"] },
+  { title: 'REPAIR', forms: ['Architectural', 'Structural'] },
+  { title: 'MOVING', forms: ['Architectural/Structural', 'Mechanical'] },
+  { title: 'RAISING', forms: ['Architectural', 'Structural'] },
   {
-    title: "ACCESSORY BUILDING",
-    forms: ["Architectural", "Structural", "Electrical", "Sanitary"],
+    title: 'ACCESSORY BUILDING',
+    forms: ['Architectural', 'Structural', 'Electrical', 'Sanitary'],
   },
-  { title: "LEGALIZATION", forms: ["Architectural", "Structural"] },
-]);
+  { title: 'LEGALIZATION', forms: ['Architectural', 'Structural'] },
+])
 
 const ancillaryForms = ref([
-  { title: "Architectural Document", icon: "mdi-drawing" },
-  { title: "Civil/Structural Document", icon: "mdi-hammer" },
-  { title: "Electrical Document", icon: "mdi-lightning-bolt" },
-  { title: "Sanitary Document", icon: "mdi-water-pump" },
-  { title: "Mechanical Document", icon: "mdi-cog" },
-  { title: "Electronics Document", icon: "mdi-chip" },
-]);
+  { title: 'Architectural Document', icon: 'mdi-drawing', downloaded: false },
+  { title: 'Civil/Structural Document', icon: 'mdi-hammer', downloaded: false },
+  {
+    title: 'Electrical Document',
+    icon: 'mdi-lightning-bolt',
+    downloaded: false,
+  },
+  { title: 'Sanitary Document', icon: 'mdi-water-pump', downloaded: false },
+  { title: 'Mechanical Document', icon: 'mdi-cog', downloaded: false },
+  { title: 'Electronics Document', icon: 'mdi-chip', downloaded: false },
+])
+
+const downloadedForms = ref([])
 
 function downloadForm(title) {
-  alert(`Downloading ${title}...`);
+  const form = ancillaryForms.value.find((f) => f.title === title)
+  if (form && !form.downloaded) {
+    form.downloaded = true
+    downloadedForms.value.push(title)
+    alert(`Downloading ${title}...`)
+    console.log(`Downloaded: ${title}`)
+  } else if (form && form.downloaded) {
+    alert(`${title} has already been downloaded.`)
+  }
+}
+
+async function saveAncillaryForms() {
+  try {
+    const applicationNumber = localStorage.getItem('application_number')
+    if (!applicationNumber) {
+      alert('Application number not found. Please complete previous steps.')
+      return false
+    }
+
+    const ancillaryData = {
+      application_number: applicationNumber,
+      downloaded_forms: downloadedForms.value,
+      download_timestamp: new Date().toISOString(),
+    }
+
+    // Store in localStorage for now (can be saved to backend API when endpoint is ready)
+    localStorage.setItem('ancillary_forms', JSON.stringify(ancillaryData))
+    console.log('Ancillary forms data saved:', ancillaryData)
+    return true
+  } catch (error) {
+    console.error('Error saving ancillary forms:', error)
+    alert('An error occurred while saving ancillary forms data.')
+    return false
+  }
 }
 </script>
 
@@ -363,6 +393,13 @@ function downloadForm(title) {
   border-radius: 50%;
   width: 64px;
   height: 64px;
+}
+.downloaded-icon-bg {
+  background: linear-gradient(180deg, #c8e6c9 70%, #fff 100%);
+}
+.downloaded-card {
+  border: 2px solid #4caf50 !important;
+  background: #f1f8f4 !important;
 }
 .form-title-text {
   font-size: 1.13rem;

@@ -1,4 +1,4 @@
-import pool from "../congig/database.js";
+import pool from "../config/database.js";
 
 /**
  * Save a new province record
@@ -60,6 +60,20 @@ export const updateProvince = async (provId, provinceData) => {
         return true;
     } catch (error) {
         throw new Error(`Error updating province: ${error.message}`);
+    }
+};
+
+/**
+ * Get all provinces
+ * @returns {Promise<Array>} Array of all province records
+ */
+export const getAllProvinces = async () => {
+    try {
+        const [rows] = await pool.query(`CALL sp_GetAllProvinces()`);
+        // With destructuring [rows], rows is already the result set array
+        return rows || [];
+    } catch (error) {
+        throw new Error(`Error fetching all provinces: ${error.message}`);
     }
 };
 

@@ -1,4 +1,4 @@
-import pool from "../congig/database.js";
+import pool from "../config/database.js";
 
 class CityMun {
     constructor(citymun_id, prov_id) {
