@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <Header />
     <v-main class="no-scroll">
       <v-container fluid class="pa-0 fill-height">
         <v-row no-gutters class="fill-height">
@@ -7,11 +8,7 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column"
-              style="
-                border-right: 1px solid #e0e0e0;
-                height: 100%;
-                background: #fcfcff;
-              "
+              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
             >
               <div class="flex-grow-1">
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -65,16 +62,9 @@
             </v-card>
           </v-col>
 
-          <v-col
-            cols="12"
-            md="9"
-            class="main-content-bg pa-6 scrollable-content"
-          >
+          <v-col cols="12" md="9" class="main-content-bg pa-6 scrollable-content">
             <v-container fluid>
-              <v-card
-                class="main-content-card card-shadow mx-auto"
-                max-width="1300"
-              >
+              <v-card class="main-content-card card-shadow mx-auto" max-width="1300">
                 <v-row>
                   <v-col
                     v-for="(plan, i) in planUploads"
@@ -84,17 +74,10 @@
                     md="4"
                     class="d-flex"
                   >
-                    <v-card
-                      class="pa-2 rounded-xl plan-upload-card flex-grow-1"
-                      elevation="3"
-                    >
+                    <v-card class="pa-2 rounded-xl plan-upload-card flex-grow-1" elevation="3">
                       <div class="d-flex align-start ga-2 mb-1">
-                        <div
-                          class="plan-icon-bg d-flex align-center justify-center mr-3"
-                        >
-                          <v-icon size="30" color="#0000CC">{{
-                            plan.icon
-                          }}</v-icon>
+                        <div class="plan-icon-bg d-flex align-center justify-center mr-3">
+                          <v-icon size="30" color="#0000CC">{{ plan.icon }}</v-icon>
                         </div>
                         <div class="text-left">
                           <v-card-title
@@ -102,9 +85,7 @@
                           >
                             {{ plan.title }}
                           </v-card-title>
-                          <v-card-text
-                            class="pa-0 text-caption text-grey-darken-1 text-wrap mt-1"
-                          >
+                          <v-card-text class="pa-0 text-caption text-grey-darken-1 text-wrap mt-1">
                             {{ plan.description }}
                           </v-card-text>
                         </div>
@@ -120,9 +101,7 @@
                         :class="{ 'has-file': uploadedFiles[i] }"
                       >
                         <template v-if="!uploadedFiles[i]">
-                          <v-icon size="30" color="#c0c0c0">
-                            mdi-cloud-upload-outline
-                          </v-icon>
+                          <v-icon size="30" color="#c0c0c0"> mdi-cloud-upload-outline </v-icon>
                           <v-card-text
                             class="pa-1 text-caption font-weight-bold text-wrap text-center"
                             style="margin-bottom: 3px"
@@ -136,21 +115,15 @@
                           </v-card-text>
                         </template>
                         <template v-else>
-                          <div
-                            class="d-flex flex-column align-center justify-center h-100 w-100"
-                          >
-                            <v-icon color="success" size="30"
-                              >mdi-check-circle</v-icon
-                            >
+                          <div class="d-flex flex-column align-center justify-center h-100 w-100">
+                            <v-icon color="success" size="30">mdi-check-circle</v-icon>
                             <v-card-text
                               class="pa-0 text-caption font-weight-bold text-center text-truncate w-100 px-2"
                             >
                               {{ uploadedFiles[i].name }}
                             </v-card-text>
                             <span class="text-caption text-grey-darken-1">
-                              {{
-                                (uploadedFiles[i].size / 1024 / 1024).toFixed(2)
-                              }}
+                              {{ (uploadedFiles[i].size / 1024 / 1024).toFixed(2) }}
                               MB
                             </span>
                           </div>
@@ -162,9 +135,7 @@
                           class="file-input-overlay"
                           accept=".pdf"
                           hide-details
-                          @update:modelValue="
-                            (file) => handleFileUpload(i, file)
-                          "
+                          @update:modelValue="(file) => handleFileUpload(i, file)"
                         ></v-file-input>
                       </v-card>
                     </v-card>
@@ -213,9 +184,7 @@
     <v-dialog v-model="showSuccessDialog" max-width="400" persistent>
       <v-card class="pa-4 text-center rounded-xl" elevation="10">
         <div class="d-flex justify-center my-4">
-          <v-icon color="green-lighten-1" size="80"
-            >mdi-check-circle-outline</v-icon
-          >
+          <v-icon color="green-lighten-1" size="80">mdi-check-circle-outline</v-icon>
         </div>
         <v-card-title class="text-h5 font-weight-bold text-wrap mb-2">
           Submitted Successfully
@@ -224,23 +193,14 @@
           All files have been received.
         </v-card-text>
         <v-card-actions class="justify-center pt-4 pb-2">
-          <v-btn
-            color="#0000CC"
-            class="text-none rounded-pill px-8"
-            @click="closeSuccessDialog"
-          >
+          <v-btn color="#0000CC" class="text-none rounded-pill px-8" @click="closeSuccessDialog">
             Continue
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-snackbar
-      v-model="snackbar"
-      timeout="2000"
-      color="success"
-      rounded="pill"
-    >
+    <v-snackbar v-model="snackbar" timeout="2000" color="success" rounded="pill">
       Progress saved as draft.
     </v-snackbar>
   </v-app>
@@ -252,130 +212,130 @@
  * [1] Gemini AI. 2026. Vue 3 Building Permit Portal Fixed Layout. (January 2026).
  */
 
-import { ref, nextTick, onMounted, watch } from "vue";
-import { useRouter } from "vue-router";
+import { ref, nextTick, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import Header from './header.vue'
 
-const router = useRouter();
-const sidebarStep = ref(1);
-const showSuccessDialog = ref(false);
-const showUploadError = ref(false);
-const snackbar = ref(false);
-const fileInputs = ref([]);
+const router = useRouter()
+const sidebarStep = ref(1)
+const showSuccessDialog = ref(false)
+const showUploadError = ref(false)
+const snackbar = ref(false)
+const fileInputs = ref([])
 
 const sidebarSteps = ref([
-  "Fill up the Unified Application Form",
-  "Upload Building Plans & Lot Plans",
-  "Download Filled-up Unified Application Form and Required Ancillary Permits",
-]);
+  'Fill up the Unified Application Form',
+  'Upload Building Plans & Lot Plans',
+  'Download Filled-up Unified Application Form and Required Ancillary Permits',
+])
 
 const planUploads = ref([
   {
-    title: "Architectural Plans",
-    description: "Floor plans, elevations, sections, and details",
-    icon: "mdi-home-outline",
+    title: 'Architectural Plans',
+    description: 'Floor plans, elevations, sections, and details',
+    icon: 'mdi-home-outline',
   },
   {
-    title: "Civil/Structural Plans",
-    description: "Foundation, framing, and structural details",
-    icon: "mdi-domain",
+    title: 'Civil/Structural Plans',
+    description: 'Foundation, framing, and structural details',
+    icon: 'mdi-domain',
   },
   {
-    title: "Mechanical Plan",
-    description: "HVAC, ventilation, and mechanical systems",
-    icon: "mdi-cog-outline",
+    title: 'Mechanical Plan',
+    description: 'HVAC, ventilation, and mechanical systems',
+    icon: 'mdi-cog-outline',
   },
   {
-    title: "Electrical Plans",
-    description: "Wiring, lighting, and electrical systems",
-    icon: "mdi-flash-outline",
+    title: 'Electrical Plans',
+    description: 'Wiring, lighting, and electrical systems',
+    icon: 'mdi-flash-outline',
   },
   {
-    title: "Plumbing Plans",
-    description: "Water supply, drainage, and plumbing fixtures",
-    icon: "mdi-pipe-wrench",
+    title: 'Plumbing Plans',
+    description: 'Water supply, drainage, and plumbing fixtures',
+    icon: 'mdi-pipe-wrench',
   },
   {
-    title: "Other Plans",
-    description: "Site plans, landscape, and miscellaneous",
-    icon: "mdi-file-document-outline",
+    title: 'Other Plans',
+    description: 'Site plans, landscape, and miscellaneous',
+    icon: 'mdi-file-document-outline',
   },
-]);
+])
 
-const rawFileInputs = ref(new Array(6).fill(null));
-const uploadedFiles = ref(new Array(6).fill(null));
+const rawFileInputs = ref(new Array(6).fill(null))
+const uploadedFiles = ref(new Array(6).fill(null))
 
 const handleFileUpload = (index, file) => {
   if (file) {
-    const selected = Array.isArray(file) ? file[0] : file;
-    if (selected.type !== "application/pdf") {
-      alert("Only PDF files are allowed.");
-      rawFileInputs.value[index] = null;
-      return;
+    const selected = Array.isArray(file) ? file[0] : file
+    if (selected.type !== 'application/pdf') {
+      alert('Only PDF files are allowed.')
+      rawFileInputs.value[index] = null
+      return
     }
     if (selected.size > 50 * 1024 * 1024) {
-      alert("File is too large (Max 50MB).");
-      rawFileInputs.value[index] = null;
-      return;
+      alert('File is too large (Max 50MB).')
+      rawFileInputs.value[index] = null
+      return
     }
-    uploadedFiles.value[index] = selected;
-    if (uploadedFiles.value.every((f) => f !== null))
-      showUploadError.value = false;
+    uploadedFiles.value[index] = selected
+    if (uploadedFiles.value.every((f) => f !== null)) showUploadError.value = false
   } else {
-    uploadedFiles.value[index] = null;
+    uploadedFiles.value[index] = null
   }
-};
+}
 
 const triggerFileInput = (index) => {
   nextTick(() => {
-    const el = fileInputs.value[index];
+    const el = fileInputs.value[index]
     if (el) {
-      const input = el.$el.querySelector("input[type='file']");
-      if (input) input.click();
+      const input = el.$el.querySelector("input[type='file']")
+      if (input) input.click()
     }
-  });
-};
+  })
+}
 
 const saveDraft = () => {
-  const draftNames = uploadedFiles.value.map((f) => (f ? f.name : null));
-  localStorage.setItem("bp_draft_files", JSON.stringify(draftNames));
-  snackbar.value = true;
-};
+  const draftNames = uploadedFiles.value.map((f) => (f ? f.name : null))
+  localStorage.setItem('bp_draft_files', JSON.stringify(draftNames))
+  snackbar.value = true
+}
 
 const handleFinalSubmit = () => {
   if (!uploadedFiles.value.every((f) => f !== null)) {
-    showUploadError.value = true;
-    return;
+    showUploadError.value = true
+    return
   }
-  showSuccessDialog.value = true;
-};
+  showSuccessDialog.value = true
+}
 
 const handleLogout = () => {
-  localStorage.removeItem("bp_draft_files");
-  router.push("/login");
-};
+  localStorage.removeItem('bp_draft_files')
+  router.push('/login')
+}
 
 const goToSidebarStep = (i) => {
-  sidebarStep.value = i;
-  if (i === 0) router.push("/applicant/applicantdetails");
-};
+  sidebarStep.value = i
+  if (i === 0) router.push('/applicant/applicantdetails')
+}
 
 const closeSuccessDialog = () => {
-  showSuccessDialog.value = false;
-  router.push("/applicant/selectancillary");
-};
+  showSuccessDialog.value = false
+  router.push('/applicant/ancillaryforms')
+}
 
 onMounted(() => {
-  console.log("Portal Initialized - ACM Reference [1]");
-});
+  console.log('Portal Initialized - ACM Reference [1]')
+})
 
 watch(
   uploadedFiles,
   (newVal) => {
-    const count = newVal.filter((f) => f !== null).length;
-    console.log(`Current upload progress: ${count}/6`);
+    const count = newVal.filter((f) => f !== null).length
+    console.log(`Current upload progress: ${count}/6`)
   },
   { deep: true }
-);
+)
 </script>
 
 <style scoped>
