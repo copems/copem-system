@@ -489,6 +489,17 @@
                   <v-icon left>mdi-arrow-left</v-icon>Back
                 </v-btn>
                 <v-btn
+                  v-if="!isSaved"
+                  color="blue-darken-3"
+                  class="btn-rounded"
+                  elevation="2"
+                  variant="elevated"
+                  @click="saveForm"
+                >
+                  Save<v-icon right>mdi-content-save</v-icon>
+                </v-btn>
+                <v-btn
+                  v-else
                   color="blue-darken-3"
                   class="btn-rounded"
                   elevation="2"
@@ -635,6 +646,7 @@ export default defineComponent({
       showApplicationNumberDialog: false,
       generatedApplicationNumber: '',
       showValidationError: false,
+      isSaved: false,
       dataComponents: [],
     }
   },
@@ -890,6 +902,35 @@ export default defineComponent({
         return false
       }
     },
+    async saveForm() {
+      // Validate form before saving
+      const { valid } = await this.$refs.form.validate()
+      if (!valid) {
+        this.showValidationError = true
+        return
+      }
+
+      this.showValidationError = false
+
+      // Save supervisor data
+      const supervisorId = await this.saveSupervisor()
+      if (!supervisorId) {
+        return
+      }
+
+      // Save lot owner data if consent is given
+      if (this.lotOwnerConsent) {
+        const lotOwnerId = await this.saveLotOwner()
+        if (!lotOwnerId) {
+          return
+        }
+      }
+
+      // Mark as saved
+      this.isSaved = true
+      alert('Signatory information saved successfully!')
+    },
+
     async submitApplication() {
       // Validate form before submission
       const { valid } = await this.$refs.form.validate()
@@ -947,6 +988,7 @@ export default defineComponent({
 <style scoped>
 .no-scroll {
   overflow: hidden !important;
+  padding-top: 88px;
 }
 .v-main.no-scroll {
   height: 100vh;

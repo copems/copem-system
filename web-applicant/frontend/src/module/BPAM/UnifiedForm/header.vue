@@ -81,13 +81,16 @@ if (typeof window !== 'undefined') {
   padding: 15px 50px;
   background: white;
   height: 88px;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-  position: relative;
-  z-index: 10;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .shadow-sm {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
 }
 
 .logo-section {
@@ -209,7 +212,7 @@ if (typeof window !== 'undefined') {
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   min-width: 200px;
-  z-index: 1000;
+  z-index: 1001;
   overflow: hidden;
 }
 

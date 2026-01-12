@@ -278,12 +278,23 @@
                     <v-icon left>mdi-arrow-left</v-icon>Back
                   </v-btn>
                   <v-btn
+                    v-if="!isSaved"
                     color="blue-darken-3"
                     class="btn-rounded"
                     elevation="2"
-                    @click="nextStep"
+                    @click="saveForm"
                     variant="elevated"
-                    to="/applicant/occupancycharacter"
+                  >
+                    Save
+                    <v-icon right>mdi-content-save</v-icon>
+                  </v-btn>
+                  <v-btn
+                    v-else
+                    color="blue-darken-3"
+                    class="btn-rounded"
+                    elevation="2"
+                    @click="proceedToNext"
+                    variant="elevated"
                   >
                     Next
                     <v-icon right>mdi-arrow-right</v-icon>
@@ -350,6 +361,7 @@ export default defineComponent({
       // Feedback UI
       errorMessage: '',
       successMessage: '',
+      isSaved: false,
       snackbar: false,
       snackbarMessage: '',
       snackbarColor: 'success',
@@ -549,6 +561,7 @@ export default defineComponent({
         this.snackbarMessage = 'Construction information saved successfully!'
         this.snackbarColor = 'success'
         this.snackbar = true
+        this.isSaved = true
 
         return true
       } catch (error) {
@@ -569,6 +582,14 @@ export default defineComponent({
         'Signatories Details',
       ]
       return titles[n - 1]
+    },
+
+    async saveForm() {
+      await this.saveConstructionInformation()
+    },
+
+    proceedToNext() {
+      this.$router.push('/applicant/occupancycharacter')
     },
 
     async nextStep() {
@@ -597,6 +618,7 @@ export default defineComponent({
 /* Scoped Layout Styles */
 .no-scroll {
   overflow: hidden !important;
+  padding-top: 88px;
 }
 
 .v-main.no-scroll {
@@ -614,7 +636,7 @@ export default defineComponent({
 
 .stepper-fixed-container {
   flex: 0 0 auto;
-  z-index: 10;
+  z-index: 50;
   background: #fafdff;
 }
 

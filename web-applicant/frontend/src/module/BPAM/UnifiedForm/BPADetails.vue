@@ -168,8 +168,7 @@ const handleLogout = () => {
   overflow-x: hidden;
   flex: 1;
   min-height: 0;
-  /* Force removal of dynamic padding if necessary */
-  padding-top: 0 !important;
+  padding-top: 88px !important;
 }
 
 .v-application {
