@@ -343,16 +343,17 @@ watch(
 .no-scroll {
   height: 100vh !important;
   overflow: hidden !important;
+  padding-top: 88px;
 }
 
 .sidebar-column {
-  height: 100vh;
+  height: calc(100vh - 88px);
   position: sticky;
-  top: 0;
+  top: 88px;
 }
 
 .scrollable-content {
-  height: 100vh;
+  height: calc(100vh - 88px);
   overflow-y: auto !important;
 }
 

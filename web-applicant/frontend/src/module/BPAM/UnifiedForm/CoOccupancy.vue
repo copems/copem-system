@@ -345,10 +345,21 @@
                   <v-icon left>mdi-arrow-left</v-icon>Back
                 </v-btn>
                 <v-btn
+                  v-if="!isSaved"
                   color="blue-darken-3"
                   class="btn-rounded"
                   elevation="2"
-                  @click="goToNextFormStep"
+                  @click="saveForm"
+                  variant="elevated"
+                >
+                  Save<v-icon right>mdi-content-save</v-icon>
+                </v-btn>
+                <v-btn
+                  v-else
+                  color="blue-darken-3"
+                  class="btn-rounded"
+                  elevation="2"
+                  @click="proceedToNext"
                   variant="elevated"
                 >
                   Next<v-icon right>mdi-arrow-right</v-icon>
@@ -377,6 +388,7 @@ export default defineComponent({
   data() {
     return {
       formStepValue: '3',
+      isSaved: false,
       selectedGroup: null,
       selectedCategory: null,
       occupancyClassified: '',
@@ -639,10 +651,19 @@ export default defineComponent({
             expectedDate: this.expectedDate,
           })
         )
+        this.isSaved = true
         return true
       }
       return false
     },
+    async saveForm() {
+      await this.saveOccupancyCharacter()
+    },
+
+    proceedToNext() {
+      this.router.push('/applicant/signatories')
+    },
+
     async goToNextFormStep() {
       const saved = await this.saveOccupancyCharacter()
       if (saved) {
@@ -668,6 +689,7 @@ export default defineComponent({
 <style scoped>
 .no-scroll {
   overflow: hidden !important;
+  padding-top: 88px;
 }
 .v-main.no-scroll {
   height: 100vh;

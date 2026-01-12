@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <Header />
-    <v-main class="no-scroll">
-      <v-row no-gutters class="fill-height" style="height: 100vh">
+    <v-main class="no-scroll" style="padding-top: 88px">
+      <v-row no-gutters class="fill-height" style="height: calc(100vh - 88px)">
         <v-col cols="12" md="3" class="pa-0" style="overflow: hidden; max-height: 100vh">
           <v-card
             flat

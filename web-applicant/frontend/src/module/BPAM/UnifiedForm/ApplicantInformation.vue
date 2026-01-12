@@ -279,15 +279,27 @@
 
                 <div class="d-flex justify-end mt-6 mb-8">
                   <v-btn
+                    v-if="!isSaved"
                     color="blue-darken-3"
                     class="btn-rounded"
                     elevation="2"
-                    @click="validateAndProceed"
+                    @click="saveForm"
                     variant="elevated"
                     :loading="saving"
                     :disabled="saving"
                   >
-                    {{ saving ? 'Saving...' : ' Next' }}
+                    {{ saving ? 'Saving...' : 'Save' }}
+                    <v-icon right>mdi-content-save</v-icon>
+                  </v-btn>
+                  <v-btn
+                    v-else
+                    color="blue-darken-3"
+                    class="btn-rounded"
+                    elevation="2"
+                    @click="proceedToNext"
+                    variant="elevated"
+                  >
+                    Next
                     <v-icon right>mdi-arrow-right</v-icon>
                   </v-btn>
                 </div>
@@ -359,6 +371,7 @@ export default defineComponent({
       loadingBarangays: false,
 
       saving: false,
+      isSaved: false,
       snackbar: false,
       snackbarMessage: '',
       snackbarColor: 'success',
@@ -522,6 +535,7 @@ export default defineComponent({
         this.snackbarMessage = 'Applicant information saved successfully!'
         this.snackbarColor = 'success'
         this.snackbar = true
+        this.isSaved = true
 
         return true
       } catch (error) {
@@ -533,6 +547,21 @@ export default defineComponent({
       } finally {
         this.saving = false
       }
+    },
+
+    async saveForm() {
+      const { valid } = await this.$refs.entryForm.validate()
+      if (valid) {
+        await this.saveApplicantInformation()
+      } else {
+        this.snackbarMessage = 'Please fill in all required fields'
+        this.snackbarColor = 'warning'
+        this.snackbar = true
+      }
+    },
+
+    proceedToNext() {
+      this.$router.push('/applicant/constructioninformation')
     },
 
     async validateAndProceed() {
@@ -590,6 +619,7 @@ export default defineComponent({
 .no-scroll {
   height: 100vh;
   overflow: hidden !important;
+  padding-top: 88px;
 }
 
 .main-content-wrapper {
@@ -601,7 +631,7 @@ export default defineComponent({
 .stepper-fixed-header {
   flex-shrink: 0;
   background: #fafdff;
-  z-index: 10;
+  z-index: 50;
 }
 
 .scrollable-form-area {
