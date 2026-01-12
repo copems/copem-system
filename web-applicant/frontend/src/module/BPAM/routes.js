@@ -34,69 +34,64 @@ export const bpamRoutes = [
         },
       },
       {
-        path: 'application',
-        name: 'BPAMApplication',
-        component: Navigation,
+        path: 'applicant-information',
+        name: 'ApplicantInformation',
+        component: ApplicantInformation,
         meta: {
-          title: 'Building Permit Application',
+          title: 'Applicant Information',
+          step: 1,
           requiresAuth: true,
         },
-        children: [
-          {
-            path: 'applicant-information',
-            name: 'ApplicantInformation',
-            component: ApplicantInformation,
-            meta: {
-              title: 'Applicant Information',
-              step: 1,
-            },
-          },
-          {
-            path: 'construction-information',
-            name: 'ConstructionInformation',
-            component: ConstructionInformation,
-            meta: {
-              title: 'Construction Information',
-              step: 2,
-            },
-          },
-          {
-            path: 'co-occupancy',
-            name: 'CoOccupancy',
-            component: CoOccupancy,
-            meta: {
-              title: 'Character of Occupancy',
-              step: 3,
-            },
-          },
-          {
-            path: 'signatories',
-            name: 'Signatories',
-            component: Signatories,
-            meta: {
-              title: 'Signatories',
-              step: 4,
-            },
-          },
-          {
-            path: 'plan-upload',
-            name: 'PlanUpload',
-            component: PlanUpload,
-            meta: {
-              title: 'Plan Upload',
-              step: 5,
-            },
-          },
-          {
-            path: 'ancillary-forms',
-            name: 'AncillaryForms',
-            component: AncillaryForms,
-            meta: {
-              title: 'Ancillary Forms',
-              step: 6,
-            },
-          },
-        ],
+      },
+      {
+        path: 'construction-information',
+        name: 'ConstructionInformation',
+        component: ConstructionInformation,
+        meta: {
+          title: 'Construction Information',
+          step: 2,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'co-occupancy',
+        name: 'CoOccupancy',
+        component: CoOccupancy,
+        meta: {
+          title: 'Character of Occupancy',
+          step: 3,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'signatories',
+        name: 'Signatories',
+        component: Signatories,
+        meta: {
+          title: 'Signatories',
+          step: 4,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'plan-upload',
+        name: 'PlanUpload',
+        component: PlanUpload,
+        meta: {
+          title: 'Plan Upload',
+          step: 5,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'ancillary-forms',
+        name: 'AncillaryForms',
+        component: AncillaryForms,
+        meta: {
+          title: 'Ancillary Forms',
+          step: 6,
+          requiresAuth: true,
+        },
       },
     ],
   },

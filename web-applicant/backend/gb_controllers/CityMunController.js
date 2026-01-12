@@ -1,4 +1,4 @@
-import pool from "../congig/database.js";
+import pool from "../config/database.js";
 
 /**
  * Save a new city/municipality record
@@ -76,8 +76,26 @@ export const getCityMunsByProvince = async (provId) => {
             [provId]
         );
 
-        return rows[0] || [];
+        return rows || [];
     } catch (error) {
         throw new Error(`Error fetching cities/municipalities by province: ${error.message}`);
+    }
+};
+
+/**
+ * Get all cities/municipalities by province code
+ * @param {string} provCode - The province code
+ * @returns {Promise<Array>} Array of city/municipality records with province information
+ */
+export const getCityMunsByProvCode = async (provCode) => {
+    try {
+        const [rows] = await pool.query(
+            `CALL sp_GetCityMunsByProvCode(?)`,
+            [provCode]
+        );
+
+        return rows || [];
+    } catch (error) {
+        throw new Error(`Error fetching cities/municipalities by province code: ${error.message}`);
     }
 };

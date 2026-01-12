@@ -28,7 +28,7 @@ export default defineConfig({
     }),
   ],
   server: {
-    port: 3000,      // Change the port (default is 5173)
+    port: 5173,      // Frontend port (backend uses 3000)
     host: true,      // Expose to network (allows access via your IP)
     open: true       // Automatically open the browser on start
   },

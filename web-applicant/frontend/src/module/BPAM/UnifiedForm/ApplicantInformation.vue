@@ -309,6 +309,7 @@
 
 <script>
 import { defineComponent } from 'vue'
+import axios from 'axios'
 import Navigation from './Navigation.vue'
 import Header from './header.vue'
 
@@ -373,11 +374,10 @@ export default defineComponent({
     async fetchProvinces() {
       this.loadingProvinces = true
       try {
-        // Assuming region code is 13 for Caraga Region, adjust as needed
-        const response = await fetch('http://localhost:3000/api/province/region/13')
-        const result = await response.json()
-        if (result.success) {
-          this.provinces = result.data
+        const response = await axios.get('http://localhost:3000/api/province')
+        if (response.data.success) {
+          console.log('Provinces fetched:', response.data)
+          this.provinces = response.data.data
         }
       } catch (error) {
         console.error('Error fetching provinces:', error)
@@ -397,10 +397,11 @@ export default defineComponent({
       this.formData.barangay = ''
 
       try {
-        const response = await fetch(`http://localhost:3000/api/city-mun/province/${provinceId}`)
-        const result = await response.json()
-        if (result.success) {
-          this.cityMunicipalities = result.data
+        const response = await axios.get(
+          `http://localhost:3000/api/city-mun/province/${provinceId}`
+        )
+        if (response.data.success) {
+          this.cityMunicipalities = response.data.data
         }
       } catch (error) {
         console.error('Error fetching cities/municipalities:', error)
@@ -418,10 +419,9 @@ export default defineComponent({
       this.formData.barangay = ''
 
       try {
-        const response = await fetch(`http://localhost:3000/api/barangay/city-mun/${cityMunId}`)
-        const result = await response.json()
-        if (result.success) {
-          this.barangays = result.data
+        const response = await axios.get(`http://localhost:3000/api/barangay/city-mun/${cityMunId}`)
+        if (response.data.success) {
+          this.barangays = response.data.data
         }
       } catch (error) {
         console.error('Error fetching barangays:', error)

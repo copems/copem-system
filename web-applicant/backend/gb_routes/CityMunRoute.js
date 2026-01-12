@@ -3,7 +3,8 @@ import {
     saveCityMun,
     getCityMunById,
     updateCityMun,
-    getCityMunsByProvince
+    getCityMunsByProvince,
+    getCityMunsByProvCode
 } from "../gb_controllers/CityMunController.js";
 
 const router = express.Router();
@@ -93,6 +94,27 @@ router.put("/:id", async (req, res) => {
 router.get("/province/:provId", async (req, res) => {
     try {
         const cityMuns = await getCityMunsByProvince(req.params.provId);
+        
+        res.status(200).json({
+            success: true,
+            data: cityMuns
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+/**
+ * @route   GET /api/city-mun/province-code/:provCode
+ * @desc    Get all cities/municipalities by province code
+ * @access  Public
+ */
+router.get("/province-code/:provCode", async (req, res) => {
+    try {
+        const cityMuns = await getCityMunsByProvCode(req.params.provCode);
         
         res.status(200).json({
             success: true,

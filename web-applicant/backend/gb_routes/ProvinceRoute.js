@@ -3,10 +3,32 @@ import {
     saveProvince,
     getProvinceById,
     updateProvince,
+    getAllProvinces,
     getProvincesByRegion
 } from "../gb_controllers/ProvinceController.js";
 
 const router = express.Router();
+
+/**
+ * @route   GET /api/province
+ * @desc    Get all provinces
+ * @access  Public
+ */
+router.get("/", async (req, res) => {
+    try {
+        const provinces = await getAllProvinces();
+        
+        res.status(200).json({
+            success: true,
+            data: provinces
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
 
 /**
  * @route   POST /api/province
