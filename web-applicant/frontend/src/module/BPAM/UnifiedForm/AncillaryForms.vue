@@ -261,29 +261,56 @@ const constructionTypes = ref([
 ])
 
 const ancillaryForms = ref([
-  { title: 'Architectural Document', icon: 'mdi-drawing', downloaded: false },
-  { title: 'Civil/Structural Document', icon: 'mdi-hammer', downloaded: false },
+  {
+    title: 'Architectural Document',
+    icon: 'mdi-drawing',
+    downloaded: false,
+    route: '/bpam/ancillarypermits/architectural',
+  },
+  {
+    title: 'Civil/Structural Document',
+    icon: 'mdi-hammer',
+    downloaded: false,
+    route: '/bpam/ancillarypermits/civilstructural',
+  },
   {
     title: 'Electrical Document',
     icon: 'mdi-lightning-bolt',
     downloaded: false,
+    route: '/bpam/ancillarypermits/electrical',
   },
-  { title: 'Sanitary Document', icon: 'mdi-water-pump', downloaded: false },
-  { title: 'Mechanical Document', icon: 'mdi-cog', downloaded: false },
-  { title: 'Electronics Document', icon: 'mdi-chip', downloaded: false },
+  {
+    title: 'Sanitary Document',
+    icon: 'mdi-water-pump',
+    downloaded: false,
+    route: '/bpam/ancillarypermits/sanitary',
+  },
+  {
+    title: 'Mechanical Document',
+    icon: 'mdi-cog',
+    downloaded: false,
+    route: '/bpam/ancillarypermits/mechanical',
+  },
+  {
+    title: 'Electronics Document',
+    icon: 'mdi-chip',
+    downloaded: false,
+    route: '/bpam/ancillarypermits/electronics',
+  },
 ])
 
 const downloadedForms = ref([])
 
 function downloadForm(title) {
   const form = ancillaryForms.value.find((f) => f.title === title)
-  if (form && !form.downloaded) {
+  if (form) {
+    // Mark as downloaded and navigate to the form
     form.downloaded = true
-    downloadedForms.value.push(title)
-    alert(`Downloading ${title}...`)
-    console.log(`Downloaded: ${title}`)
-  } else if (form && form.downloaded) {
-    alert(`${title} has already been downloaded.`)
+    if (!downloadedForms.value.includes(title)) {
+      downloadedForms.value.push(title)
+    }
+    console.log(`Opening ${title}...`)
+    router.push(form.route)
   }
 }
 

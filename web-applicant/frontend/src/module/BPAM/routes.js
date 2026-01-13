@@ -15,6 +15,14 @@ import PlanUpload from './UnifiedForm/PlanUpload.vue'
 import AncillaryForms from './UnifiedForm/AncillaryForms.vue'
 import Navigation from './UnifiedForm/Navigation.vue'
 
+// AncillaryPermits Components
+import Architectural from './AncillaryPermits/architectural.vue'
+import CivilStructural from './AncillaryPermits/civilstructural.vue'
+import Electrical from './AncillaryPermits/electrical.vue'
+import Sanitary from './AncillaryPermits/sanitary.vue'
+import Mechanical from './AncillaryPermits/mechanical.vue'
+import Electronics from './AncillaryPermits/electronics.vue'
+
 // Layout
 import ApplicantLayout from '@/layouts/ApplicantLayout.vue'
 
@@ -94,6 +102,60 @@ export const bpamRoutes = [
         meta: {
           title: 'Ancillary Forms',
           step: 6,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'ancillarypermits/architectural',
+        name: 'ArchitecturalPermit',
+        component: Architectural,
+        meta: {
+          title: 'Architectural Permit',
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'ancillarypermits/civilstructural',
+        name: 'CivilStructuralPermit',
+        component: CivilStructural,
+        meta: {
+          title: 'Civil/Structural Permit',
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'ancillarypermits/electrical',
+        name: 'ElectricalPermit',
+        component: Electrical,
+        meta: {
+          title: 'Electrical Permit',
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'ancillarypermits/sanitary',
+        name: 'SanitaryPermit',
+        component: Sanitary,
+        meta: {
+          title: 'Sanitary Permit',
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'ancillarypermits/mechanical',
+        name: 'MechanicalPermit',
+        component: Mechanical,
+        meta: {
+          title: 'Mechanical Permit',
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'ancillarypermits/electronics',
+        name: 'ElectronicsPermit',
+        component: Electronics,
+        meta: {
+          title: 'Electronics Permit',
           requiresAuth: true,
         },
       },
