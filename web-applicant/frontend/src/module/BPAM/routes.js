@@ -15,6 +15,9 @@ import PlanUpload from './UnifiedForm/PlanUpload.vue'
 import AncillaryForms from './UnifiedForm/AncillaryForms.vue'
 import Navigation from './UnifiedForm/Navigation.vue'
 
+// Layout
+import ApplicantLayout from '@/layouts/ApplicantLayout.vue'
+
 /**
  * BPAM Module Routes Configuration
  */
@@ -22,6 +25,7 @@ export const bpamRoutes = [
   {
     path: '/bpam',
     name: 'BPAM',
+    component: ApplicantLayout,
     redirect: '/bpam/portal',
     children: [
       {
@@ -34,7 +38,7 @@ export const bpamRoutes = [
         },
       },
       {
-        path: 'applicant-information',
+        path: 'applicantinformation',
         name: 'ApplicantInformation',
         component: ApplicantInformation,
         meta: {
@@ -44,7 +48,7 @@ export const bpamRoutes = [
         },
       },
       {
-        path: 'construction-information',
+        path: 'constructioninformation',
         name: 'ConstructionInformation',
         component: ConstructionInformation,
         meta: {
@@ -54,7 +58,7 @@ export const bpamRoutes = [
         },
       },
       {
-        path: 'co-occupancy',
+        path: 'cooccupancy',
         name: 'CoOccupancy',
         component: CoOccupancy,
         meta: {
@@ -74,7 +78,7 @@ export const bpamRoutes = [
         },
       },
       {
-        path: 'plan-upload',
+        path: 'planupload',
         name: 'PlanUpload',
         component: PlanUpload,
         meta: {
@@ -84,7 +88,7 @@ export const bpamRoutes = [
         },
       },
       {
-        path: 'ancillary-forms',
+        path: 'ancillaryforms',
         name: 'AncillaryForms',
         component: AncillaryForms,
         meta: {

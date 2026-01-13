@@ -1,376 +1,369 @@
 <template>
-  <v-app>
-    <Header />
-    <v-main class="no-scroll">
-      <v-container fluid class="pa-0 content-area fill-height">
-        <v-row no-gutters class="fill-height">
-          <v-col cols="12" md="3" class="pa-0">
+  <v-container fluid class="pa-0 content-area fill-height">
+    <v-row no-gutters class="fill-height">
+      <v-col cols="12" md="3" class="pa-0">
+        <v-card
+          flat
+          class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
+          style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
+        >
+          <div>
+            <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
+              Building Permit Application
+            </h4>
+            <div class="text-subtitle-2 mb-6 text-blue-grey-darken-1">
+              Follow these steps to complete your application
+            </div>
             <v-card
+              v-for="(step, index) in sidebarSteps"
+              :key="index"
               flat
-              class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
+              :color="sidebarStep === index ? 'blue-lighten-5' : '#f6f8fa'"
+              class="d-flex align-center pa-3 mb-4 rounded-lg quick-guide-step"
+              :class="{
+                'clickable-step': index === 0,
+                'active-step': sidebarStep === index,
+              }"
+              @click="goToSidebarStep(index)"
+              elevation="sidebarStep === index ? 2 : 0"
+              style="transition: box-shadow 0.16s, background 0.16s"
             >
-              <div>
-                <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
-                  Building Permit Application
-                </h4>
-                <div class="text-subtitle-2 mb-6 text-blue-grey-darken-1">
-                  Follow these steps to complete your application
-                </div>
-                <v-card
-                  v-for="(step, index) in sidebarSteps"
-                  :key="index"
-                  flat
-                  :color="sidebarStep === index ? 'blue-lighten-5' : '#f6f8fa'"
-                  class="d-flex align-center pa-3 mb-4 rounded-lg quick-guide-step"
-                  :class="{
-                    'clickable-step': index === 0,
-                    'active-step': sidebarStep === index,
-                  }"
-                  @click="goToSidebarStep(index)"
-                  elevation="sidebarStep === index ? 2 : 0"
-                  style="transition: box-shadow 0.16s, background 0.16s"
-                >
-                  <v-avatar
-                    :color="sidebarStep === index ? 'primary' : '#2563EB'"
-                    size="36"
-                    class="white--text mr-3 quick-guide-avatar"
-                  >
-                    <span class="text-h6 font-weight-bold">
-                      {{ index + 1 }}
-                    </span>
-                  </v-avatar>
-                  <div class="font-weight-bold text-body-1 step-label">
-                    {{ step }}
-                  </div>
-                </v-card>
-              </div>
-              <v-spacer></v-spacer>
-              <div class="mt-4">
-                <v-btn
-                  block
-                  color="white"
-                  outlined
-                  to="/login"
-                  class="text-capitalize font-weight-bold"
-                  @click="handleLogout"
-                >
-                  <v-icon left>mdi-logout</v-icon>
-                  Logout
-                </v-btn>
+              <v-avatar
+                :color="sidebarStep === index ? 'primary' : '#2563EB'"
+                size="36"
+                class="white--text mr-3 quick-guide-avatar"
+              >
+                <span class="text-h6 font-weight-bold">
+                  {{ index + 1 }}
+                </span>
+              </v-avatar>
+              <div class="font-weight-bold text-body-1 step-label">
+                {{ step }}
               </div>
             </v-card>
-          </v-col>
+          </div>
+          <v-spacer></v-spacer>
+          <div class="mt-4">
+            <v-btn
+              block
+              color="white"
+              outlined
+              to="/login"
+              class="text-capitalize font-weight-bold"
+              @click="handleLogout"
+            >
+              <v-icon left>mdi-logout</v-icon>
+              Logout
+            </v-btn>
+          </div>
+        </v-card>
+      </v-col>
 
-          <v-col cols="12" md="9" class="main-content-bg pa-6">
-            <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-              <v-stepper v-model="formStepValue" alt-labels flat class="mb-4 mt-2 stepper-elevated">
-                <v-stepper-header>
-                  <v-stepper-item
-                    title="Applicant Information"
-                    value="1"
-                    :complete="parseInt(formStepValue) > 1"
-                    :color="parseInt(formStepValue) >= 1 ? 'blue-darken-1' : 'grey lighten-2'"
-                    class="stepper-item-custom"
-                  ></v-stepper-item>
-                  <v-divider
-                    :thickness="3"
-                    :style="{
-                      'border-color': parseInt(formStepValue) > 1 ? '#1976D2' : '#e0e0e0',
-                    }"
-                    class="mx-2"
-                  ></v-divider>
+      <v-col cols="12" md="9" class="main-content-bg pa-6">
+        <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
+          <v-stepper v-model="formStepValue" alt-labels flat class="mb-4 mt-2 stepper-elevated">
+            <v-stepper-header>
+              <v-stepper-item
+                title="Applicant Information"
+                value="1"
+                :complete="parseInt(formStepValue) > 1"
+                :color="parseInt(formStepValue) >= 1 ? 'blue-darken-1' : 'grey lighten-2'"
+                class="stepper-item-custom"
+              ></v-stepper-item>
+              <v-divider
+                :thickness="3"
+                :style="{
+                  'border-color': parseInt(formStepValue) > 1 ? '#1976D2' : '#e0e0e0',
+                }"
+                class="mx-2"
+              ></v-divider>
 
-                  <v-stepper-item
-                    title="Construction Information"
-                    value="2"
-                    :complete="parseInt(formStepValue) > 2"
-                    :color="parseInt(formStepValue) >= 2 ? 'blue-darken-1' : 'grey lighten-2'"
-                    class="stepper-item-custom"
-                  ></v-stepper-item>
-                  <v-divider
-                    :thickness="3"
-                    :style="{
-                      'border-color': parseInt(formStepValue) > 2 ? '#1976D2' : '#e0e0e0',
-                    }"
-                    class="mx-2"
-                  ></v-divider>
+              <v-stepper-item
+                title="Construction Information"
+                value="2"
+                :complete="parseInt(formStepValue) > 2"
+                :color="parseInt(formStepValue) >= 2 ? 'blue-darken-1' : 'grey lighten-2'"
+                class="stepper-item-custom"
+              ></v-stepper-item>
+              <v-divider
+                :thickness="3"
+                :style="{
+                  'border-color': parseInt(formStepValue) > 2 ? '#1976D2' : '#e0e0e0',
+                }"
+                class="mx-2"
+              ></v-divider>
 
-                  <v-stepper-item
-                    title="Use or Character of Occupancy"
-                    value="3"
-                    :complete="parseInt(formStepValue) > 3"
-                    :color="parseInt(formStepValue) >= 3 ? 'blue-darken-1' : 'grey lighten-2'"
-                    class="stepper-item-custom"
-                  ></v-stepper-item>
-                  <v-divider
-                    :thickness="3"
-                    :style="{
-                      'border-color': parseInt(formStepValue) > 3 ? '#1976D2' : '#e0e0e0',
-                    }"
-                    class="mx-2"
-                  ></v-divider>
+              <v-stepper-item
+                title="Use or Character of Occupancy"
+                value="3"
+                :complete="parseInt(formStepValue) > 3"
+                :color="parseInt(formStepValue) >= 3 ? 'blue-darken-1' : 'grey lighten-2'"
+                class="stepper-item-custom"
+              ></v-stepper-item>
+              <v-divider
+                :thickness="3"
+                :style="{
+                  'border-color': parseInt(formStepValue) > 3 ? '#1976D2' : '#e0e0e0',
+                }"
+                class="mx-2"
+              ></v-divider>
 
-                  <v-stepper-item
-                    title="Signatories Details"
-                    value="4"
-                    :complete="parseInt(formStepValue) > 4"
-                    :color="parseInt(formStepValue) >= 4 ? 'blue-darken-1' : 'grey lighten-2'"
-                    class="stepper-item-custom"
-                  ></v-stepper-item>
-                </v-stepper-header>
-              </v-stepper>
+              <v-stepper-item
+                title="Signatories Details"
+                value="4"
+                :complete="parseInt(formStepValue) > 4"
+                :color="parseInt(formStepValue) >= 4 ? 'blue-darken-1' : 'grey lighten-2'"
+                class="stepper-item-custom"
+              ></v-stepper-item>
+            </v-stepper-header>
+          </v-stepper>
 
-              <v-card class="my-2 pa-4 card-shadow">
+          <v-card class="my-2 pa-4 card-shadow">
+            <v-card-text>
+              <v-card class="mb-4 card-section">
+                <v-card-title class="text-h6 card-title-responsive section-title">
+                  <v-icon left color="blue-darken-3" class="mr-2">mdi-domain</v-icon>
+                  USE OR CHARACTER OF OCCUPANCY
+                </v-card-title>
+                <v-divider></v-divider>
                 <v-card-text>
-                  <v-card class="mb-4 card-section">
-                    <v-card-title class="text-h6 card-title-responsive section-title">
-                      <v-icon left color="blue-darken-3" class="mr-2">mdi-domain</v-icon>
-                      USE OR CHARACTER OF OCCUPANCY
-                    </v-card-title>
-                    <v-divider></v-divider>
-                    <v-card-text>
-                      <v-row dense>
-                        <v-col cols="12" md="6">
-                          <v-select
-                            v-model="selectedGroup"
-                            :items="groups"
-                            label="Groups"
-                            variant="outlined"
-                            prepend-inner-icon="mdi-format-list-bulleted"
-                            color="blue-darken-3"
-                            hide-details
-                          ></v-select>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                          <v-select
-                            v-model="selectedCategory"
-                            :items="categories"
-                            label="Category"
-                            variant="outlined"
-                            :disabled="!selectedGroup"
-                            prepend-inner-icon="mdi-shape"
-                            color="blue-darken-3"
-                            hide-details
-                          ></v-select>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-
-                  <v-card class="card-section">
-                    <v-card-title class="text-h6 card-title-responsive section-title">
-                      <v-icon left color="blue-darken-3" class="mr-2"
-                        >mdi-file-document-outline</v-icon
-                      >
-                      PROJECT DETAILS
-                    </v-card-title>
-                    <v-divider></v-divider>
-                    <v-card-text>
-                      <v-row dense>
-                        <v-col cols="12" md="6">
-                          <div class="input-label">Occupancy Classified</div>
-                          <v-text-field
-                            v-model="occupancyClassified"
-                            variant="outlined"
-                            density="comfortable"
-                            prepend-inner-icon="mdi-clipboard-outline"
-                            hide-details
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6" class="d-flex flex-column justify-center">
-                          <div class="input-label mb-1">Total Estimated Cost</div>
-                          <div class="font-weight-bold text-h5 gradient-cost px-2 py-1">
-                            ₱ {{ totalEstimatedCostComputed }}
-                          </div>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                          <div class="input-label">Number of Units</div>
-                          <v-text-field
-                            v-model="numberOfUnits"
-                            variant="outlined"
-                            density="comfortable"
-                            prepend-inner-icon="mdi-counter"
-                            hide-details
-                            @keypress="isNumber($event)"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <div class="input-label">Building</div>
-                          <v-text-field
-                            v-model="costBuilding"
-                            variant="outlined"
-                            density="comfortable"
-                            prefix="₱"
-                            prepend-inner-icon="mdi-home-city"
-                            hide-details
-                            @keypress="isNumber($event)"
-                            @blur="formatNumber('costBuilding')"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <div class="input-label">Electrical</div>
-                          <v-text-field
-                            v-model="costElectrical"
-                            variant="outlined"
-                            density="comfortable"
-                            prefix="₱"
-                            prepend-inner-icon="mdi-flash"
-                            hide-details
-                            @keypress="isNumber($event)"
-                            @blur="formatNumber('costElectrical')"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                          <div class="input-label">Number of Storey</div>
-                          <v-text-field
-                            v-model="numberOfStorey"
-                            variant="outlined"
-                            density="comfortable"
-                            prepend-inner-icon="mdi-numeric"
-                            hide-details
-                            @keypress="isNumber($event)"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <div class="input-label">Mechanical</div>
-                          <v-text-field
-                            v-model="costMechanical"
-                            variant="outlined"
-                            density="comfortable"
-                            prefix="₱"
-                            prepend-inner-icon="mdi-cog"
-                            hide-details
-                            @keypress="isNumber($event)"
-                            @blur="formatNumber('costMechanical')"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <div class="input-label">Electronics</div>
-                          <v-text-field
-                            v-model="costElectronics"
-                            variant="outlined"
-                            density="comfortable"
-                            prefix="₱"
-                            prepend-inner-icon="mdi-television"
-                            hide-details
-                            @keypress="isNumber($event)"
-                            @blur="formatNumber('costElectronics')"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                          <div class="input-label">Total Floor Area (sq. m)</div>
-                          <v-text-field
-                            v-model="totalFloorArea"
-                            variant="outlined"
-                            density="comfortable"
-                            prepend-inner-icon="mdi-ruler-square"
-                            hide-details
-                            @keypress="isNumber($event)"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <div class="input-label">Plumbing</div>
-                          <v-text-field
-                            v-model="costPlumbing"
-                            variant="outlined"
-                            density="comfortable"
-                            prefix="₱"
-                            prepend-inner-icon="mdi-pipe"
-                            hide-details
-                            @keypress="isNumber($event)"
-                            @blur="formatNumber('costPlumbing')"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <div class="input-label">Others</div>
-                          <v-text-field
-                            v-model="costOthers"
-                            variant="outlined"
-                            density="comfortable"
-                            prefix="₱"
-                            prepend-inner-icon="mdi-dots-horizontal"
-                            hide-details
-                            @keypress="isNumber($event)"
-                            @blur="formatNumber('costOthers')"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                          <div class="input-label">Lot Area (sq. m)</div>
-                          <v-text-field
-                            v-model="lotArea"
-                            variant="outlined"
-                            density="comfortable"
-                            prepend-inner-icon="mdi-map"
-                            hide-details
-                            @keypress="isNumber($event)"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <div class="input-label">Proposed Date of Construction</div>
-                          <v-text-field
-                            v-model="proposedDate"
-                            type="date"
-                            variant="outlined"
-                            density="comfortable"
-                            prepend-inner-icon="mdi-calendar"
-                            hide-details
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <div class="input-label">Expected Date of Completion</div>
-                          <v-text-field
-                            v-model="expectedDate"
-                            type="date"
-                            variant="outlined"
-                            density="comfortable"
-                            prepend-inner-icon="mdi-calendar-check"
-                            hide-details
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
+                  <v-row dense>
+                    <v-col cols="12" md="6">
+                      <v-select
+                        v-model="selectedGroup"
+                        :items="groups"
+                        label="Groups"
+                        variant="outlined"
+                        prepend-inner-icon="mdi-format-list-bulleted"
+                        color="blue-darken-3"
+                        hide-details
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-select
+                        v-model="selectedCategory"
+                        :items="categories"
+                        label="Category"
+                        variant="outlined"
+                        :disabled="!selectedGroup"
+                        prepend-inner-icon="mdi-shape"
+                        color="blue-darken-3"
+                        hide-details
+                      ></v-select>
+                    </v-col>
+                  </v-row>
                 </v-card-text>
               </v-card>
 
-              <div class="d-flex justify-end mt-6 mb-8">
-                <v-btn
-                  color="blue-grey-lighten-4"
-                  class="mr-2 btn-rounded"
-                  elevation="2"
-                  to="/applicant/constructioninformation"
-                  variant="tonal"
-                >
-                  <v-icon left>mdi-arrow-left</v-icon>Back
-                </v-btn>
-                <v-btn
-                  v-if="!isSaved"
-                  color="blue-darken-3"
-                  class="btn-rounded"
-                  elevation="2"
-                  @click="saveForm"
-                  variant="elevated"
-                >
-                  Save<v-icon right>mdi-content-save</v-icon>
-                </v-btn>
-                <v-btn
-                  v-else
-                  color="blue-darken-3"
-                  class="btn-rounded"
-                  elevation="2"
-                  @click="proceedToNext"
-                  variant="elevated"
-                >
-                  Next<v-icon right>mdi-arrow-right</v-icon>
-                </v-btn>
-              </div>
-            </v-container>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+              <v-card class="card-section">
+                <v-card-title class="text-h6 card-title-responsive section-title">
+                  <v-icon left color="blue-darken-3" class="mr-2">mdi-file-document-outline</v-icon>
+                  PROJECT DETAILS
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                  <v-row dense>
+                    <v-col cols="12" md="6">
+                      <div class="input-label">Occupancy Classified</div>
+                      <v-text-field
+                        v-model="occupancyClassified"
+                        variant="outlined"
+                        density="comfortable"
+                        prepend-inner-icon="mdi-clipboard-outline"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6" class="d-flex flex-column justify-center">
+                      <div class="input-label mb-1">Total Estimated Cost</div>
+                      <div class="font-weight-bold text-h5 gradient-cost px-2 py-1">
+                        ₱ {{ totalEstimatedCostComputed }}
+                      </div>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="input-label">Number of Units</div>
+                      <v-text-field
+                        v-model="numberOfUnits"
+                        variant="outlined"
+                        density="comfortable"
+                        prepend-inner-icon="mdi-counter"
+                        hide-details
+                        @keypress="isNumber($event)"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="input-label">Building</div>
+                      <v-text-field
+                        v-model="costBuilding"
+                        variant="outlined"
+                        density="comfortable"
+                        prefix="₱"
+                        prepend-inner-icon="mdi-home-city"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @blur="formatNumber('costBuilding')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="input-label">Electrical</div>
+                      <v-text-field
+                        v-model="costElectrical"
+                        variant="outlined"
+                        density="comfortable"
+                        prefix="₱"
+                        prepend-inner-icon="mdi-flash"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @blur="formatNumber('costElectrical')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="input-label">Number of Storey</div>
+                      <v-text-field
+                        v-model="numberOfStorey"
+                        variant="outlined"
+                        density="comfortable"
+                        prepend-inner-icon="mdi-numeric"
+                        hide-details
+                        @keypress="isNumber($event)"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="input-label">Mechanical</div>
+                      <v-text-field
+                        v-model="costMechanical"
+                        variant="outlined"
+                        density="comfortable"
+                        prefix="₱"
+                        prepend-inner-icon="mdi-cog"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @blur="formatNumber('costMechanical')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="input-label">Electronics</div>
+                      <v-text-field
+                        v-model="costElectronics"
+                        variant="outlined"
+                        density="comfortable"
+                        prefix="₱"
+                        prepend-inner-icon="mdi-television"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @blur="formatNumber('costElectronics')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="input-label">Total Floor Area (sq. m)</div>
+                      <v-text-field
+                        v-model="totalFloorArea"
+                        variant="outlined"
+                        density="comfortable"
+                        prepend-inner-icon="mdi-ruler-square"
+                        hide-details
+                        @keypress="isNumber($event)"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="input-label">Plumbing</div>
+                      <v-text-field
+                        v-model="costPlumbing"
+                        variant="outlined"
+                        density="comfortable"
+                        prefix="₱"
+                        prepend-inner-icon="mdi-pipe"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @blur="formatNumber('costPlumbing')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="input-label">Others</div>
+                      <v-text-field
+                        v-model="costOthers"
+                        variant="outlined"
+                        density="comfortable"
+                        prefix="₱"
+                        prepend-inner-icon="mdi-dots-horizontal"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @blur="formatNumber('costOthers')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="input-label">Lot Area (sq. m)</div>
+                      <v-text-field
+                        v-model="lotArea"
+                        variant="outlined"
+                        density="comfortable"
+                        prepend-inner-icon="mdi-map"
+                        hide-details
+                        @keypress="isNumber($event)"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="input-label">Proposed Date of Construction</div>
+                      <v-text-field
+                        v-model="proposedDate"
+                        type="date"
+                        variant="outlined"
+                        density="comfortable"
+                        prepend-inner-icon="mdi-calendar"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="input-label">Expected Date of Completion</div>
+                      <v-text-field
+                        v-model="expectedDate"
+                        type="date"
+                        variant="outlined"
+                        density="comfortable"
+                        prepend-inner-icon="mdi-calendar-check"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-card-text>
+          </v-card>
+
+          <div class="d-flex justify-end mt-6 mb-8">
+            <v-btn
+              color="blue-grey-lighten-4"
+              class="mr-2 btn-rounded"
+              elevation="2"
+              to="/applicant/constructioninformation"
+              variant="tonal"
+            >
+              <v-icon left>mdi-arrow-left</v-icon>Back
+            </v-btn>
+            <v-btn
+              v-if="!isSaved"
+              color="blue-darken-3"
+              class="btn-rounded"
+              elevation="2"
+              @click="saveForm"
+              variant="elevated"
+            >
+              Save<v-icon right>mdi-content-save</v-icon>
+            </v-btn>
+            <v-btn
+              v-else
+              color="blue-darken-3"
+              class="btn-rounded"
+              elevation="2"
+              @click="proceedToNext"
+              variant="elevated"
+            >
+              Next<v-icon right>mdi-arrow-right</v-icon>
+            </v-btn>
+          </div>
+        </v-container>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

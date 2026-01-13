@@ -35,7 +35,7 @@
           <div class="service-body">
             <h3 class="service-name">{{ service.title }}</h3>
             <p class="service-desc">{{ service.description }}</p>
-            <button class="apply-now-btn">Apply Now</button>
+            <button class="apply-now-btn" @click="handleApplyNow(service.title)">Apply Now</button>
           </div>
         </div>
       </div>
@@ -103,7 +103,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Header from '@/components/Header.vue'
 
+const router = useRouter()
 const applicationNumber = ref('BP-2026-000001')
 const showDropdown = ref(false)
 
@@ -125,6 +128,15 @@ if (typeof window !== 'undefined') {
       showDropdown.value = false
     }
   })
+}
+
+const handleApplyNow = (serviceTitle) => {
+  if (serviceTitle === 'Building Permit Application') {
+    router.push('/bpam/applicantinformation')
+  } else {
+    // Handle other services in the future
+    console.log(`Apply for: ${serviceTitle}`)
+  }
 }
 
 const services = [

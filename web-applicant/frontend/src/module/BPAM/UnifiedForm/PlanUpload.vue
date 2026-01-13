@@ -1,185 +1,182 @@
 <template>
-  <v-app>
-    <Header />
-    <v-main class="no-scroll">
-      <v-container fluid class="pa-0 fill-height">
-        <v-row no-gutters class="fill-height">
-          <v-col cols="12" md="3" class="pa-0 sidebar-column">
-            <v-card
-              flat
-              class="pa-4 quick-guide-card d-flex flex-column"
-              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
-            >
-              <div class="flex-grow-1">
-                <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
-                  Building Permit Application
-                </h4>
-                <div class="text-subtitle-2 mb-6 text-blue-grey-darken-1">
-                  Follow these steps to complete your application
+  <div>
+    <v-container fluid class="pa-0 content-area fill-height">
+      <v-row no-gutters class="fill-height">
+        <v-col cols="12" md="3" class="pa-0 sidebar-column">
+          <v-card
+            flat
+            class="pa-4 quick-guide-card d-flex flex-column"
+            style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
+          >
+            <div class="flex-grow-1">
+              <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
+                Building Permit Application
+              </h4>
+              <div class="text-subtitle-2 mb-6 text-blue-grey-darken-1">
+                Follow these steps to complete your application
+              </div>
+
+              <v-card
+                v-for="(step, index) in sidebarSteps"
+                :key="index"
+                flat
+                :color="sidebarStep === index ? 'blue-lighten-5' : '#f6f8fa'"
+                class="d-flex align-center pa-3 mb-4 rounded-lg quick-guide-step"
+                :class="{
+                  'clickable-step': true,
+                  'active-step': sidebarStep === index,
+                }"
+                @click="goToSidebarStep(index)"
+                :elevation="sidebarStep === index ? 2 : 0"
+                style="transition: box-shadow 0.16s, background 0.16s"
+              >
+                <v-avatar
+                  :color="sidebarStep === index ? 'primary' : '#2563EB'"
+                  size="36"
+                  class="white--text mr-3 quick-guide-avatar"
+                >
+                  <span class="text-h6 font-weight-bold">
+                    {{ index + 1 }}
+                  </span>
+                </v-avatar>
+                <div class="font-weight-bold text-body-1 step-label">
+                  {{ step }}
                 </div>
-
-                <v-card
-                  v-for="(step, index) in sidebarSteps"
-                  :key="index"
-                  flat
-                  :color="sidebarStep === index ? 'blue-lighten-5' : '#f6f8fa'"
-                  class="d-flex align-center pa-3 mb-4 rounded-lg quick-guide-step"
-                  :class="{
-                    'clickable-step': true,
-                    'active-step': sidebarStep === index,
-                  }"
-                  @click="goToSidebarStep(index)"
-                  :elevation="sidebarStep === index ? 2 : 0"
-                  style="transition: box-shadow 0.16s, background 0.16s"
-                >
-                  <v-avatar
-                    :color="sidebarStep === index ? 'primary' : '#2563EB'"
-                    size="36"
-                    class="white--text mr-3 quick-guide-avatar"
-                  >
-                    <span class="text-h6 font-weight-bold">
-                      {{ index + 1 }}
-                    </span>
-                  </v-avatar>
-                  <div class="font-weight-bold text-body-1 step-label">
-                    {{ step }}
-                  </div>
-                </v-card>
-              </div>
-
-              <div class="pb-4 mt-auto">
-                <v-btn
-                  block
-                  color="white"
-                  variant="outlined"
-                  class="text-capitalize font-weight-bold logout-btn"
-                  @click="handleLogout"
-                >
-                  <v-icon left class="mr-2">mdi-logout</v-icon>
-                  Logout
-                </v-btn>
-              </div>
-            </v-card>
-          </v-col>
-
-          <v-col cols="12" md="9" class="main-content-bg pa-6 scrollable-content">
-            <v-container fluid>
-              <v-card class="main-content-card card-shadow mx-auto" max-width="1300">
-                <v-row>
-                  <v-col
-                    v-for="(plan, i) in planUploads"
-                    :key="i"
-                    cols="12"
-                    sm="6"
-                    md="4"
-                    class="d-flex"
-                  >
-                    <v-card class="pa-2 rounded-xl plan-upload-card flex-grow-1" elevation="3">
-                      <div class="d-flex align-start ga-2 mb-1">
-                        <div class="plan-icon-bg d-flex align-center justify-center mr-3">
-                          <v-icon size="30" color="#0000CC">{{ plan.icon }}</v-icon>
-                        </div>
-                        <div class="text-left">
-                          <v-card-title
-                            class="pa-0 font-weight-bold text-wrap text-subtitle-1 plan-title"
-                          >
-                            {{ plan.title }}
-                          </v-card-title>
-                          <v-card-text class="pa-0 text-caption text-grey-darken-1 text-wrap mt-1">
-                            {{ plan.description }}
-                          </v-card-text>
-                        </div>
-                      </div>
-
-                      <v-divider class="my-divider"></v-divider>
-
-                      <v-card
-                        flat
-                        class="pa-2 rounded-lg d-flex flex-column align-center plan-dropzone"
-                        elevation="0"
-                        @click="triggerFileInput(i)"
-                        :class="{ 'has-file': uploadedFiles[i] }"
-                      >
-                        <template v-if="!uploadedFiles[i]">
-                          <v-icon size="30" color="#c0c0c0"> mdi-cloud-upload-outline </v-icon>
-                          <v-card-text
-                            class="pa-1 text-caption font-weight-bold text-wrap text-center"
-                            style="margin-bottom: 3px"
-                          >
-                            Drop files here or click to browse
-                          </v-card-text>
-                          <v-card-text
-                            class="pa-0 text-caption font-weight-regular text-grey-darken-1 text-wrap text-center"
-                          >
-                            PDF files only • Maximum file size: 50MB
-                          </v-card-text>
-                        </template>
-                        <template v-else>
-                          <div class="d-flex flex-column align-center justify-center h-100 w-100">
-                            <v-icon color="success" size="30">mdi-check-circle</v-icon>
-                            <v-card-text
-                              class="pa-0 text-caption font-weight-bold text-center text-truncate w-100 px-2"
-                            >
-                              {{ uploadedFiles[i].name }}
-                            </v-card-text>
-                            <span class="text-caption text-grey-darken-1">
-                              {{ (uploadedFiles[i].size / 1024 / 1024).toFixed(2) }}
-                              MB
-                            </span>
-                          </div>
-                        </template>
-
-                        <v-file-input
-                          ref="fileInputs"
-                          v-model="rawFileInputs[i]"
-                          class="file-input-overlay"
-                          accept=".pdf"
-                          hide-details
-                          @update:modelValue="(file) => handleFileUpload(i, file)"
-                        ></v-file-input>
-                      </v-card>
-                    </v-card>
-                  </v-col>
-                </v-row>
-
-                <v-row justify="end" class="mt-6 align-center">
-                  <v-col cols="auto" class="d-flex align-center ga-4">
-                    <v-alert
-                      v-if="showUploadError"
-                      type="error"
-                      variant="tonal"
-                      density="compact"
-                      class="mb-0 rounded-pill"
-                    >
-                      Incomplete upload: All 6 plans are required.
-                    </v-alert>
-
-                    <v-btn
-                      variant="outlined"
-                      color="blue-darken-2"
-                      class="text-none rounded-pill font-weight-bold"
-                      @click="saveDraft"
-                    >
-                      Save as Draft
-                    </v-btn>
-
-                    <v-btn
-                      color="#0000CC"
-                      class="rounded-pill text-none font-weight-bold px-10"
-                      elevation="4"
-                      size="large"
-                      @click="handleFinalSubmit"
-                    >
-                      SUBMIT
-                    </v-btn>
-                  </v-col>
-                </v-row>
               </v-card>
-            </v-container>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
+            </div>
+
+            <div class="pb-4 mt-auto">
+              <v-btn
+                block
+                color="white"
+                variant="outlined"
+                class="text-capitalize font-weight-bold logout-btn"
+                @click="handleLogout"
+              >
+                <v-icon left class="mr-2">mdi-logout</v-icon>
+                Logout
+              </v-btn>
+            </div>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" md="9" class="main-content-bg pa-6 scrollable-content">
+          <v-container fluid>
+            <v-card class="main-content-card card-shadow mx-auto" max-width="1300">
+              <v-row>
+                <v-col
+                  v-for="(plan, i) in planUploads"
+                  :key="i"
+                  cols="12"
+                  sm="6"
+                  md="4"
+                  class="d-flex"
+                >
+                  <v-card class="pa-2 rounded-xl plan-upload-card flex-grow-1" elevation="3">
+                    <div class="d-flex align-start ga-2 mb-1">
+                      <div class="plan-icon-bg d-flex align-center justify-center mr-3">
+                        <v-icon size="30" color="#0000CC">{{ plan.icon }}</v-icon>
+                      </div>
+                      <div class="text-left">
+                        <v-card-title
+                          class="pa-0 font-weight-bold text-wrap text-subtitle-1 plan-title"
+                        >
+                          {{ plan.title }}
+                        </v-card-title>
+                        <v-card-text class="pa-0 text-caption text-grey-darken-1 text-wrap mt-1">
+                          {{ plan.description }}
+                        </v-card-text>
+                      </div>
+                    </div>
+
+                    <v-divider class="my-divider"></v-divider>
+
+                    <v-card
+                      flat
+                      class="pa-2 rounded-lg d-flex flex-column align-center plan-dropzone"
+                      elevation="0"
+                      @click="triggerFileInput(i)"
+                      :class="{ 'has-file': uploadedFiles[i] }"
+                    >
+                      <template v-if="!uploadedFiles[i]">
+                        <v-icon size="30" color="#c0c0c0"> mdi-cloud-upload-outline </v-icon>
+                        <v-card-text
+                          class="pa-1 text-caption font-weight-bold text-wrap text-center"
+                          style="margin-bottom: 3px"
+                        >
+                          Drop files here or click to browse
+                        </v-card-text>
+                        <v-card-text
+                          class="pa-0 text-caption font-weight-regular text-grey-darken-1 text-wrap text-center"
+                        >
+                          PDF files only • Maximum file size: 50MB
+                        </v-card-text>
+                      </template>
+                      <template v-else>
+                        <div class="d-flex flex-column align-center justify-center h-100 w-100">
+                          <v-icon color="success" size="30">mdi-check-circle</v-icon>
+                          <v-card-text
+                            class="pa-0 text-caption font-weight-bold text-center text-truncate w-100 px-2"
+                          >
+                            {{ uploadedFiles[i].name }}
+                          </v-card-text>
+                          <span class="text-caption text-grey-darken-1">
+                            {{ (uploadedFiles[i].size / 1024 / 1024).toFixed(2) }}
+                            MB
+                          </span>
+                        </div>
+                      </template>
+
+                      <v-file-input
+                        ref="fileInputs"
+                        v-model="rawFileInputs[i]"
+                        class="file-input-overlay"
+                        accept=".pdf"
+                        hide-details
+                        @update:modelValue="(file) => handleFileUpload(i, file)"
+                      ></v-file-input>
+                    </v-card>
+                  </v-card>
+                </v-col>
+              </v-row>
+
+              <v-row justify="end" class="mt-6 align-center">
+                <v-col cols="auto" class="d-flex align-center ga-4">
+                  <v-alert
+                    v-if="showUploadError"
+                    type="error"
+                    variant="tonal"
+                    density="compact"
+                    class="mb-0 rounded-pill"
+                  >
+                    Incomplete upload: All 6 plans are required.
+                  </v-alert>
+
+                  <v-btn
+                    variant="outlined"
+                    color="blue-darken-2"
+                    class="text-none rounded-pill font-weight-bold"
+                    @click="saveDraft"
+                  >
+                    Save as Draft
+                  </v-btn>
+
+                  <v-btn
+                    color="#0000CC"
+                    class="rounded-pill text-none font-weight-bold px-10"
+                    elevation="4"
+                    size="large"
+                    @click="handleFinalSubmit"
+                  >
+                    SUBMIT
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <v-dialog v-model="showSuccessDialog" max-width="400" persistent>
       <v-card class="pa-4 text-center rounded-xl" elevation="10">
@@ -203,7 +200,7 @@
     <v-snackbar v-model="snackbar" timeout="2000" color="success" rounded="pill">
       Progress saved as draft.
     </v-snackbar>
-  </v-app>
+  </div>
 </template>
 
 <script setup>

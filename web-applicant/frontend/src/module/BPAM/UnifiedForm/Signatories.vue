@@ -1,19 +1,18 @@
 <template>
-  <v-app>
-    <Header />
-    <v-main class="no-scroll">
-      <v-container fluid class="pa-0 content-area fill-height">
-        <v-row no-gutters class="fill-height">
-          <Navigation
-            :sidebar-step="sidebarStep"
-            :sidebar-steps="sidebarSteps"
-            @go-to-step="goToSidebarStep"
-            @logout="handleLogout"
-          />
+  <div>
+    <v-container fluid class="pa-0 content-area fill-height">
+      <v-row no-gutters class="fill-height">
+        <Navigation
+          :sidebar-step="sidebarStep"
+          :sidebar-steps="sidebarSteps"
+          @go-to-step="goToSidebarStep"
+          @logout="handleLogout"
+        />
 
-          <v-col cols="12" md="9" class="main-content-bg pa-6">
+        <v-col cols="12" md="9" class="main-content-wrapper d-flex flex-column">
+          <div class="stepper-fixed-header pa-6 pb-2">
             <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-              <v-stepper v-model="formStepValue" alt-labels flat class="mb-4 mt-2 stepper-elevated">
+              <v-stepper v-model="formStepValue" alt-labels flat class="mb-0 mt-2 stepper-elevated">
                 <v-stepper-header>
                   <v-stepper-item
                     title="Applicant Information"
@@ -66,7 +65,11 @@
                   ></v-stepper-item>
                 </v-stepper-header>
               </v-stepper>
+            </v-container>
+          </div>
 
+          <div class="scrollable-form-area pa-6 pt-0 pb-12">
+            <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
               <v-card class="my-2 pa-4 card-shadow">
                 <v-card-text>
                   <v-form ref="form">
@@ -510,10 +513,10 @@
                 </v-btn>
               </div>
             </v-container>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <!-- Application Number Dialog -->
     <v-dialog v-model="showApplicationNumberDialog" max-width="450" style="min-height: 600px">
@@ -556,7 +559,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -1004,6 +1007,29 @@ export default defineComponent({
 .content-area .v-row {
   width: 100%;
 }
+
+.main-content-wrapper {
+  height: 100vh;
+  overflow: hidden;
+  background: #fafdff;
+}
+
+.stepper-fixed-header {
+  flex-shrink: 0;
+  background: #fafdff;
+  z-index: 50;
+}
+
+.scrollable-form-area {
+  flex-grow: 1;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollable-form-area::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
 .main-content-bg {
   background: #fafdff;
   overflow-y: auto;

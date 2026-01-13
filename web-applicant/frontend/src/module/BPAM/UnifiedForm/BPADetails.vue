@@ -1,111 +1,100 @@
 <template>
-  <v-app>
-    <Header />
+  <v-container style="max-width: 1300px" class="pa-0 px-6 pb-6" fluid>
+    <div class="mb-1 mt-0 py-2">
+      <h2 class="text-h6 font-weight-bold text-grey-darken-3 mb-0">Application BP-2025-0808-001</h2>
+      <p class="text-caption text-grey-darken-1">
+        View the current progress of your building permit request.
+      </p>
+    </div>
 
-    <v-main class="bg-grey-lighten-5 pt-0">
-      <v-container style="max-width: 1300px" class="pa-0 px-6 pb-6" fluid>
-        <div class="mb-1 mt-0 py-2">
-          <h2 class="text-h6 font-weight-bold text-grey-darken-3 mb-0">
-            Application BP-2025-0808-001
-          </h2>
-          <p class="text-caption text-grey-darken-1">
-            View the current progress of your building permit request.
-          </p>
-        </div>
+    <v-card flat border class="mb-2 rounded-lg">
+      <v-card-text class="pa-4">
+        <v-row dense>
+          <v-col cols="6" md="3">
+            <div class="text-caption text-grey mb-1">Submission Date</div>
+            <div class="text-body-2 font-weight-medium text-grey-darken-3">Jan 15, 2024</div>
+          </v-col>
+          <v-col cols="6" md="3">
+            <div class="text-caption text-grey mb-1">Application Type</div>
+            <div class="text-body-2 font-weight-medium text-grey-darken-3">New Construction</div>
+          </v-col>
+          <v-col cols="6" md="3">
+            <div class="text-caption text-grey mb-1">Current Status</div>
+            <v-chip
+              color="success"
+              variant="tonal"
+              size="x-small"
+              class="font-weight-medium rounded-sm"
+            >
+              Submitted
+            </v-chip>
+          </v-col>
+          <v-col cols="6" md="3">
+            <div class="text-caption text-grey mb-1">Last Updated</div>
+            <div class="text-body-2 font-weight-medium text-grey-darken-3">2h ago</div>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
 
-        <v-card flat border class="mb-2 rounded-lg">
-          <v-card-text class="pa-4">
-            <v-row dense>
-              <v-col cols="6" md="3">
-                <div class="text-caption text-grey mb-1">Submission Date</div>
-                <div class="text-body-2 font-weight-medium text-grey-darken-3">Jan 15, 2024</div>
-              </v-col>
-              <v-col cols="6" md="3">
-                <div class="text-caption text-grey mb-1">Application Type</div>
-                <div class="text-body-2 font-weight-medium text-grey-darken-3">
-                  New Construction
-                </div>
-              </v-col>
-              <v-col cols="6" md="3">
-                <div class="text-caption text-grey mb-1">Current Status</div>
-                <v-chip
-                  color="success"
-                  variant="tonal"
-                  size="x-small"
-                  class="font-weight-medium rounded-sm"
-                >
-                  Submitted
-                </v-chip>
-              </v-col>
-              <v-col cols="6" md="3">
-                <div class="text-caption text-grey mb-1">Last Updated</div>
-                <div class="text-body-2 font-weight-medium text-grey-darken-3">2h ago</div>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+    <v-card flat border class="rounded-lg">
+      <v-card-title class="text-subtitle-1 font-weight-bold text-grey-darken-3 px-4 pt-4 pb-2">
+        Application Status Tracker
+      </v-card-title>
 
-        <v-card flat border class="rounded-lg">
-          <v-card-title class="text-subtitle-1 font-weight-bold text-grey-darken-3 px-4 pt-4 pb-2">
-            Application Status Tracker
-          </v-card-title>
+      <v-card-text class="px-4 pb-4">
+        <v-timeline align="start" density="compact" side="end" truncate-line="both">
+          <v-timeline-item
+            v-for="step in steps"
+            :key="step.id"
+            :dot-color="step.status === 'completed' ? 'primary' : 'grey-lighten-2'"
+            :icon="step.status === 'completed' ? 'mdi-check' : ''"
+            :icon-color="step.status === 'completed' ? 'white' : ''"
+            size="x-small"
+            fill-dot
+            width="100%"
+          >
+            <div class="d-flex flex-column w-100">
+              <div class="d-flex align-center justify-space-between mb-1 w-100">
+                <h4 class="text-body-2 font-weight-bold text-grey-darken-3 flex-grow-1 mr-4">
+                  {{ step.title }}
+                </h4>
 
-          <v-card-text class="px-4 pb-4">
-            <v-timeline align="start" density="compact" side="end" truncate-line="both">
-              <v-timeline-item
-                v-for="step in steps"
-                :key="step.id"
-                :dot-color="step.status === 'completed' ? 'primary' : 'grey-lighten-2'"
-                :icon="step.status === 'completed' ? 'mdi-check' : ''"
-                :icon-color="step.status === 'completed' ? 'white' : ''"
-                size="x-small"
-                fill-dot
-                width="100%"
-              >
-                <div class="d-flex flex-column w-100">
-                  <div class="d-flex align-center justify-space-between mb-1 w-100">
-                    <h4 class="text-body-2 font-weight-bold text-grey-darken-3 flex-grow-1 mr-4">
-                      {{ step.title }}
-                    </h4>
-
-                    <div style="width: 100px" class="flex-shrink-0 d-flex justify-end">
-                      <v-chip
-                        :color="step.status === 'completed' ? 'success' : 'grey'"
-                        variant="tonal"
-                        size="x-small"
-                        class="font-weight-medium justify-center"
-                        style="width: 100%"
-                      >
-                        {{ step.status === 'completed' ? 'Completed' : 'Pending' }}
-                      </v-chip>
-                    </div>
-                  </div>
-
-                  <div
-                    class="text-caption text-grey-darken-1 mb-1 font-mono"
-                    style="font-size: 0.7rem !important"
+                <div style="width: 100px" class="flex-shrink-0 d-flex justify-end">
+                  <v-chip
+                    :color="step.status === 'completed' ? 'success' : 'grey'"
+                    variant="tonal"
+                    size="x-small"
+                    class="font-weight-medium justify-center"
+                    style="width: 100%"
                   >
-                    {{ step.applicationId }}
-                  </div>
-                  <div class="text-caption font-weight-bold text-grey-darken-2 mb-1">
-                    {{ step.statusText }}
-                  </div>
-                  <div class="text-caption text-grey-darken-1">
-                    {{ step.description }}
-                  </div>
+                    {{ step.status === 'completed' ? 'Completed' : 'Pending' }}
+                  </v-chip>
                 </div>
-              </v-timeline-item>
-            </v-timeline>
-          </v-card-text>
-        </v-card>
-      </v-container>
-    </v-main>
-  </v-app>
+              </div>
+
+              <div
+                class="text-caption text-grey-darken-1 mb-1 font-mono"
+                style="font-size: 0.7rem !important"
+              >
+                {{ step.applicationId }}
+              </div>
+              <div class="text-caption font-weight-bold text-grey-darken-2 mb-1">
+                {{ step.statusText }}
+              </div>
+              <div class="text-caption text-grey-darken-1">
+                {{ step.description }}
+              </div>
+            </div>
+          </v-timeline-item>
+        </v-timeline>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import Header from './header.vue'
 
 const showProfileMenu = ref(false)
 

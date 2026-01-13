@@ -1,322 +1,317 @@
 <template>
-  <v-app>
-    <Header />
-    <v-main class="no-scroll">
-      <v-container fluid class="pa-0 content-area fill-height">
-        <v-row no-gutters class="fill-height">
-          <Navigation
-            :sidebar-step="sidebarStep"
-            :sidebar-steps="sidebarSteps"
-            @go-to-step="goToStep"
-            @logout="handleLogout"
-          />
+  <v-container fluid class="pa-0 content-area fill-height">
+    <v-row no-gutters class="fill-height">
+      <Navigation
+        :sidebar-step="sidebarStep"
+        :sidebar-steps="sidebarSteps"
+        @go-to-step="goToStep"
+        @logout="handleLogout"
+      />
 
-          <v-col cols="12" md="9" class="main-content-wrapper d-flex flex-column">
-            <div class="stepper-fixed-header pa-6 pb-2">
-              <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-                <v-stepper v-model="formStepValue" alt-labels flat class="stepper-elevated">
-                  <v-stepper-header>
-                    <v-stepper-item
-                      v-for="(step, index) in formSteps"
-                      :key="`step-${index}`"
-                      :title="step.title"
-                      :value="step.value"
-                      :complete="formStepValue > step.value"
-                      :color="formStepValue >= step.value ? 'blue-darken-1' : 'grey-lighten-2'"
-                      class="stepper-item-custom"
-                    >
-                      <template v-if="index < formSteps.length - 1" #divider>
-                        <v-divider
-                          :thickness="3"
-                          :style="{
-                            'border-color': formStepValue > step.value ? '#1976D2' : '#e0e0e0',
-                          }"
-                          class="mx-2"
-                        ></v-divider>
-                      </template>
-                    </v-stepper-item>
-                  </v-stepper-header>
-                </v-stepper>
-              </v-container>
+      <v-col cols="12" md="9" class="main-content-wrapper d-flex flex-column">
+        <div class="stepper-fixed-header pa-6 pb-2">
+          <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
+            <v-stepper v-model="formStepValue" alt-labels flat class="stepper-elevated">
+              <v-stepper-header>
+                <v-stepper-item
+                  v-for="(step, index) in formSteps"
+                  :key="`step-${index}`"
+                  :title="step.title"
+                  :value="step.value"
+                  :complete="formStepValue > step.value"
+                  :color="formStepValue >= step.value ? 'blue-darken-1' : 'grey-lighten-2'"
+                  class="stepper-item-custom"
+                >
+                  <template v-if="index < formSteps.length - 1" #divider>
+                    <v-divider
+                      :thickness="3"
+                      :style="{
+                        'border-color': formStepValue > step.value ? '#1976D2' : '#e0e0e0',
+                      }"
+                      class="mx-2"
+                    ></v-divider>
+                  </template>
+                </v-stepper-item>
+              </v-stepper-header>
+            </v-stepper>
+          </v-container>
+        </div>
+
+        <div class="scrollable-form-area pa-6 pt-0 pb-12">
+          <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
+            <v-card class="my-2 pa-4 card-shadow">
+              <v-card-title class="text-h6 card-title-responsive mb-2">
+                APPLICATION DETAILS
+              </v-card-title>
+              <v-divider class="mb-4"></v-divider>
+              <v-card-text>
+                <v-form ref="entryForm" @submit.prevent="validateAndProceed">
+                  <v-card class="mb-4 card-section">
+                    <v-card-title class="text-h6 card-title-responsive section-title">
+                      <v-icon left color="blue-darken-3" class="mr-2">mdi-account</v-icon>
+                      Full Name
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                      <v-row dense>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="formData.last_name"
+                            label="Last Name"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            prepend-inner-icon="mdi-account"
+                            color="blue-darken-3"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="formData.first_name"
+                            label="First Name"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-account"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="formData.middle_initial"
+                            label="Middle Initial"
+                            variant="outlined"
+                            density="comfortable"
+                            maxlength="2"
+                            counter
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-alpha-m-box-outline"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+
+                  <v-card class="mb-4 card-section">
+                    <v-card-title class="text-h6 card-title-responsive section-title">
+                      <v-icon left color="blue-darken-3" class="mr-2">mdi-map-marker</v-icon>
+                      ADDRESS
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                      <v-row dense>
+                        <v-col cols="12" sm="6" md="2">
+                          <v-select
+                            v-model="formData.province"
+                            :items="provinces"
+                            item-title="prov_name"
+                            item-value="prov_id"
+                            label="Province"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-map"
+                            hide-details="auto"
+                            :loading="loadingProvinces"
+                            required
+                          ></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="2">
+                          <v-select
+                            v-model="formData.city_municipality"
+                            :items="cityMunicipalities"
+                            item-title="citymun_name"
+                            item-value="citymun_id"
+                            label="City/Municipality"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-home-city"
+                            hide-details="auto"
+                            :loading="loadingCities"
+                            :disabled="!formData.province"
+                            required
+                          ></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="2">
+                          <v-select
+                            v-model="formData.barangay"
+                            :items="barangays"
+                            item-title="brgy_name"
+                            item-value="brgy_id"
+                            label="Barangay"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-home-group"
+                            hide-details="auto"
+                            :loading="loadingBarangays"
+                            :disabled="!formData.city_municipality"
+                            required
+                          ></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="2">
+                          <v-text-field
+                            v-model="formData.house_no"
+                            label="House No."
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-home-outline"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="2">
+                          <v-text-field
+                            v-model="formData.street"
+                            label="Street"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-road-variant"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="2">
+                          <v-text-field
+                            v-model="formData.contact_no"
+                            label="Contact No."
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-phone"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+
+                  <v-card class="mb-4 card-section">
+                    <v-card-title class="text-h6 card-title-responsive section-title">
+                      <v-icon left color="blue-darken-3" class="mr-2"
+                        >mdi-card-account-details</v-icon
+                      >
+                      GOVERNMENT ISSUED ID
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                      <v-row dense>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-text-field
+                            v-model="formData.tin"
+                            label="TIN"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-numeric"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-text-field
+                            v-model="formData.govt_issued_id"
+                            label="Gov't Issued ID"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-card-account-details-outline"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-text-field
+                            v-model="formData.date_issued"
+                            label="Date Issued"
+                            variant="outlined"
+                            density="comfortable"
+                            type="date"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-calendar"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-text-field
+                            v-model="formData.place_issued"
+                            label="Place Issued"
+                            variant="outlined"
+                            density="comfortable"
+                            :rules="[rules.required]"
+                            color="blue-darken-3"
+                            prepend-inner-icon="mdi-map-marker"
+                            hide-details="auto"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+                </v-form>
+              </v-card-text>
+            </v-card>
+
+            <div class="d-flex justify-end mt-6 mb-8">
+              <v-btn
+                v-if="!isSaved"
+                color="blue-darken-3"
+                class="btn-rounded"
+                elevation="2"
+                @click="saveForm"
+                variant="elevated"
+                :loading="saving"
+                :disabled="saving"
+              >
+                {{ saving ? 'Saving...' : 'Save' }}
+                <v-icon right>mdi-content-save</v-icon>
+              </v-btn>
+              <v-btn
+                v-else
+                color="blue-darken-3"
+                class="btn-rounded"
+                elevation="2"
+                @click="proceedToNext"
+                variant="elevated"
+              >
+                Next
+                <v-icon right>mdi-arrow-right</v-icon>
+              </v-btn>
             </div>
+          </v-container>
+        </div>
 
-            <div class="scrollable-form-area pa-6 pt-0">
-              <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-                <v-card class="my-2 pa-4 card-shadow">
-                  <v-card-title class="text-h6 card-title-responsive mb-2">
-                    APPLICATION DETAILS
-                  </v-card-title>
-                  <v-divider class="mb-4"></v-divider>
-                  <v-card-text>
-                    <v-form ref="entryForm" @submit.prevent="validateAndProceed">
-                      <v-card class="mb-4 card-section">
-                        <v-card-title class="text-h6 card-title-responsive section-title">
-                          <v-icon left color="blue-darken-3" class="mr-2">mdi-account</v-icon>
-                          Full Name
-                        </v-card-title>
-                        <v-divider></v-divider>
-                        <v-card-text>
-                          <v-row dense>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field
-                                v-model="formData.last_name"
-                                label="Last Name"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                prepend-inner-icon="mdi-account"
-                                color="blue-darken-3"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field
-                                v-model="formData.first_name"
-                                label="First Name"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-account"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field
-                                v-model="formData.middle_initial"
-                                label="Middle Initial"
-                                variant="outlined"
-                                density="comfortable"
-                                maxlength="2"
-                                counter
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-alpha-m-box-outline"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-                        </v-card-text>
-                      </v-card>
-
-                      <v-card class="mb-4 card-section">
-                        <v-card-title class="text-h6 card-title-responsive section-title">
-                          <v-icon left color="blue-darken-3" class="mr-2">mdi-map-marker</v-icon>
-                          ADDRESS
-                        </v-card-title>
-                        <v-divider></v-divider>
-                        <v-card-text>
-                          <v-row dense>
-                            <v-col cols="12" sm="6" md="2">
-                              <v-select
-                                v-model="formData.province"
-                                :items="provinces"
-                                item-title="prov_name"
-                                item-value="prov_id"
-                                label="Province"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-map"
-                                hide-details="auto"
-                                :loading="loadingProvinces"
-                                required
-                              ></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="2">
-                              <v-select
-                                v-model="formData.city_municipality"
-                                :items="cityMunicipalities"
-                                item-title="citymun_name"
-                                item-value="citymun_id"
-                                label="City/Municipality"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-home-city"
-                                hide-details="auto"
-                                :loading="loadingCities"
-                                :disabled="!formData.province"
-                                required
-                              ></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="2">
-                              <v-select
-                                v-model="formData.barangay"
-                                :items="barangays"
-                                item-title="brgy_name"
-                                item-value="brgy_id"
-                                label="Barangay"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-home-group"
-                                hide-details="auto"
-                                :loading="loadingBarangays"
-                                :disabled="!formData.city_municipality"
-                                required
-                              ></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="2">
-                              <v-text-field
-                                v-model="formData.house_no"
-                                label="House No."
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-home-outline"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="2">
-                              <v-text-field
-                                v-model="formData.street"
-                                label="Street"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-road-variant"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="2">
-                              <v-text-field
-                                v-model="formData.contact_no"
-                                label="Contact No."
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-phone"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-                        </v-card-text>
-                      </v-card>
-
-                      <v-card class="mb-4 card-section">
-                        <v-card-title class="text-h6 card-title-responsive section-title">
-                          <v-icon left color="blue-darken-3" class="mr-2"
-                            >mdi-card-account-details</v-icon
-                          >
-                          GOVERNMENT ISSUED ID
-                        </v-card-title>
-                        <v-divider></v-divider>
-                        <v-card-text>
-                          <v-row dense>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="formData.tin"
-                                label="TIN"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-numeric"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="formData.govt_issued_id"
-                                label="Gov't Issued ID"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-card-account-details-outline"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="formData.date_issued"
-                                label="Date Issued"
-                                variant="outlined"
-                                density="comfortable"
-                                type="date"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-calendar"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="formData.place_issued"
-                                label="Place Issued"
-                                variant="outlined"
-                                density="comfortable"
-                                :rules="[rules.required]"
-                                color="blue-darken-3"
-                                prepend-inner-icon="mdi-map-marker"
-                                hide-details="auto"
-                                required
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-                        </v-card-text>
-                      </v-card>
-                    </v-form>
-                  </v-card-text>
-                </v-card>
-
-                <div class="d-flex justify-end mt-6 mb-8">
-                  <v-btn
-                    v-if="!isSaved"
-                    color="blue-darken-3"
-                    class="btn-rounded"
-                    elevation="2"
-                    @click="saveForm"
-                    variant="elevated"
-                    :loading="saving"
-                    :disabled="saving"
-                  >
-                    {{ saving ? 'Saving...' : 'Save' }}
-                    <v-icon right>mdi-content-save</v-icon>
-                  </v-btn>
-                  <v-btn
-                    v-else
-                    color="blue-darken-3"
-                    class="btn-rounded"
-                    elevation="2"
-                    @click="proceedToNext"
-                    variant="elevated"
-                  >
-                    Next
-                    <v-icon right>mdi-arrow-right</v-icon>
-                  </v-btn>
-                </div>
-              </v-container>
-            </div>
-
-            <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="3000" top right>
-              {{ snackbarMessage }}
-              <template v-slot:actions>
-                <v-btn color="white" variant="text" @click="snackbar = false">Close</v-btn>
-              </template>
-            </v-snackbar>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+        <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="3000" top right>
+          {{ snackbarMessage }}
+          <template v-slot:actions>
+            <v-btn color="white" variant="text" @click="snackbar = false">Close</v-btn>
+          </template>
+        </v-snackbar>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -637,15 +632,11 @@ export default defineComponent({
 .scrollable-form-area {
   flex-grow: 1;
   overflow-y: auto;
-  scrollbar-width: thin;
+  scrollbar-width: none; /* Firefox */
 }
 
 .scrollable-form-area::-webkit-scrollbar {
-  width: 6px;
-}
-.scrollable-form-area::-webkit-scrollbar-thumb {
-  background: #cfd8dc;
-  border-radius: 10px;
+  display: none; /* Chrome, Safari, Edge */
 }
 
 .stepper-elevated {
