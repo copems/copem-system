@@ -23,7 +23,9 @@ declare module 'vue-router/auto-routes' {
     '/ForgotPW': RouteRecordInfo<'/ForgotPW', '/ForgotPW', Record<never, never>, Record<never, never>>,
     '/Homepage': RouteRecordInfo<'/Homepage', '/Homepage', Record<never, never>, Record<never, never>>,
     '/Login': RouteRecordInfo<'/Login', '/Login', Record<never, never>, Record<never, never>>,
+    '/LoginAuth': RouteRecordInfo<'/LoginAuth', '/LoginAuth', Record<never, never>, Record<never, never>>,
     '/OpInquiry': RouteRecordInfo<'/OpInquiry', '/OpInquiry', Record<never, never>, Record<never, never>>,
+    '/Register': RouteRecordInfo<'/Register', '/Register', Record<never, never>, Record<never, never>>,
     '/Registration': RouteRecordInfo<'/Registration', '/Registration', Record<never, never>, Record<never, never>>,
   }
 
@@ -58,8 +60,16 @@ declare module 'vue-router/auto-routes' {
       routes: '/Login'
       views: never
     }
+    'src/pages/LoginAuth.vue': {
+      routes: '/LoginAuth'
+      views: never
+    }
     'src/pages/OpInquiry.vue': {
       routes: '/OpInquiry'
+      views: never
+    }
+    'src/pages/Register.vue': {
+      routes: '/Register'
       views: never
     }
     'src/pages/Registration.vue': {

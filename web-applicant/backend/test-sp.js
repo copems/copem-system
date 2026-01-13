@@ -9,7 +9,7 @@ async function testStoredProcedure() {
         console.log('Inserting test user...');
         await conn.query(
             "INSERT INTO User_Account (username, user_password, account_type, is_active) VALUES (?, ?, ?, ?)",
-            ['test@example.com', 'password123', 1, true]
+            ['test@example.com', 'password123', 3, true] // 3 = applicant
         );
         console.log('Test user inserted');
         

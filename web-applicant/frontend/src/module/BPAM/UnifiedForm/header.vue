@@ -9,9 +9,9 @@
     </div>
     <div class="user-profile-wrapper">
       <button class="profile-btn" @click="toggleDropdown">
-        <div class="avatar">JR</div>
+        <div class="avatar">{{ userInitials }}</div>
         <div class="user-info">
-          <span class="user-name">Jose Rizal</span>
+          <span class="user-name">{{ applicantName }}</span>
         </div>
         <span class="dropdown-icon">
           <svg
@@ -34,7 +34,10 @@
       </button>
       <div v-if="showDropdown" class="dropdown-menu">
         <div class="dropdown-header">
-          <div class="dropdown-name">Jose Rizal</div>
+          <div class="dropdown-name">{{ applicantName }}</div>
+          <div class="dropdown-subtitle" v-if="currentUser">
+            {{ currentUser.email || currentUser.username }}
+          </div>
         </div>
         <div class="dropdown-divider"></div>
         <div class="dropdown-item logout" @click.stop="logout">
@@ -47,19 +50,61 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { usePermitApplicantStore } from '@/stores/permitApplicant'
 
+const router = useRouter()
 const showDropdown = ref(false)
+
+// Store instances
+const authStore = useAuthStore()
+const permitApplicantStore = usePermitApplicantStore()
+
+// Computed properties
+const currentUser = computed(() => authStore.currentUser)
+const applicantName = computed(
+  () => permitApplicantStore.fullName || currentUser.value?.username || 'User'
+)
+const userInitials = computed(() => {
+  if (permitApplicantStore.applicant) {
+    const { firstname, lastname } = permitApplicantStore.applicant
+    return `${firstname?.charAt(0) || ''}${lastname?.charAt(0) || ''}`.toUpperCase()
+  }
+  if (currentUser.value?.username) {
+    const parts = currentUser.value.username.split('@')[0].split(/[._ ]/)
+    if (parts.length >= 2) {
+      return `${parts[0].charAt(0)}${parts[1].charAt(0)}`.toUpperCase()
+    }
+    return currentUser.value.username.substring(0, 2).toUpperCase()
+  }
+  return 'U'
+})
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value
 }
 
-const logout = () => {
-  console.log('Logging out...')
-  // Add your logout logic here
-  // For example: router.push('/login') or clear session
-  showDropdown.value = false
+// Fetch applicant data on mount
+onMounted(async () => {
+  if (authStore.isAuthenticated) {
+    try {
+      await permitApplicantStore.fetchCurrentApplicant()
+    } catch (error) {
+      console.error('Failed to load applicant data:', error)
+    }
+  }
+})
+
+const logout = async () => {
+  try {
+    await authStore.logout()
+    showDropdown.value = false
+    router.push('/login')
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
 }
 
 // Close dropdown when clicking outside

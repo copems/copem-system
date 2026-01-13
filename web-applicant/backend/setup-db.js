@@ -10,7 +10,7 @@ async function setup() {
         try {
             await conn.query(
                 `INSERT INTO User_Account (username, user_password, account_type, is_active) 
-                 VALUES ('test@example.com', 'password123', 1, 1)`
+                 VALUES ('test@example.com', 'password123', 3, 1)` // 3 = applicant
             );
             console.log('✓ Test user created');
             console.log('  Username: test@example.com');

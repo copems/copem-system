@@ -2,6 +2,7 @@
   <v-app>
     <!-- <MainHeader /> -->
 
+    <Header />
     <v-main style="padding: 0">
       <router-view />
     </v-main>
@@ -10,6 +11,6 @@
 
 <script>
 export default {
-  name: 'MainLayout'
+  name: 'MainLayout',
 }
 </script>

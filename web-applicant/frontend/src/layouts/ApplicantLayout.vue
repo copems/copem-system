@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <!-- <ApplicantHeader /> -->
+    <Header />
 
     <v-main style="padding: 0">
       <router-view />
@@ -10,6 +11,6 @@
 
 <script>
 export default {
-  name: "ApplicantLayout",
-};
+  name: 'ApplicantLayout',
+}
 </script>

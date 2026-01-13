@@ -3,7 +3,7 @@
     <v-container fluid class="pa-0 content-area">
       <v-row no-gutters class="fill-height">
         <v-col cols="12" class="pa-6 main-content-bg">
-          <v-btn text color="white" @click="goBack" class="mb-4" to="home">
+          <v-btn text color="white" @click="goBack" class="mb-4">
             <v-icon left>mdi-arrow-left</v-icon>
             Back
           </v-btn>
@@ -348,7 +348,7 @@ export default {
   },
   methods: {
     goBack() {
-      window.location.href = 'http://localhost:3000/'
+      this.$router.push('/')
     },
   },
 }

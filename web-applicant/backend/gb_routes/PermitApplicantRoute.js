@@ -2,10 +2,32 @@ import express from "express";
 import {
     savePermitApplicant,
     getPermitApplicantById,
+    getPermitApplicantByUserId,
+    getAllPermitApplicants,
     updatePermitApplicant
 } from "../gb_controllers/PermitApplicantController.js";
 
 const router = express.Router();
+
+/**
+ * @route   GET /api/permit-applicant
+ * @desc    Get all permit applicants
+ * @access  Public
+ */
+router.get("/", async (req, res) => {
+    try {
+        const applicants = await getAllPermitApplicants();
+        res.status(200).json({
+            success: true,
+            data: applicants
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
 
 /**
  * @route   POST /api/permit-applicant
@@ -19,6 +41,34 @@ router.post("/", async (req, res) => {
             success: true,
             message: "Permit applicant created successfully",
             data: { applicant_id: applicantId }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+/**
+ * @route   GET /api/permit-applicant/user/:userId
+ * @desc    Get permit applicant by user ID
+ * @access  Public
+ */
+router.get("/user/:userId", async (req, res) => {
+    try {
+        const applicant = await getPermitApplicantByUserId(req.params.userId);
+        
+        if (!applicant) {
+            return res.status(404).json({
+                success: false,
+                message: "Permit applicant not found for this user"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: applicant
         });
     } catch (error) {
         res.status(500).json({

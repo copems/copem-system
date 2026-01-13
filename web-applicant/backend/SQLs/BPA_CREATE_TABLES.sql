@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS User_Account
     user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) UNIQUE NOT NULL,
 	user_password VARCHAR(255) NOT NULL,
-    account_type INTEGER DEFAULT(0),  #0 -> LGU STAFF, 1 -> Applicant
+    account_type INTEGER DEFAULT(3),  #0 -> admin, 1 -> evaluator, 2 -> inspector, 3 -> applicant
 	is_active BOOLEAN DEFAULT(TRUE)
 );
 
