@@ -88,3 +88,37 @@ export const updatePermitApplicant = async (applicantId, applicantData) => {
         throw new Error(`Error updating permit applicant: ${error.message}`);
     }
 };
+
+/**
+ * Get permit applicant by user ID
+ * @param {number} userId - The user ID
+ * @returns {Promise<Object|null>} The applicant record or null if not found
+ */
+export const getPermitApplicantByUserId = async (userId) => {
+    try {
+        const [rows] = await pool.query(
+            `SELECT * FROM tbl_permit_applicant WHERE user_id = ? LIMIT 1`,
+            [userId]
+        );
+
+        return rows[0] || null;
+    } catch (error) {
+        throw new Error(`Error fetching permit applicant by user ID: ${error.message}`);
+    }
+};
+
+/**
+ * Get all permit applicants
+ * @returns {Promise<Array>} Array of all applicant records
+ */
+export const getAllPermitApplicants = async () => {
+    try {
+        const [rows] = await pool.query(
+            `SELECT * FROM tbl_permit_applicant ORDER BY applicant_id DESC`
+        );
+
+        return rows;
+    } catch (error) {
+        throw new Error(`Error fetching all permit applicants: ${error.message}`);
+    }
+};

@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import authRoutes from './gb_routes/AuthRoute.js';
 import userAccountRoutes from './gb_routes/UserAccount.js';
 import provinceRoutes from './gb_routes/ProvinceRoute.js';
 import cityMunRoutes from './gb_routes/CityMunRoute.js';
@@ -26,6 +27,9 @@ app.get('/api/test', (req, res) => {
     res.json({ message: 'API is working!' });
 });*/
 
+// Authentication routes
+app.use('/api/auth', authRoutes);
+
 // User account routes
 app.use('/api', userAccountRoutes);
 
@@ -47,6 +51,8 @@ app.use('/api/applicant-gov-id', applicantGovIdRoutes);
 const PORT = process.env.PORT || 3000;  
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+        console.log(`http://localhost:${PORT}`);
+
     console.log('Registered routes:');
     console.log('  GET /api/test');
     console.log('  GET /api/userAccount/:username');

@@ -13,6 +13,7 @@ import App from "./App.vue";
 // Composables
 import { createApp } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useAuthUserStore } from "@/stores/authUser";
 
 // Styles
 import "unfonts.css";
@@ -23,10 +24,12 @@ registerPlugins(app);
 
 app.mount("#app");
 
-// Initialize auth store and check for existing authentication after mount
+// Initialize auth stores and check for existing authentication after mount
 try {
   const authStore = useAuthStore();
+  const authUserStore = useAuthUserStore();
   authStore.checkAuth();
+  authUserStore.loadAuth();
 } catch (error) {
   console.warn("Auth store initialization warning:", error);
 }

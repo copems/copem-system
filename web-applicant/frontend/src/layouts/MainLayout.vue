@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <!-- <MainHeader /> -->
+    <Header />
 
     <v-main style="padding: 0">
       <router-view />
@@ -8,8 +8,6 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  name: 'MainLayout'
-}
+<script setup>
+import Header from '@/components/Header.vue'
 </script>

@@ -1,50 +1,6 @@
 <template>
   <div class="app-container">
-    <nav class="navbar shadow-sm">
-      <div class="logo-section">
-        <img src="@/assets/copemslogo.png" alt="CoPeMS Logo" class="logo-image" />
-        <div class="logo-text">
-          <p class="main-title">CONSTRUCTION PERMIT</p>
-          <h1 class="sub-title">MANAGEMENT SYSTEM</h1>
-        </div>
-      </div>
-      <div class="user-profile-wrapper">
-        <button class="profile-btn" @click="toggleDropdown">
-          <div class="avatar">JR</div>
-          <div class="user-info">
-            <span class="user-name">Jose Rizal</span>
-          </div>
-          <span class="dropdown-icon">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="chevron-down-icon"
-            >
-              <path
-                d="M6 9l6 6 6-6"
-                stroke="#222"
-                stroke-width="2.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-        </button>
-        <div v-if="showDropdown" class="dropdown-menu">
-          <div class="dropdown-header">
-            <div class="dropdown-name">Jose Rizal</div>
-          </div>
-          <div class="dropdown-divider"></div>
-          <div class="dropdown-item logout" @click.stop="logout">
-            <span class="logout-icon">↪</span>
-            <span>Log Out</span>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <Header />
 
     <header class="hero">
       <div class="hero-content">
@@ -79,7 +35,7 @@
           <div class="service-body">
             <h3 class="service-name">{{ service.title }}</h3>
             <p class="service-desc">{{ service.description }}</p>
-            <button class="apply-now-btn">Apply Now</button>
+            <button class="apply-now-btn" @click="handleApplyNow(service.title)">Apply Now</button>
           </div>
         </div>
       </div>
@@ -147,8 +103,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Header from '@/components/Header.vue'
 
-const applicationNumber = ref('BP-2026-000001')
+const router = useRouter()
 const showDropdown = ref(false)
 
 const toggleDropdown = () => {
@@ -169,6 +127,15 @@ if (typeof window !== 'undefined') {
       showDropdown.value = false
     }
   })
+}
+
+const handleApplyNow = (serviceTitle) => {
+  if (serviceTitle === 'Building Permit Application') {
+    router.push('/bpam/applicantinformation')
+  } else {
+    // Handle other services in the future
+    console.log(`Apply for: ${serviceTitle}`)
+  }
 }
 
 const services = [
@@ -236,7 +203,7 @@ const requirementLists = [
     items: [
       'Two (2) copies of accomplished Unified Application form for Certificate of Occupancy, duly notarized',
       'Two (2) copies of Certificate of Completion, duly notarized',
-      'Construction Logbook, signed and sealed by the Owner’s Architect or Civil Engineer who undertook full-time inspection and supervision',
+      "Construction Logbook, signed and sealed by the Owner's Architect or Civil Engineer who undertook full-time inspection and supervision",
       'Two (2) photocopies of the valid licenses of all involved professionals',
       'Photograph of the structure with substantial completion showing front, sides, and rear areas',
       'Two (2) sets of As-Built Plans, if there are changes in the building plans covered by the issued Building Permit',
