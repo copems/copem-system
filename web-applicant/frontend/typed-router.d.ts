@@ -23,7 +23,6 @@ declare module 'vue-router/auto-routes' {
     '/Applicant-Homepage': RouteRecordInfo<'/Applicant-Homepage', '/Applicant-Homepage', Record<never, never>, Record<never, never>>,
     '/Applicant-Login': RouteRecordInfo<'/Applicant-Login', '/Applicant-Login', Record<never, never>, Record<never, never>>,
     '/Applicant-opInquiry': RouteRecordInfo<'/Applicant-opInquiry', '/Applicant-opInquiry', Record<never, never>, Record<never, never>>,
-    '/Applicant-Registration': RouteRecordInfo<'/Applicant-Registration', '/Applicant-Registration', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -57,10 +56,6 @@ declare module 'vue-router/auto-routes' {
       routes: '/Applicant-opInquiry'
       views: never
     }
-    'src/pages/Applicant-Registration.vue': {
-      routes: '/Applicant-Registration'
-      views: never
-    }
   }
 
   /**
@@ -71,6 +66,6 @@ declare module 'vue-router/auto-routes' {
    */
   export type _RouteNamesForFilePath<FilePath extends string> =
     _RouteFileInfoMap extends Record<FilePath, infer Info>
-      ? Info['routes']
-      : keyof RouteNamedMap
+    ? Info['routes']
+    : keyof RouteNamedMap
 }

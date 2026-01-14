@@ -318,7 +318,7 @@
 import { defineComponent } from 'vue'
 import axios from 'axios'
 import Navigation from './Navigation.vue'
-import Header from './header.vue'
+import Header from '@/components/Header.vue'
 
 export default defineComponent({
   components: { Navigation, Header },

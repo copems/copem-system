@@ -174,7 +174,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Header from './header.vue'
+import Header from '@/components/header.vue'
 
 const router = useRouter()
 const sidebarStep = ref(2)

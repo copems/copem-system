@@ -92,7 +92,8 @@ export const useAuthStore = defineStore("auth", {
           password: userData.password,
           email: userData.email,
           role: userData.role || 'permit_applicant',
-          fullName: userData.fullName,
+          first_name: userData.first_name,
+          last_name: userData.last_name,
         });
 
         const { data } = response.data;

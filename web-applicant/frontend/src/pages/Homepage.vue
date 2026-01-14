@@ -107,7 +107,6 @@ import { useRouter } from 'vue-router'
 import Header from '@/components/Header.vue'
 
 const router = useRouter()
-const applicationNumber = ref('BP-2026-000001')
 const showDropdown = ref(false)
 
 const toggleDropdown = () => {
@@ -204,7 +203,7 @@ const requirementLists = [
     items: [
       'Two (2) copies of accomplished Unified Application form for Certificate of Occupancy, duly notarized',
       'Two (2) copies of Certificate of Completion, duly notarized',
-      'Construction Logbook, signed and sealed by the Owner’s Architect or Civil Engineer who undertook full-time inspection and supervision',
+      "Construction Logbook, signed and sealed by the Owner's Architect or Civil Engineer who undertook full-time inspection and supervision",
       'Two (2) photocopies of the valid licenses of all involved professionals',
       'Photograph of the structure with substantial completion showing front, sides, and rear areas',
       'Two (2) sets of As-Built Plans, if there are changes in the building plans covered by the issued Building Permit',

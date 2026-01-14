@@ -113,13 +113,6 @@
                   >
                     {{ loading ? 'Signing in...' : 'Login' }}
                   </v-btn>
-
-                  <div class="text-center mt-6">
-                    <span class="text-grey-darken-1">Don't have an account?</span>
-                    <router-link to="/register" class="text-primary font-weight-bold ms-1"
-                      >Register</router-link
-                    >
-                  </div>
                 </v-form>
               </v-card-text>
             </v-card>
@@ -132,6 +125,7 @@
 
 <script>
 import { useAuthStore } from '@/stores/auth'
+import { useAuthUserStore } from '@/stores/authUser'
 
 export default {
   name: 'LoginPage',
@@ -166,12 +160,14 @@ export default {
 
       try {
         const authStore = useAuthStore()
-        await authStore.login(this.email, this.password)
-
+        const authUserStore = useAuthUserStore()
+        const result = await authStore.login(this.email, this.password)
+        // Set user in authUser store
+        if (result && result.user) {
+          authUserStore.setAuth(result.user, authStore.accessToken)
+        }
         this.alertType = 'success'
         this.alertMessage = 'Login successful!'
-
-        // Redirect to homepage after successful login
         setTimeout(() => {
           this.$router.push('/Homepage')
         }, 1000)

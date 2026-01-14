@@ -2,6 +2,21 @@
   <v-app>
     <v-main class="bg-grey-lighten-3">
       <v-container fluid class="px-4 mx-auto a4-container">
+        <div class="d-flex justify-space-between align-center mb-4">
+          <v-btn color="primary" variant="text" @click="$router.back()">
+            <v-icon left>mdi-arrow-left</v-icon>
+            Back
+          </v-btn>
+          <v-btn
+            color="success"
+            variant="elevated"
+            :disabled="!isFormComplete"
+            @click="downloadForm"
+          >
+            <v-icon left>mdi-download</v-icon>
+            Download
+          </v-btn>
+        </div>
         <div class="permit-form-wrapper">
           <div id="plumbing-permit-form-page-1">
             <div class="header-section">
@@ -12,9 +27,7 @@
                 <div>Province of Camarines Sur</div>
                 <div class="bold-text">OFFICE OF THE BUILDING OFFICIAL</div>
               </div>
-              <div class="form-no" style="visibility: hidden">
-                NBC FORM NO. A -06
-              </div>
+              <div class="form-no" style="visibility: hidden">NBC FORM NO. A -06</div>
             </div>
 
             <div class="permit-title-section">
@@ -61,9 +74,7 @@
             </div>
 
             <div class="box-container">
-              <p class="box-label">
-                BOX 1 (TO BE ACCOMPLISHED IN PRINT BY THE OWNER/APPLICANT)
-              </p>
+              <p class="box-label">BOX 1 (TO BE ACCOMPLISHED IN PRINT BY THE OWNER/APPLICANT)</p>
               <div class="box-content">
                 <div class="box-row">
                   <div class="cell owner-label">OWNER/APPLICANT</div>
@@ -81,9 +92,7 @@
                   </div>
                 </div>
                 <div class="box-row">
-                  <div class="cell enterprise-label">
-                    FOR CONSTRUCTION OWNED BY AN ENTERPRISE
-                  </div>
+                  <div class="cell enterprise-label">FOR CONSTRUCTION OWNED BY AN ENTERPRISE</div>
                   <div class="cell ownership-field">
                     <span class="sub-label">FORM OF OWNERSHIP</span>
                   </div>
@@ -110,9 +119,7 @@
                   </div>
                 </div>
                 <div class="box-row no-bottom-border">
-                  <div class="cell location-label">
-                    LOCATION OF CONSTRUCTION:
-                  </div>
+                  <div class="cell location-label">LOCATION OF CONSTRUCTION:</div>
                   <div class="cell location-details">
                     <div class="location-line">
                       <div class="field-group">
@@ -136,9 +143,7 @@
                         BARANGAY<span class="underline flex-fill"></span>
                       </div>
                       <div class="field-group flex-1">
-                        CITY/ MUNICIPALITY OF<span
-                          class="underline flex-fill"
-                        ></span>
+                        CITY/ MUNICIPALITY OF<span class="underline flex-fill"></span>
                       </div>
                     </div>
                   </div>
@@ -148,60 +153,20 @@
                   <p class="box-label">SCOPE OF WORK</p>
                   <div class="scope-grid-building">
                     <div class="scope-col">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="NEW CONSTRUCTION"
-                      ></v-checkbox>
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="ERECTION"
-                      ></v-checkbox>
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="ADDITION"
-                      ></v-checkbox>
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="ALTERATION"
-                      ></v-checkbox>
+                      <v-checkbox dense hide-details label="NEW CONSTRUCTION"></v-checkbox>
+                      <v-checkbox dense hide-details label="ERECTION"></v-checkbox>
+                      <v-checkbox dense hide-details label="ADDITION"></v-checkbox>
+                      <v-checkbox dense hide-details label="ALTERATION"></v-checkbox>
                     </div>
                     <div class="scope-col">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="RENOVATION"
-                      ></v-checkbox>
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="CONVERSION"
-                      ></v-checkbox>
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="REPAIR"
-                      ></v-checkbox>
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="MOVING"
-                      ></v-checkbox>
+                      <v-checkbox dense hide-details label="RENOVATION"></v-checkbox>
+                      <v-checkbox dense hide-details label="CONVERSION"></v-checkbox>
+                      <v-checkbox dense hide-details label="REPAIR"></v-checkbox>
+                      <v-checkbox dense hide-details label="MOVING"></v-checkbox>
                     </div>
                     <div class="scope-col">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="RAISING"
-                      ></v-checkbox>
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="DEMOLITION"
-                      ></v-checkbox>
+                      <v-checkbox dense hide-details label="RAISING"></v-checkbox>
+                      <v-checkbox dense hide-details label="DEMOLITION"></v-checkbox>
                       <div class="scope-item-with-input">
                         <v-checkbox
                           dense
@@ -210,11 +175,7 @@
                         ></v-checkbox>
                       </div>
                       <div class="scope-item-with-input">
-                        <v-checkbox
-                          dense
-                          hide-details
-                          label="OTHERS (Specify)"
-                        ></v-checkbox>
+                        <v-checkbox dense hide-details label="OTHERS (Specify)"></v-checkbox>
                         <span class="underline"></span>
                       </div>
                     </div>
@@ -224,9 +185,7 @@
             </div>
 
             <div class="mt-2">
-              <p class="box-label-outer">
-                BOX 2 (TO BE ACCOMPLISHED BY THE DESIGN PROFESSIONAL)
-              </p>
+              <p class="box-label-outer">BOX 2 (TO BE ACCOMPLISHED BY THE DESIGN PROFESSIONAL)</p>
               <div class="box-2-container">
                 <p class="box-2-title">FIXTURES TO BE INSTALLED</p>
                 <div class="fixtures-main-container">
@@ -238,25 +197,13 @@
                       <span class="kind-header">KIND OF FIXTURES</span>
                     </div>
 
-                    <div
-                      class="fixture-row"
-                      v-for="fixture in leftFixtures"
-                      :key="fixture"
-                    >
+                    <div class="fixture-row" v-for="fixture in leftFixtures" :key="fixture">
                       <div class="qty-cell"></div>
                       <div class="check-cell">
-                        <v-checkbox
-                          dense
-                          hide-details
-                          class="fixture-check"
-                        ></v-checkbox>
+                        <v-checkbox dense hide-details class="fixture-check"></v-checkbox>
                       </div>
                       <div class="check-cell">
-                        <v-checkbox
-                          dense
-                          hide-details
-                          class="fixture-check"
-                        ></v-checkbox>
+                        <v-checkbox dense hide-details class="fixture-check"></v-checkbox>
                       </div>
                       <div class="kind-cell">
                         <v-checkbox
@@ -277,25 +224,13 @@
                       <span class="kind-header">KIND OF FIXTURES</span>
                     </div>
 
-                    <div
-                      class="fixture-row"
-                      v-for="fixture in rightFixtures"
-                      :key="fixture"
-                    >
+                    <div class="fixture-row" v-for="fixture in rightFixtures" :key="fixture">
                       <div class="qty-cell"></div>
                       <div class="check-cell">
-                        <v-checkbox
-                          dense
-                          hide-details
-                          class="fixture-check"
-                        ></v-checkbox>
+                        <v-checkbox dense hide-details class="fixture-check"></v-checkbox>
                       </div>
                       <div class="check-cell">
-                        <v-checkbox
-                          dense
-                          hide-details
-                          class="fixture-check"
-                        ></v-checkbox>
+                        <v-checkbox dense hide-details class="fixture-check"></v-checkbox>
                       </div>
                       <div class="kind-cell">
                         <v-checkbox
@@ -311,33 +246,14 @@
 
                 <div class="box-2-footer">
                   <div class="system-checks">
-                    <v-checkbox
-                      dense
-                      hide-details
-                      label="WATER DISTRIBUTION SYSTEM"
-                    ></v-checkbox>
-                    <v-checkbox
-                      dense
-                      hide-details
-                      label="SEWAGE SYSTEM"
-                    ></v-checkbox>
-                    <v-checkbox
-                      dense
-                      hide-details
-                      label="SEPTIC TANK"
-                    ></v-checkbox>
-                    <v-checkbox
-                      dense
-                      hide-details
-                      label="STORM DRAINAGE SYSTEM"
-                    ></v-checkbox>
+                    <v-checkbox dense hide-details label="WATER DISTRIBUTION SYSTEM"></v-checkbox>
+                    <v-checkbox dense hide-details label="SEWAGE SYSTEM"></v-checkbox>
+                    <v-checkbox dense hide-details label="SEPTIC TANK"></v-checkbox>
+                    <v-checkbox dense hide-details label="STORM DRAINAGE SYSTEM"></v-checkbox>
                   </div>
                   <div class="prepared-by">
                     PREPARED BY:
-                    <span
-                      class="underline"
-                      style="flex-grow: 1; margin-left: 8px"
-                    ></span>
+                    <span class="underline" style="flex-grow: 1; margin-left: 8px"></span>
                   </div>
                 </div>
               </div>
@@ -347,20 +263,14 @@
               <div class="info-box-wrapper">
                 <p class="box-label-outer">BOX 3</p>
                 <div class="info-box">
-                  <p class="info-box-title">
-                    DESIGN PROFESSIONAL, PLANS AND SPECIFICATIONS
-                  </p>
+                  <p class="info-box-title">DESIGN PROFESSIONAL, PLANS AND SPECIFICATIONS</p>
                   <div class="signature-area">
                     <div class="signature-line-main"></div>
                     <div class="signature-line-date">Date</div>
                   </div>
                   <div class="signature-caption-area">
-                    <p class="font-weight-bold mb-0">
-                      PLUMBING ENGINEER / MASTER PLUMBER
-                    </p>
-                    <p class="caption-text">
-                      (Signed and Sealed Over Printed Name)
-                    </p>
+                    <p class="font-weight-bold mb-0">PLUMBING ENGINEER / MASTER PLUMBER</p>
+                    <p class="caption-text">(Signed and Sealed Over Printed Name)</p>
                   </div>
                   <div class="details-table">
                     <div class="detail-row full-width">
@@ -390,20 +300,14 @@
               <div class="info-box-wrapper">
                 <p class="box-label-outer">BOX 4</p>
                 <div class="info-box">
-                  <p class="info-box-title">
-                    SUPERVISOR / IN-CHARGE OF PLUMBING WORKS
-                  </p>
+                  <p class="info-box-title">SUPERVISOR / IN-CHARGE OF PLUMBING WORKS</p>
                   <div class="signature-area">
                     <div class="signature-line-main"></div>
                     <div class="signature-line-date">Date</div>
                   </div>
                   <div class="signature-caption-area">
-                    <p class="font-weight-bold mb-0">
-                      PLUMBING ENGINEER / MASTER PLUMBER
-                    </p>
-                    <p class="caption-text">
-                      (Signed and Sealed Over Printed Name)
-                    </p>
+                    <p class="font-weight-bold mb-0">PLUMBING ENGINEER / MASTER PLUMBER</p>
+                    <p class="caption-text">(Signed and Sealed Over Printed Name)</p>
                   </div>
                   <div class="details-table">
                     <div class="detail-row full-width">
@@ -436,9 +340,7 @@
                   <p class="owner-box-title">BUILDING OWNER</p>
                   <div class="owner-signature-area">
                     <div class="owner-signature-line"></div>
-                    <p class="owner-signature-caption">
-                      (Signature Over Printed Name)
-                    </p>
+                    <p class="owner-signature-caption">(Signature Over Printed Name)</p>
                     <p class="owner-date-line">
                       Date
                       <span class="underline" style="width: 150px"></span>
@@ -460,9 +362,7 @@
                   <p class="owner-box-title">WITH MY CONSENT: LOT OWNER</p>
                   <div class="owner-signature-area">
                     <div class="owner-signature-line"></div>
-                    <p class="owner-signature-caption">
-                      (Signature Over Printed Name)
-                    </p>
+                    <p class="owner-signature-caption">(Signature Over Printed Name)</p>
                     <p class="owner-date-line">
                       Date
                       <span class="underline" style="width: 150px"></span>
@@ -492,9 +392,7 @@
                 <div class="date-field">DATE</div>
               </div>
               <div class="architectural-documents-section">
-                <p class="documents-title">
-                  FIVE (5) SETS OF PLUMBING DOCUMENTS
-                </p>
+                <p class="documents-title">FIVE (5) SETS OF PLUMBING DOCUMENTS</p>
                 <div class="documents-grid">
                   <div class="documents-col">
                     <v-checkbox
@@ -514,22 +412,14 @@
                     ></v-checkbox>
                   </div>
                   <div class="documents-col">
-                    <v-checkbox
-                      dense
-                      hide-details
-                      label="4. SPECIFICATIONS"
-                    ></v-checkbox>
+                    <v-checkbox dense hide-details label="4. SPECIFICATIONS"></v-checkbox>
                     <v-checkbox
                       dense
                       hide-details
                       label="5. BILL OF MATERIALS AND COST ESTIMATES"
                     ></v-checkbox>
                     <div class="other-docs-item">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="6. OTHERS (Specify)"
-                      ></v-checkbox>
+                      <v-checkbox dense hide-details label="6. OTHERS (Specify)"></v-checkbox>
                       <span class="underline" style="width: 100%"></span>
                     </div>
                   </div>
@@ -562,9 +452,7 @@
               <div class="box-8-cell"></div>
               <div class="box-8-cell"></div>
               <div class="box-8-cell"></div>
-              <div class="box-8-cell label-cell no-bottom">
-                OTHERS (Specify)
-              </div>
+              <div class="box-8-cell label-cell no-bottom">OTHERS (Specify)</div>
               <div class="box-8-cell no-bottom"></div>
               <div class="box-8-cell no-bottom"></div>
               <div class="box-8-cell no-bottom"></div>
@@ -575,40 +463,33 @@
             <p class="box-label-outer mt-4">BOX 9</p>
             <div class="box-9-container">
               <p class="box-9-title">ACTION TAKEN:</p>
-              <p class="box-9-subtitle">
-                PERMIT IS HEREBY ISSUED SUBJECT TO THE FOLLOWING:
-              </p>
+              <p class="box-9-subtitle">PERMIT IS HEREBY ISSUED SUBJECT TO THE FOLLOWING:</p>
               <ol class="conditions-list">
                 <li>
-                  That under Article 1723 of the Civil Code of the Philippines,
-                  the engineer or architect who drew up the plans and
-                  specifications for a building/structure is liable for damages
-                  if within fifteen (15) years from the completion of the
-                  structure, the same should collapse due to defect in the plans
-                  or specifications, or defects in the ground.
+                  That under Article 1723 of the Civil Code of the Philippines, the engineer or
+                  architect who drew up the plans and specifications for a building/structure is
+                  liable for damages if within fifteen (15) years from the completion of the
+                  structure, the same should collapse due to defect in the plans or specifications,
+                  or defects in the ground.
                 </li>
                 <li>
-                  That the proposed plumbing works shall be in accordance with
-                  the plumbing plans filed with this Office and in conformity
-                  with the provisions of the latest Revised National Plumbing
-                  Code of the Philippines, the National Building Code and its
-                  IRR.
+                  That the proposed plumbing works shall be in accordance with the plumbing plans
+                  filed with this Office and in conformity with the provisions of the latest Revised
+                  National Plumbing Code of the Philippines, the National Building Code and its IRR.
                 </li>
                 <li>
-                  That prior to any construction activity, a duly accomplished
-                  prescribed "<strong>Notice of Construction</strong>" shall be
-                  submitted to the Office of the Building Official.
+                  That prior to any construction activity, a duly accomplished prescribed "<strong
+                    >Notice of Construction</strong
+                  >" shall be submitted to the Office of the Building Official.
                 </li>
                 <li>
-                  That upon completion of the construction, the licensed
-                  full-time inspector and supervisor/in-charge of construction
-                  works shall submit the entry to the logbook duly signed and
-                  sealed to the building official including as-built plans and
-                  other documents.
+                  That upon completion of the construction, the licensed full-time inspector and
+                  supervisor/in-charge of construction works shall submit the entry to the logbook
+                  duly signed and sealed to the building official including as-built plans and other
+                  documents.
                 </li>
                 <li>
-                  That this permit is null and void unless accompanied by the
-                  building permit.
+                  That this permit is null and void unless accompanied by the building permit.
                 </li>
               </ol>
               <div class="permit-issued-by-section">
@@ -633,32 +514,48 @@
 
 <script>
 export default {
-  name: "PlumbingPermitForm",
+  name: 'PlumbingPermitForm',
   data() {
     return {
+      isFormComplete: true, // Set to false if you want to add validation
       leftFixtures: [
-        "WATER CLOSET",
-        "FLOOR DRAIN",
-        "LAVATORY",
-        "KITCHEN SINK",
-        "FAUCET",
-        "SHOWER HEAD",
-        "WATER METER",
-        "GREASE TRAP",
+        'WATER CLOSET',
+        'FLOOR DRAIN',
+        'LAVATORY',
+        'KITCHEN SINK',
+        'FAUCET',
+        'SHOWER HEAD',
+        'WATER METER',
+        'GREASE TRAP',
       ],
       rightFixtures: [
-        "BIDETTE",
-        "LAUNDRY TRAYS",
-        "DENTAL CUSPIDOR",
-        "DRINKING FOUNTAIN",
-        "BAR SINK",
-        "SODA FOUNTAIN SINK",
-        "LABORATORY SINK",
-        "STERILIZER",
+        'BIDETTE',
+        'LAUNDRY TRAYS',
+        'DENTAL CUSPIDOR',
+        'DRINKING FOUNTAIN',
+        'BAR SINK',
+        'SODA FOUNTAIN SINK',
+        'LABORATORY SINK',
+        'STERILIZER',
       ],
-    };
+    }
   },
-};
+  methods: {
+    downloadForm() {
+      // Hide buttons before printing
+      const buttons = document.querySelectorAll('.v-btn')
+      buttons.forEach((btn) => (btn.style.display = 'none'))
+
+      // Trigger browser print dialog which can save as PDF
+      window.print()
+
+      // Restore buttons after print dialog
+      setTimeout(() => {
+        buttons.forEach((btn) => (btn.style.display = ''))
+      }, 100)
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -668,6 +565,23 @@ export default {
 }
 
 @media print {
+  .v-app {
+    background: white !important;
+  }
+  .v-btn,
+  .v-app-bar,
+  .v-toolbar,
+  .v-navigation-drawer,
+  .v-footer,
+  .v-system-bar,
+  .v-application__wrap > header,
+  .v-application > header,
+  header,
+  .navbar,
+  nav {
+    display: none !important;
+  }
+
   .permit-form-wrapper {
     padding: 0;
     box-shadow: none !important;
@@ -682,6 +596,10 @@ export default {
   .v-container {
     padding: 0 !important;
     margin: 0 !important;
+  }
+
+  body {
+    background: white !important;
   }
 }
 

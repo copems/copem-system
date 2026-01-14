@@ -2,6 +2,21 @@
   <v-app>
     <v-main class="bg-grey-lighten-3 scrollable-main">
       <v-container fluid class="px-4 mx-auto a4-container">
+        <div class="d-flex justify-space-between align-center mb-4">
+          <v-btn color="primary" variant="text" @click="$router.back()">
+            <v-icon left>mdi-arrow-left</v-icon>
+            Back
+          </v-btn>
+          <v-btn
+            color="success"
+            variant="elevated"
+            :disabled="!isFormComplete"
+            @click="downloadForm"
+          >
+            <v-icon left>mdi-download</v-icon>
+            Download
+          </v-btn>
+        </div>
         <div class="permit-form-wrapper">
           <div id="electrical-permit-form-page-1">
             <div class="header-section">
@@ -466,6 +481,26 @@
 <script>
 export default {
   name: 'ElectricalPermitForm',
+  data() {
+    return {
+      isFormComplete: true, // Set to false if you want to add validation
+    }
+  },
+  methods: {
+    downloadForm() {
+      // Hide buttons before printing
+      const buttons = document.querySelectorAll('.v-btn')
+      buttons.forEach((btn) => (btn.style.display = 'none'))
+
+      // Trigger browser print dialog which can save as PDF
+      window.print()
+
+      // Restore buttons after print dialog
+      setTimeout(() => {
+        buttons.forEach((btn) => (btn.style.display = ''))
+      }, 100)
+    },
+  },
 }
 </script>
 
@@ -482,20 +517,28 @@ export default {
   padding: 20px;
 }
 @media print {
+  .v-app {
+    background: white !important;
+  }
   .scrollable-main {
     overflow: visible;
     height: auto;
   }
+  .v-btn,
   .v-app-bar,
   .v-toolbar,
   .v-navigation-drawer,
   .v-footer,
   .v-system-bar,
+  .v-application__wrap > header,
+  .v-application > header,
   header,
-  .header-section,
   .navbar,
   nav {
     display: none !important;
+  }
+  .bg-grey-lighten-3 {
+    background: white !important;
   }
   .permit-form-wrapper {
     padding: 0;

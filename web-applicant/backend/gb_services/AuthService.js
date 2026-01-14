@@ -86,7 +86,7 @@ class AuthService {
      * @returns {Promise<Object>}
      */
     static async register(userData) {
-        const { username, password, email, role, fullName } = userData;
+        const { username, password, email, role, first_name, last_name } = userData;
 
         // Validate input
         if (!username || !password) {
@@ -113,22 +113,24 @@ class AuthService {
 
         // Hash password
         const passwordHash = await this.hashPassword(password);
-
         try {
             // Register user in database
             const user = await Auth.registerUser(
                 username,
                 passwordHash,
                 email || null,
-                accountType,
-                fullName || null
+                role || 'permit_applicant',
+                first_name,
+                last_name
             );
 
             return {
                 userId: user.user_id,
                 username: user.username,
                 accountType: user.account_type,
-                role: roleTypeToName(user.account_type) // For backward compatibility
+                role: user.role,
+                first_name: user.first_name,
+                last_name: user.last_name
             };
         } catch (error) {
             if (error.message.includes('already exists')) {
@@ -166,7 +168,9 @@ class AuthService {
             userId: user.user_id,
             username: user.username,
             accountType: user.account_type,
-            role: roleTypeToName(user.account_type) // For backward compatibility
+            role: user.role,
+            first_name: user.first_name,
+            last_name: user.last_name
         });
 
         const refreshToken = this.generateRefreshToken({
@@ -206,7 +210,9 @@ class AuthService {
                 userId: user.user_id,
                 username: user.username,
                 accountType: user.account_type,
-                role: roleTypeToName(user.account_type) // For backward compatibility
+                role: user.role,
+                first_name: user.first_name,
+                last_name: user.last_name
             }
         };
     }

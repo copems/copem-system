@@ -310,7 +310,7 @@
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import Navigation from './Navigation.vue'
-import Header from './header.vue'
+import Header from '@/components/Header.vue'
 
 export default defineComponent({
   name: 'BuildingPermitStep2',

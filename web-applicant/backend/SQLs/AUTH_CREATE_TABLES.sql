@@ -75,7 +75,8 @@ CREATE PROCEDURE sp_RegisterUser(
     IN p_password_hash VARCHAR(255),
     IN p_email VARCHAR(100),
     IN p_role_name VARCHAR(50),
-    IN p_full_name VARCHAR(200)
+    IN p_first_name VARCHAR(100),
+    IN p_last_name VARCHAR(100)
 )
 BEGIN
     DECLARE v_role_id INT;
@@ -92,9 +93,6 @@ BEGIN
         SET MESSAGE_TEXT = 'Username already exists';
     END IF;
     
-    -- Check if email already exists (if applicable)
-    -- You may need to add email field to user_account table
-    
     -- Get role_id
     SELECT role_id INTO v_role_id 
     FROM user_roles 
@@ -106,10 +104,10 @@ BEGIN
     END IF;
     
     -- Insert new user
-    INSERT INTO user_account (username, user_password, account_type)
-    VALUES (p_username, p_password_hash, p_role_name);
+    INSERT INTO user_account (username, user_password, account_type, first_name, last_name)
+    VALUES (p_username, p_password_hash, p_role_name, p_first_name, p_last_name);
     
-    SELECT LAST_INSERT_ID() as user_id, p_username as username, p_role_name as role;
+    SELECT LAST_INSERT_ID() as user_id, p_username as username, p_role_name as role, p_first_name as first_name, p_last_name as last_name;
 END//
 DELIMITER ;
 
@@ -127,7 +125,9 @@ BEGIN
         user_id,
         username,
         user_password,
-        account_type
+        account_type,
+        first_name,
+        last_name
     FROM user_account
     WHERE username = p_username;
 END//
