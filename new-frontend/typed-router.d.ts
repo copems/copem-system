@@ -36,6 +36,16 @@ declare module 'vue-router/auto-routes' {
     '/applicant/BPAM/UnifiedForm/PlanUpload': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/PlanUpload', '/applicant/BPAM/UnifiedForm/PlanUpload', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/Signatories': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/Signatories', '/applicant/BPAM/UnifiedForm/Signatories', Record<never, never>, Record<never, never>>,
     '/applicant/Homepage': RouteRecordInfo<'/applicant/Homepage', '/applicant/Homepage', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/Opapply': RouteRecordInfo<'/applicant/OPAM/OPapplication/Opapply', '/applicant/OPAM/OPapplication/Opapply', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/Oploaction': RouteRecordInfo<'/applicant/OPAM/OPapplication/Oploaction', '/applicant/OPAM/OPapplication/Oploaction', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/OPowner': RouteRecordInfo<'/applicant/OPAM/OPapplication/OPowner', '/applicant/OPAM/OPapplication/OPowner', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/OPportal': RouteRecordInfo<'/applicant/OPAM/OPapplication/OPportal', '/applicant/OPAM/OPapplication/OPportal', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/OPsignatories': RouteRecordInfo<'/applicant/OPAM/OPapplication/OPsignatories', '/applicant/OPAM/OPapplication/OPsignatories', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/OPtype': RouteRecordInfo<'/applicant/OPAM/OPapplication/OPtype', '/applicant/OPAM/OPapplication/OPtype', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPforms/Completion': RouteRecordInfo<'/applicant/OPAM/OPforms/Completion', '/applicant/OPAM/OPforms/Completion', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPforms/Electrical': RouteRecordInfo<'/applicant/OPAM/OPforms/Electrical', '/applicant/OPAM/OPforms/Electrical', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPforms/FormsSection': RouteRecordInfo<'/applicant/OPAM/OPforms/FormsSection', '/applicant/OPAM/OPforms/FormsSection', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPforms/Unified': RouteRecordInfo<'/applicant/OPAM/OPforms/Unified', '/applicant/OPAM/OPforms/Unified', Record<never, never>, Record<never, never>>,
     '/auth/ForgotPW': RouteRecordInfo<'/auth/ForgotPW', '/auth/ForgotPW', Record<never, never>, Record<never, never>>,
     '/auth/Login': RouteRecordInfo<'/auth/Login', '/auth/Login', Record<never, never>, Record<never, never>>,
     '/ForgotPW': RouteRecordInfo<'/ForgotPW', '/ForgotPW', Record<never, never>, Record<never, never>>,
@@ -125,6 +135,46 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/applicant/Homepage.vue': {
       routes: '/applicant/Homepage'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPapplication/Opapply.vue': {
+      routes: '/applicant/OPAM/OPapplication/Opapply'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPapplication/Oploaction.vue': {
+      routes: '/applicant/OPAM/OPapplication/Oploaction'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPapplication/OPowner.vue': {
+      routes: '/applicant/OPAM/OPapplication/OPowner'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPapplication/OPportal.vue': {
+      routes: '/applicant/OPAM/OPapplication/OPportal'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPapplication/OPsignatories.vue': {
+      routes: '/applicant/OPAM/OPapplication/OPsignatories'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPapplication/OPtype.vue': {
+      routes: '/applicant/OPAM/OPapplication/OPtype'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPforms/Completion.vue': {
+      routes: '/applicant/OPAM/OPforms/Completion'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPforms/Electrical.vue': {
+      routes: '/applicant/OPAM/OPforms/Electrical'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPforms/FormsSection.vue': {
+      routes: '/applicant/OPAM/OPforms/FormsSection'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPforms/Unified.vue': {
+      routes: '/applicant/OPAM/OPforms/Unified'
       views: never
     }
     'src/pages/auth/ForgotPW.vue': {
