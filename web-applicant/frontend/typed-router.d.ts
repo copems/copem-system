@@ -35,6 +35,7 @@ declare module 'vue-router/auto-routes' {
     '/applicant/BPAM/UnifiedForm/Navigation': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/Navigation', '/applicant/BPAM/UnifiedForm/Navigation', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/PlanUpload': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/PlanUpload', '/applicant/BPAM/UnifiedForm/PlanUpload', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/Signatories': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/Signatories', '/applicant/BPAM/UnifiedForm/Signatories', Record<never, never>, Record<never, never>>,
+    '/applicant/Bpinquiry': RouteRecordInfo<'/applicant/Bpinquiry', '/applicant/Bpinquiry', Record<never, never>, Record<never, never>>,
     '/applicant/Homepage': RouteRecordInfo<'/applicant/Homepage', '/applicant/Homepage', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPapplication/Opapply': RouteRecordInfo<'/applicant/OPAM/OPapplication/Opapply', '/applicant/OPAM/OPapplication/Opapply', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPapplication/Oploaction': RouteRecordInfo<'/applicant/OPAM/OPapplication/Oploaction', '/applicant/OPAM/OPapplication/Oploaction', Record<never, never>, Record<never, never>>,
@@ -46,6 +47,7 @@ declare module 'vue-router/auto-routes' {
     '/applicant/OPAM/OPforms/Electrical': RouteRecordInfo<'/applicant/OPAM/OPforms/Electrical', '/applicant/OPAM/OPforms/Electrical', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPforms/FormsSection': RouteRecordInfo<'/applicant/OPAM/OPforms/FormsSection', '/applicant/OPAM/OPforms/FormsSection', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPforms/Unified': RouteRecordInfo<'/applicant/OPAM/OPforms/Unified', '/applicant/OPAM/OPforms/Unified', Record<never, never>, Record<never, never>>,
+    '/applicant/Opinquiry': RouteRecordInfo<'/applicant/Opinquiry', '/applicant/Opinquiry', Record<never, never>, Record<never, never>>,
     '/auth/ForgotPW': RouteRecordInfo<'/auth/ForgotPW', '/auth/ForgotPW', Record<never, never>, Record<never, never>>,
     '/auth/Login': RouteRecordInfo<'/auth/Login', '/auth/Login', Record<never, never>, Record<never, never>>,
     '/ForgotPW': RouteRecordInfo<'/ForgotPW', '/ForgotPW', Record<never, never>, Record<never, never>>,
@@ -133,6 +135,10 @@ declare module 'vue-router/auto-routes' {
       routes: '/applicant/BPAM/UnifiedForm/Signatories'
       views: never
     }
+    'src/pages/applicant/Bpinquiry.vue': {
+      routes: '/applicant/Bpinquiry'
+      views: never
+    }
     'src/pages/applicant/Homepage.vue': {
       routes: '/applicant/Homepage'
       views: never
@@ -175,6 +181,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/applicant/OPAM/OPforms/Unified.vue': {
       routes: '/applicant/OPAM/OPforms/Unified'
+      views: never
+    }
+    'src/pages/applicant/Opinquiry.vue': {
+      routes: '/applicant/Opinquiry'
       views: never
     }
     'src/pages/auth/ForgotPW.vue': {

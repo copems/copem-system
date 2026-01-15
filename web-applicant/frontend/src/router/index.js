@@ -19,6 +19,16 @@ const router = createRouter({
           name: "Login",
           component: () => import("@/pages/auth/Login.vue"),
         },
+        {
+          path: "bp-inquiry",
+          name: "Bpinquiry",
+          component: () => import("@/pages/applicant/Bpinquiry.vue"),
+        },
+{
+          path: "op-inquiry",
+          name: "Opinquiry",
+          component: () => import("@/pages/applicant/Opinquiry.vue"),
+        },
       ],
     },
 
