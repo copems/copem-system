@@ -1,17 +1,43 @@
-import { createRouter, createWebHistory } from 'vue-router/auto'
-import { setupLayouts } from 'virtual:generated-layouts'
-import { routes } from 'vue-router/auto-routes'
-import { bpamRoutes } from '@/module/BPAM/routes'
-
-// Merge auto-generated routes with module routes
-const allRoutes = [
-  ...setupLayouts(routes),
-  ...bpamRoutes,
-]
+import { createRouter, createWebHistory } from "vue-router";
+import { bpamRoutes } from "./bpam-router";
+import { opamRoutes } from "./opam-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: allRoutes,
-})
+  routes: [
+    {
+      path: "/",
+      component: () => import("@/layouts/default.vue"),
+      children: [
+        {
+          path: "",
+          name: "LandingPage",
+          component: () => import("@/pages/landing-page/LandingPage.vue"),
+        },
+        {
+          path: "login",
+          name: "Login",
+          component: () => import("@/pages/auth/Login.vue"),
+        },
+        {
+          path: "bp-inquiry",
+          name: "Bpinquiry",
+          component: () => import("@/pages/applicant/Bpinquiry.vue"),
+        },
+{
+          path: "op-inquiry",
+          name: "Opinquiry",
+          component: () => import("@/pages/applicant/Opinquiry.vue"),
+        },
+      ],
+    },
 
-export default router
+    // BPAM Routes
+    ...bpamRoutes,
+
+    // OPAM Routes
+    ...opamRoutes,
+  ],
+});
+
+export default router;

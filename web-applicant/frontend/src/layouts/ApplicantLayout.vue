@@ -1,26 +1,16 @@
 <template>
   <v-app>
     <Header />
-
-    <v-main class="applicant-main">
+    <v-main>
       <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script setup>
-import Header from '@/components/Header.vue'
+import Header from "@/components/Header.vue";
 </script>
 
 <style scoped>
-.applicant-main {
-  padding: 0 !important;
-  overflow: hidden;
-  height: calc(100vh - 88px);
-}
-
-:deep(.v-main__wrap) {
-  height: 100%;
-  overflow: auto;
-}
+/* Additional layout styles if needed */
 </style>

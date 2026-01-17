@@ -6,7 +6,9 @@
           <!-- INFO SECTION -->
           <v-col cols="12" md="7" class="pa-6">
             <div class="info-section elevation-2">
-              <h2 class="info-title gradient-info-title">Why Choose Online Application</h2>
+              <h2 class="info-title gradient-info-title">
+                Why Choose Online Application
+              </h2>
               <v-row class="mt-8" align="stretch">
                 <v-col cols="12" sm="4" class="text-center">
                   <div class="icon-wrapper blue-bg">
@@ -14,8 +16,9 @@
                   </div>
                   <h3 class="feature-title">Time-Saving</h3>
                   <p class="feature-description">
-                    Save valuable time by processing your permits online. No more waiting in long
-                    queues – complete everything from the comfort of your home or office.
+                    Save valuable time by processing your permits online. No
+                    more waiting in long queues – complete everything from the
+                    comfort of your home or office.
                   </p>
                 </v-col>
                 <v-col cols="12" sm="4" class="text-center">
@@ -24,8 +27,9 @@
                   </div>
                   <h3 class="feature-title">24/7 Access</h3>
                   <p class="feature-description">
-                    Access our services around the clock, every day of the year. Submit applications
-                    and track progress at any time that suits your schedule.
+                    Access our services around the clock, every day of the year.
+                    Submit applications and track progress at any time that
+                    suits your schedule.
                   </p>
                 </v-col>
                 <v-col cols="12" sm="4" class="text-center">
@@ -34,8 +38,9 @@
                   </div>
                   <h3 class="feature-title">Real-time Updates</h3>
                   <p class="feature-description">
-                    Stay informed with instant notifications about your application status. Receive
-                    timely updates and never miss important information.
+                    Stay informed with instant notifications about your
+                    application status. Receive timely updates and never miss
+                    important information.
                   </p>
                 </v-col>
               </v-row>
@@ -45,7 +50,9 @@
           <!-- LOGIN CARD -->
           <v-col cols="12" md="4" class="pa-6">
             <v-card class="login-card pa-7 elevation-8">
-              <v-card-title class="text-center text-h5 font-weight-bold pb-1 text-blue-darken-3">
+              <v-card-title
+                class="text-center text-h5 font-weight-bold pb-1 text-blue-darken-3"
+              >
                 Welcome Back!
               </v-card-title>
               <v-card-subtitle class="text-center mb-6 text-grey-darken-1">
@@ -72,14 +79,18 @@
                     density="comfortable"
                     variant="outlined"
                     prepend-inner-icon="mdi-lock-outline"
-                    :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-inner-icon="
+                      showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                    "
                     @click:append-inner="toggleShowPassword"
                     class="mb-2"
                     :rules="passwordRules"
                     required
                   />
 
-                  <div class="d-flex justify-space-between align-center mt-2 mb-4">
+                  <div
+                    class="d-flex justify-space-between align-center mt-2 mb-4"
+                  >
                     <v-checkbox-btn
                       label="Remember me"
                       class="ma-0 pa-0"
@@ -97,7 +108,11 @@
                     v-if="alertMessage"
                     :type="alertType"
                     class="mb-4"
-                    :icon="alertType === 'success' ? 'mdi-check-circle' : 'mdi-alert-circle'"
+                    :icon="
+                      alertType === 'success'
+                        ? 'mdi-check-circle'
+                        : 'mdi-alert-circle'
+                    "
                   >
                     {{ alertMessage }}
                   </v-alert>
@@ -111,7 +126,7 @@
                     :loading="loading"
                     :disabled="loading"
                   >
-                    {{ loading ? 'Signing in...' : 'Login' }}
+                    {{ loading ? "Signing in..." : "Login" }}
                   </v-btn>
                 </v-form>
               </v-card-text>
@@ -124,62 +139,63 @@
 </template>
 
 <script>
-import { useAuthStore } from '@/stores/auth'
-import { useAuthUserStore } from '@/stores/authUser'
+import { useAuthStore } from "@/stores/auth";
+import { useAuthUserStore } from "@/stores/authUser";
 
 export default {
-  name: 'LoginPage',
+  name: "LoginPage",
   data() {
     return {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       showPassword: false,
       loading: false,
-      alertMessage: '',
-      alertType: 'error',
+      alertMessage: "",
+      alertType: "error",
       emailRules: [
-        (v) => !!v || 'Email is required',
-        (v) => /.+@.+\..+/.test(v) || 'Email must be valid',
+        (v) => !!v || "Email is required",
+        (v) => /.+@.+\..+/.test(v) || "Email must be valid",
       ],
-      passwordRules: [(v) => !!v || 'Password is required'],
-    }
+      passwordRules: [(v) => !!v || "Password is required"],
+    };
   },
   methods: {
     toggleShowPassword() {
-      this.showPassword = !this.showPassword
+      this.showPassword = !this.showPassword;
     },
     async handleLogin() {
       // Validate form
-      const { valid } = await this.$refs.loginForm.validate()
+      const { valid } = await this.$refs.loginForm.validate();
       if (!valid) {
-        return
+        return;
       }
 
-      this.loading = true
-      this.alertMessage = ''
+      this.loading = true;
+      this.alertMessage = "";
 
       try {
-        const authStore = useAuthStore()
-        const authUserStore = useAuthUserStore()
-        const result = await authStore.login(this.email, this.password)
+        const authStore = useAuthStore();
+        const authUserStore = useAuthUserStore();
+        const result = await authStore.login(this.email, this.password);
         // Set user in authUser store
         if (result && result.user) {
-          authUserStore.setAuth(result.user, authStore.accessToken)
+          authUserStore.setAuth(result.user, authStore.accessToken);
         }
-        this.alertType = 'success'
-        this.alertMessage = 'Login successful!'
+        this.alertType = "success";
+        this.alertMessage = "Login successful!";
         setTimeout(() => {
-          this.$router.push('/Homepage')
-        }, 1000)
+          this.$router.push("/bpam/applicant/");
+        }, 1000);
       } catch (error) {
-        this.alertType = 'error'
-        this.alertMessage = error.message || 'Login failed. Please check your credentials.'
+        this.alertType = "error";
+        this.alertMessage =
+          error.message || "Login failed. Please check your credentials.";
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
   },
-}
+};
 </script>
 
 <style scoped>

@@ -1,7 +1,10 @@
 <template>
   <div class="page-wrapper">
     <v-main>
-      <v-container class="fill-height pa-8 d-flex align-center justify-center" fluid>
+      <v-container
+        class="fill-height pa-8 d-flex align-center justify-center"
+        fluid
+      >
         <v-row align="center" justify="center" class="w-100">
           <v-col cols="12" md="7" class="pa-6">
             <div class="info-section elevation-2">
@@ -15,9 +18,9 @@
                   </div>
                   <h3 class="feature-title">Time-Saving</h3>
                   <p class="feature-description">
-                    Save valuable time by processing your permits online. No more waiting
-                    in long queues – complete everything from the comfort of your home or
-                    office.
+                    Save valuable time by processing your permits online. No
+                    more waiting in long queues – complete everything from the
+                    comfort of your home or office.
                   </p>
                 </v-col>
                 <v-col cols="12" sm="4" class="text-center">
@@ -26,8 +29,9 @@
                   </div>
                   <h3 class="feature-title">24/7 Access</h3>
                   <p class="feature-description">
-                    Access our services around the clock, every day of the year. Submit
-                    applications and track progress at any time that suits your schedule.
+                    Access our services around the clock, every day of the year.
+                    Submit applications and track progress at any time that
+                    suits your schedule.
                   </p>
                 </v-col>
                 <v-col cols="12" sm="4" class="text-center">
@@ -36,8 +40,9 @@
                   </div>
                   <h3 class="feature-title">Real-time Updates</h3>
                   <p class="feature-description">
-                    Stay informed with instant notifications about your application
-                    status. Receive timely updates and never miss important information.
+                    Stay informed with instant notifications about your
+                    application status. Receive timely updates and never miss
+                    important information.
                   </p>
                 </v-col>
               </v-row>
@@ -49,11 +54,13 @@
               <v-card-title
                 class="text-center text-h5 font-weight-bold pb-1 text-blue-darken-3"
               >
-                <a href="#" class="text-primary text-decoration-none">Forgot Password?</a>
+                <a href="#" class="text-primary text-decoration-none"
+                  >Forgot Password?</a
+                >
               </v-card-title>
               <v-card-subtitle class="text-center mb-6 text-grey-darken-1">
-                Enter your email address and we'll send you instructions to reset your
-                password.
+                Enter your email address and we'll send you instructions to
+                reset your password.
               </v-card-subtitle>
               <v-card-text>
                 <v-form>

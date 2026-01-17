@@ -1,4 +1,4 @@
-import pool from "../congig/database.js";
+import pool from "../config/database.js";
 
 class OccupancyUseType {
     constructor(ou_type_id, ou_group_id) {
