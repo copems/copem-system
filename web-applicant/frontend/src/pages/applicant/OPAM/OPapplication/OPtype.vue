@@ -7,11 +7,7 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="
-                border-right: 1px solid #e0e0e0;
-                height: 100%;
-                background: #fcfcff;
-              "
+              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
             >
               <div>
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -49,19 +45,7 @@
                 </v-card>
               </div>
               <v-spacer></v-spacer>
-              <div class="mt-4">
-                <v-btn
-                  block
-                  color="white"
-                  variant="flat"
-                  to="/login"
-                  class="text-capitalize font-weight-bold logout-btn-white"
-                  @click="handleLogout"
-                >
-                  <v-icon left color="black">mdi-logout</v-icon>
-                  <span style="color: #222; font-weight: bold">Logout</span>
-                </v-btn>
-              </div>
+              <div class="mt-4"></div>
             </v-card>
           </v-col>
 
@@ -84,9 +68,7 @@
                       :value="step.value"
                       :complete="formStepValue > step.value"
                       :color="
-                        formStepValue >= step.value
-                          ? 'blue-darken-1'
-                          : 'grey lighten-2'
+                        formStepValue >= step.value ? 'blue-darken-1' : 'grey lighten-2'
                       "
                       class="stepper-item-custom"
                     ></v-stepper-item>
@@ -124,31 +106,24 @@
                         class="text-h6 card-title-responsive section-title"
                         :class="{
                           'text-red-darken-1':
-                            validationFailed &&
-                            selectedApplicationType === null,
+                            validationFailed && selectedApplicationType === null,
                         }"
                       >
                         <v-icon
                           left
-                          :color="
-                            validationFailed ? 'red-darken-1' : 'blue-darken-3'
-                          "
+                          :color="validationFailed ? 'red-darken-1' : 'blue-darken-3'"
                           class="mr-2"
                           >mdi-format-list-bulleted</v-icon
                         >
                         TYPE OF APPLICATION
                       </v-card-title>
                       <v-divider
-                        :color="
-                          validationFailed ? 'red-lighten-3' : 'grey-lighten-2'
-                        "
+                        :color="validationFailed ? 'red-lighten-3' : 'grey-lighten-2'"
                       ></v-divider>
                       <v-card-text>
                         <v-radio-group
                           v-model="selectedApplicationType"
-                          :rules="[
-                            (v) => !!v || 'Please select an application type.',
-                          ]"
+                          :rules="[(v) => !!v || 'Please select an application type.']"
                           mandatory
                           class="mt-0 pt-0"
                           :error="validationFailed"
@@ -158,8 +133,7 @@
                             <v-col cols="12" md="6">
                               <v-card
                                 :class="{
-                                  'card-selected':
-                                    selectedApplicationType === 'partial',
+                                  'card-selected': selectedApplicationType === 'partial',
                                 }"
                                 @click="selectedApplicationType = 'partial'"
                                 class="pa-4 custom-radio-card"
@@ -168,9 +142,7 @@
                                 <div class="d-flex align-center">
                                   <v-radio :value="'partial'"></v-radio>
                                   <div class="flex-grow-1 ml-2">
-                                    <div
-                                      class="text-h6 radio-card-title-responsive"
-                                    >
+                                    <div class="text-h6 radio-card-title-responsive">
                                       Partial
                                     </div>
                                   </div>
@@ -188,8 +160,7 @@
                             <v-col cols="12" md="6">
                               <v-card
                                 :class="{
-                                  'card-selected':
-                                    selectedApplicationType === 'complete',
+                                  'card-selected': selectedApplicationType === 'complete',
                                 }"
                                 @click="selectedApplicationType = 'complete'"
                                 class="pa-4 custom-radio-card"
@@ -198,9 +169,7 @@
                                 <div class="d-flex align-center">
                                   <v-radio :value="'complete'"></v-radio>
                                   <div class="flex-grow-1 ml-2">
-                                    <div
-                                      class="text-h6 radio-card-title-responsive"
-                                    >
+                                    <div class="text-h6 radio-card-title-responsive">
                                       Full
                                     </div>
                                   </div>
@@ -219,11 +188,7 @@
                         </v-radio-group>
                       </v-card-text>
                     </v-card>
-                    <v-row
-                      v-if="
-                        validationFailed && selectedApplicationType === null
-                      "
-                    >
+                    <v-row v-if="validationFailed && selectedApplicationType === null">
                       <v-col cols="12" class="pt-0 pb-2">
                         <span class="text-caption text-red-darken-1">
                           Please select an application type.
@@ -240,9 +205,7 @@
                     @click="validateAndProceed"
                     variant="elevated"
                     :to="
-                      validationFailed
-                        ? ''
-                        : '/applicantlayout/constructioninformation'
+                      validationFailed ? '' : '/applicantlayout/constructioninformation'
                     "
                   >
                     Next<v-icon right>mdi-arrow-right</v-icon>

@@ -7,11 +7,7 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="
-                border-right: 1px solid #e0e0e0;
-                height: 100%;
-                background: #fcfcff;
-              "
+              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
             >
               <div>
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -51,19 +47,7 @@
 
               <v-spacer />
 
-              <div class="mt-4">
-                <v-btn
-                  block
-                  color="white"
-                  variant="flat"
-                  to="/login"
-                  class="text-capitalize font-weight-bold logout-btn-white"
-                  @click="handleLogout"
-                >
-                  <v-icon left color="black">mdi-logout</v-icon>
-                  <span style="color: #222; font-weight: bold">Logout</span>
-                </v-btn>
-              </div>
+              <div class="mt-4"></div>
             </v-card>
           </v-col>
 
@@ -86,9 +70,7 @@
                       :value="step.value"
                       :complete="formStepValue > step.value"
                       :color="
-                        formStepValue >= step.value
-                          ? 'blue-darken-1'
-                          : 'grey lighten-2'
+                        formStepValue >= step.value ? 'blue-darken-1' : 'grey lighten-2'
                       "
                       class="stepper-item-custom"
                     />
@@ -211,9 +193,7 @@
                             <div class="plain-value">{{ numberOfStoreys }}</div>
                           </v-col>
                           <v-col cols="12">
-                            <div class="plain-label">
-                              Total Floor Area (sq. m):
-                            </div>
+                            <div class="plain-label">Total Floor Area (sq. m):</div>
                             <div class="plain-value">{{ totalFloorArea }}</div>
                           </v-col>
                         </v-row>

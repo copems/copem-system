@@ -7,11 +7,7 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="
-                border-right: 1px solid #e0e0e0;
-                height: 100%;
-                background: #fcfcff;
-              "
+              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
             >
               <div>
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -49,27 +45,13 @@
                 </v-card>
               </div>
               <v-spacer></v-spacer>
-              <div class="mt-4">
-                <v-btn
-                  block
-                  color="white"
-                  variant="flat"
-                  to="/login"
-                  class="text-capitalize font-weight-bold logout-btn-white"
-                  @click="handleLogout"
-                >
-                  <v-icon left color="black">mdi-logout</v-icon>
-                  <span style="color: #222; font-weight: bold">Logout</span>
-                </v-btn>
-              </div>
+              <div class="mt-4"></div>
             </v-card>
           </v-col>
 
           <v-col cols="12" md="9" class="pa-6 main-content-bg">
             <v-card flat class="released-permit-card">
-              <div
-                class="d-flex justify-space-between align-center mb-6 px-6 pt-6"
-              >
+              <div class="d-flex justify-space-between align-center mb-6 px-6 pt-6">
                 <div class="d-flex align-center">
                   <v-icon class="mr-2" size="24" color="grey-darken-3"
                     >mdi-file-document-outline</v-icon
@@ -108,9 +90,7 @@
                     >
                       APPLICATION DATE
                     </div>
-                    <div
-                      class="d-flex align-center text-body-1 text-grey-darken-3"
-                    >
+                    <div class="d-flex align-center text-body-1 text-grey-darken-3">
                       <v-icon size="20" class="mr-2" color="grey-darken-1"
                         >mdi-calendar-month</v-icon
                       >
@@ -124,9 +104,7 @@
                     >
                       RELEASE DATE
                     </div>
-                    <div
-                      class="d-flex align-center text-body-1 text-grey-darken-3"
-                    >
+                    <div class="d-flex align-center text-body-1 text-grey-darken-3">
                       <v-icon size="20" class="mr-2" color="grey-darken-1"
                         >mdi-calendar-check</v-icon
                       >
@@ -144,13 +122,8 @@
                     >
                       PERMIT STATUS
                     </div>
-                    <div
-                      class="d-flex align-center text-body-1"
-                      style="color: #2e7d32"
-                    >
-                      <v-icon size="10" class="mr-2" color="#2e7d32"
-                        >mdi-circle</v-icon
-                      >
+                    <div class="d-flex align-center text-body-1" style="color: #2e7d32">
+                      <v-icon size="10" class="mr-2" color="#2e7d32">mdi-circle</v-icon>
                       <span class="font-weight-bold" style="color: #2e7d32"
                         >Active & Valid</span
                       >
@@ -163,9 +136,7 @@
                     >
                       VALIDITY PERIOD
                     </div>
-                    <div
-                      class="text-body-1 text-grey-darken-3 font-weight-medium"
-                    >
+                    <div class="text-body-1 text-grey-darken-3 font-weight-medium">
                       March 20, 2026
                     </div>
                   </v-col>
@@ -198,9 +169,7 @@
                   to="/opam/op-application/op-type"
                 >
                   Apply for Occupancy Permit
-                  <v-icon left size="24" color="#23407c"
-                    >mdi-arrow-right</v-icon
-                  >
+                  <v-icon left size="24" color="#23407c">mdi-arrow-right</v-icon>
                 </v-btn>
               </v-card-actions>
             </v-card>

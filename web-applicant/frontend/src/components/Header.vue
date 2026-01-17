@@ -94,8 +94,8 @@ const logout = () => {
   authStore.clearAuth();
   authUserStore.logout();
   showDropdown.value = false;
-  // Redirect to login
-  router.push({ name: "Login" });
+  // Redirect to root
+  router.push("/");
 };
 
 // Close dropdown when clicking outside
