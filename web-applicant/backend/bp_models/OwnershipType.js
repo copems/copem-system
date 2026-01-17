@@ -1,4 +1,4 @@
-import pool from "../congig/database.js";
+import pool from "../config/database.js";
 
 class OwnershipType {
     constructor(ot_id) {

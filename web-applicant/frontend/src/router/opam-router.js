@@ -50,24 +50,24 @@ export const opamRoutes = [
     children: [
       {
         path: "completion",
-        name: "Completion",
+        name: "OPCompletion",
         component: () =>
           import("@/pages/applicant/OPAM/OPforms/Completion.vue"),
       },
       {
         path: "electrical",
-        name: "Electrical",
+        name: "OPElectrical",
         component: () =>
           import("@/pages/applicant/OPAM/OPforms/Electrical.vue"),
       },
       {
         path: "unified",
-        name: "Unified",
+        name: "OPUnified",
         component: () => import("@/pages/applicant/OPAM/OPforms/Unified.vue"),
       },
       {
         path: "forms-section",
-        name: "FormsSection",
+        name: "OPFormsSection",
         component: () =>
           import("@/pages/applicant/OPAM/OPforms/FormsSection.vue"),
       },

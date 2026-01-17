@@ -5,7 +5,11 @@
         <v-card
           flat
           class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-          style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
+          style="
+            border-right: 1px solid #e0e0e0;
+            height: 100%;
+            background: #fcfcff;
+          "
         >
           <div>
             <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -61,19 +65,29 @@
 
       <v-col cols="12" md="9" class="main-content-bg pa-6">
         <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-          <v-stepper v-model="formStepValue" alt-labels flat class="mb-4 mt-2 stepper-elevated">
+          <v-stepper
+            v-model="formStepValue"
+            alt-labels
+            flat
+            class="mb-4 mt-2 stepper-elevated"
+          >
             <v-stepper-header>
               <v-stepper-item
                 title="Applicant Information"
                 value="1"
                 :complete="parseInt(formStepValue) > 1"
-                :color="parseInt(formStepValue) >= 1 ? 'blue-darken-1' : 'grey lighten-2'"
+                :color="
+                  parseInt(formStepValue) >= 1
+                    ? 'blue-darken-1'
+                    : 'grey lighten-2'
+                "
                 class="stepper-item-custom"
               ></v-stepper-item>
               <v-divider
                 :thickness="3"
                 :style="{
-                  'border-color': parseInt(formStepValue) > 1 ? '#1976D2' : '#e0e0e0',
+                  'border-color':
+                    parseInt(formStepValue) > 1 ? '#1976D2' : '#e0e0e0',
                 }"
                 class="mx-2"
               ></v-divider>
@@ -82,13 +96,18 @@
                 title="Construction Information"
                 value="2"
                 :complete="parseInt(formStepValue) > 2"
-                :color="parseInt(formStepValue) >= 2 ? 'blue-darken-1' : 'grey lighten-2'"
+                :color="
+                  parseInt(formStepValue) >= 2
+                    ? 'blue-darken-1'
+                    : 'grey lighten-2'
+                "
                 class="stepper-item-custom"
               ></v-stepper-item>
               <v-divider
                 :thickness="3"
                 :style="{
-                  'border-color': parseInt(formStepValue) > 2 ? '#1976D2' : '#e0e0e0',
+                  'border-color':
+                    parseInt(formStepValue) > 2 ? '#1976D2' : '#e0e0e0',
                 }"
                 class="mx-2"
               ></v-divider>
@@ -97,13 +116,18 @@
                 title="Use or Character of Occupancy"
                 value="3"
                 :complete="parseInt(formStepValue) > 3"
-                :color="parseInt(formStepValue) >= 3 ? 'blue-darken-1' : 'grey lighten-2'"
+                :color="
+                  parseInt(formStepValue) >= 3
+                    ? 'blue-darken-1'
+                    : 'grey lighten-2'
+                "
                 class="stepper-item-custom"
               ></v-stepper-item>
               <v-divider
                 :thickness="3"
                 :style="{
-                  'border-color': parseInt(formStepValue) > 3 ? '#1976D2' : '#e0e0e0',
+                  'border-color':
+                    parseInt(formStepValue) > 3 ? '#1976D2' : '#e0e0e0',
                 }"
                 class="mx-2"
               ></v-divider>
@@ -112,7 +136,11 @@
                 title="Signatories Details"
                 value="4"
                 :complete="parseInt(formStepValue) > 4"
-                :color="parseInt(formStepValue) >= 4 ? 'blue-darken-1' : 'grey lighten-2'"
+                :color="
+                  parseInt(formStepValue) >= 4
+                    ? 'blue-darken-1'
+                    : 'grey lighten-2'
+                "
                 class="stepper-item-custom"
               ></v-stepper-item>
             </v-stepper-header>
@@ -121,8 +149,12 @@
           <v-card class="my-2 pa-4 card-shadow">
             <v-card-text>
               <v-card class="mb-4 card-section">
-                <v-card-title class="text-h6 card-title-responsive section-title">
-                  <v-icon left color="blue-darken-3" class="mr-2">mdi-domain</v-icon>
+                <v-card-title
+                  class="text-h6 card-title-responsive section-title"
+                >
+                  <v-icon left color="blue-darken-3" class="mr-2"
+                    >mdi-domain</v-icon
+                  >
                   USE OR CHARACTER OF OCCUPANCY
                 </v-card-title>
                 <v-divider></v-divider>
@@ -156,8 +188,12 @@
               </v-card>
 
               <v-card class="card-section">
-                <v-card-title class="text-h6 card-title-responsive section-title">
-                  <v-icon left color="blue-darken-3" class="mr-2">mdi-file-document-outline</v-icon>
+                <v-card-title
+                  class="text-h6 card-title-responsive section-title"
+                >
+                  <v-icon left color="blue-darken-3" class="mr-2"
+                    >mdi-file-document-outline</v-icon
+                  >
                   PROJECT DETAILS
                 </v-card-title>
                 <v-divider></v-divider>
@@ -173,9 +209,15 @@
                         hide-details
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="6" class="d-flex flex-column justify-center">
+                    <v-col
+                      cols="12"
+                      md="6"
+                      class="d-flex flex-column justify-center"
+                    >
                       <div class="input-label mb-1">Total Estimated Cost</div>
-                      <div class="font-weight-bold text-h5 gradient-cost px-2 py-1">
+                      <div
+                        class="font-weight-bold text-h5 gradient-cost px-2 py-1"
+                      >
                         ₱ {{ totalEstimatedCostComputed }}
                       </div>
                     </v-col>
@@ -302,7 +344,9 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" md="3">
-                      <div class="input-label">Proposed Date of Construction</div>
+                      <div class="input-label">
+                        Proposed Date of Construction
+                      </div>
                       <v-text-field
                         v-model="proposedDate"
                         type="date"
@@ -367,52 +411,76 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { useRouter } from 'vue-router'
-import Header from '../../../components/header.vue'
+import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+import Header from "../../../components/header.vue";
 
 export default defineComponent({
-  name: 'BuildingPermitStep3',
+  name: "BuildingPermitStep3",
   components: { Header },
   setup() {
-    const router = useRouter()
-    return { router }
+    const router = useRouter();
+    return { router };
   },
   data() {
     return {
-      formStepValue: '3',
+      formStepValue: "3",
       isSaved: false,
       selectedGroup: null,
       selectedCategory: null,
-      occupancyClassified: '',
-      numberOfUnits: '',
-      numberOfStorey: '',
-      totalFloorArea: '',
-      lotArea: '',
-      costBuilding: '',
-      costElectrical: '',
-      costMechanical: '',
-      costElectronics: '',
-      costPlumbing: '',
-      costOthers: '',
-      proposedDate: '',
-      expectedDate: '',
+      occupancyClassified: "",
+      numberOfUnits: "",
+      numberOfStorey: "",
+      totalFloorArea: "",
+      lotArea: "",
+      costBuilding: "",
+      costElectrical: "",
+      costMechanical: "",
+      costElectronics: "",
+      costPlumbing: "",
+      costOthers: "",
+      proposedDate: "",
+      expectedDate: "",
       formValid: false,
       dataComponents: [],
       groupCategoryData: {
-        'GROUP A: RESIDENTIAL (DWELLINGS)': ['SINGLE', 'DUPLEX', 'RESIDENTIAL R-1, R-2', 'OTHERS'],
-        'GROUP B: RESIDENTIAL': ['HOTEL', 'MOTEL', 'TOWNHOUSE', 'DORMITORY', 'OTHERS'],
-        'GROUP C: EDUCATIONAL & RECREATIONAL': [
-          'SCHOOL BUILDING',
-          'SCHOOL AUDITORIUM, GYMNASIUM',
-          'OTHERS',
+        "GROUP A: RESIDENTIAL (DWELLINGS)": [
+          "SINGLE",
+          "DUPLEX",
+          "RESIDENTIAL R-1, R-2",
+          "OTHERS",
         ],
-        'GROUP E: COMMERCIAL': ['BANK', 'STORE', 'SHOPPING CENTER/MALL', 'OTHERS'],
-        'GROUP F: LIGHT INDUSTRIAL': ['FACTORY/PLANT', 'OTHERS'],
-        'GROUP G: MEDIUM INDUSTRIAL': ['STORAGE/WAREHOUSE', 'FACTORY', 'OTHERS'],
-        'GROUP H: ASSEMBLY': ['THEATER, AUDITORIUM', 'OTHERS'],
-        'GROUP I: ASSEMBLY': ['COLISEUM, SPORTS COMPLEX', 'OTHERS'],
-        'GROUP J: AGRICULTURAL & ACCESSORIES': ['AGRICULTURAL STRUCTURES', 'ACCESSORIES', 'OTHERS'],
+        "GROUP B: RESIDENTIAL": [
+          "HOTEL",
+          "MOTEL",
+          "TOWNHOUSE",
+          "DORMITORY",
+          "OTHERS",
+        ],
+        "GROUP C: EDUCATIONAL & RECREATIONAL": [
+          "SCHOOL BUILDING",
+          "SCHOOL AUDITORIUM, GYMNASIUM",
+          "OTHERS",
+        ],
+        "GROUP E: COMMERCIAL": [
+          "BANK",
+          "STORE",
+          "SHOPPING CENTER/MALL",
+          "OTHERS",
+        ],
+        "GROUP F: LIGHT INDUSTRIAL": ["FACTORY/PLANT", "OTHERS"],
+        "GROUP G: MEDIUM INDUSTRIAL": [
+          "STORAGE/WAREHOUSE",
+          "FACTORY",
+          "OTHERS",
+        ],
+        "GROUP H: ASSEMBLY": ["THEATER, AUDITORIUM", "OTHERS"],
+        "GROUP I: ASSEMBLY": ["COLISEUM, SPORTS COMPLEX", "OTHERS"],
+        "GROUP J: AGRICULTURAL & ACCESSORIES": [
+          "AGRICULTURAL STRUCTURES",
+          "ACCESSORIES",
+          "OTHERS",
+        ],
       },
       occupancyUseGroups: [],
       occupancyUseTypes: [],
@@ -420,21 +488,23 @@ export default defineComponent({
 
       sidebarStep: 0,
       sidebarSteps: [
-        'Fill up the Unified Application Form',
-        'Upload Building Plans & Lot Plans',
-        'Download Filled-up Unified Application Form and Required Ancillary Permits ',
+        "Fill up the Unified Application Form",
+        "Upload Building Plans & Lot Plans",
+        "Download Filled-up Unified Application Form and Required Ancillary Permits ",
       ],
-    }
+    };
   },
   mounted() {
-    this.fetchOccupancyUseGroups()
+    this.fetchOccupancyUseGroups();
   },
   computed: {
     groups() {
-      return Object.keys(this.groupCategoryData)
+      return Object.keys(this.groupCategoryData);
     },
     categories() {
-      return this.selectedGroup ? this.groupCategoryData[this.selectedGroup] : []
+      return this.selectedGroup
+        ? this.groupCategoryData[this.selectedGroup]
+        : [];
     },
     totalEstimatedCostComputed() {
       const costs = [
@@ -444,138 +514,152 @@ export default defineComponent({
         this.costElectronics,
         this.costPlumbing,
         this.costOthers,
-      ]
+      ];
       const total = costs.reduce((sum, cost) => {
-        const cleanedCost = parseFloat((cost || '0').toString().replace(/,/g, '')) || 0
-        return sum + cleanedCost
-      }, 0)
+        const cleanedCost =
+          parseFloat((cost || "0").toString().replace(/,/g, "")) || 0;
+        return sum + cleanedCost;
+      }, 0);
 
-      return total.toLocaleString('en-US', {
+      return total.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })
+      });
     },
   },
   watch: {
     selectedGroup() {
-      this.selectedCategory = null
-      this.validateForm()
+      this.selectedCategory = null;
+      this.validateForm();
     },
     selectedCategory() {
-      this.validateForm()
+      this.validateForm();
     },
     occupancyClassified() {
-      this.validateForm()
+      this.validateForm();
     },
     numberOfUnits() {
-      this.validateForm()
+      this.validateForm();
     },
     numberOfStorey() {
-      this.validateForm()
+      this.validateForm();
     },
     totalFloorArea() {
-      this.validateForm()
+      this.validateForm();
     },
     lotArea() {
-      this.validateForm()
+      this.validateForm();
     },
     costBuilding() {
-      this.validateForm()
+      this.validateForm();
     },
     costElectrical() {
-      this.validateForm()
+      this.validateForm();
     },
     costMechanical() {
-      this.validateForm()
+      this.validateForm();
     },
     costElectronics() {
-      this.validateForm()
+      this.validateForm();
     },
     costPlumbing() {
-      this.validateForm()
+      this.validateForm();
     },
     costOthers() {
-      this.validateForm()
+      this.validateForm();
     },
     proposedDate() {
-      this.validateForm()
+      this.validateForm();
     },
     expectedDate() {
-      this.validateForm()
+      this.validateForm();
     },
   },
   methods: {
     formatNumberValue(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     isNumber(event) {
-      const charCode = event.which ? event.which : event.keyCode
-      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
-        event.preventDefault()
+      const charCode = event.which ? event.which : event.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        event.preventDefault();
       }
     },
     formatNumber(fieldName) {
-      let value = this[fieldName] ? this[fieldName].replace(/,/g, '') : ''
-      value = value.replace(/[^\d.]/g, '')
-      const parts = value.split('.')
-      let integer = parts[0]
-      const decimal = parts[1]
+      let value = this[fieldName] ? this[fieldName].replace(/,/g, "") : "";
+      value = value.replace(/[^\d.]/g, "");
+      const parts = value.split(".");
+      let integer = parts[0];
+      const decimal = parts[1];
 
-      integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
       if (decimal !== undefined) {
-        this[fieldName] = integer + '.' + decimal.slice(0, 2)
+        this[fieldName] = integer + "." + decimal.slice(0, 2);
       } else {
-        this[fieldName] = integer
+        this[fieldName] = integer;
       }
-      this.validateForm()
+      this.validateForm();
     },
     validateForm() {
-      const isDropdownSelected = this.selectedGroup !== null && this.selectedCategory !== null
+      const isDropdownSelected =
+        this.selectedGroup !== null && this.selectedCategory !== null;
 
       const projectDetailsFilled =
-        this.occupancyClassified.trim() !== '' &&
-        this.numberOfUnits.trim() !== '' &&
-        this.numberOfStorey.trim() !== '' &&
-        this.totalFloorArea.trim() !== '' &&
-        this.lotArea.trim() !== '' &&
-        this.proposedDate.trim() !== '' &&
-        this.expectedDate.trim() !== ''
+        this.occupancyClassified.trim() !== "" &&
+        this.numberOfUnits.trim() !== "" &&
+        this.numberOfStorey.trim() !== "" &&
+        this.totalFloorArea.trim() !== "" &&
+        this.lotArea.trim() !== "" &&
+        this.proposedDate.trim() !== "" &&
+        this.expectedDate.trim() !== "";
 
-      const totalCostValue = parseFloat(this.totalEstimatedCostComputed.replace(/,/g, '')) || 0
-      const isTotalCostValid = totalCostValue > 0
+      const totalCostValue =
+        parseFloat(this.totalEstimatedCostComputed.replace(/,/g, "")) || 0;
+      const isTotalCostValid = totalCostValue > 0;
 
-      this.formValid = isDropdownSelected && projectDetailsFilled && isTotalCostValid
+      this.formValid =
+        isDropdownSelected && projectDetailsFilled && isTotalCostValid;
     },
     async fetchOccupancyUseGroups() {
-      this.loadingGroups = true
+      this.loadingGroups = true;
       try {
-        const response = await fetch('http://localhost:3000/api/occupancy-use-group')
+        const response = await fetch(
+          "http://localhost:3000/api/occupancy-use-group"
+        );
         if (response.ok) {
-          const data = await response.json()
-          this.occupancyUseGroups = data
+          const data = await response.json();
+          this.occupancyUseGroups = data;
         }
       } catch (error) {
-        console.error('Error fetching occupancy use groups:', error)
+        console.error("Error fetching occupancy use groups:", error);
       } finally {
-        this.loadingGroups = false
+        this.loadingGroups = false;
       }
     },
     getOccupancyUseGroupId() {
-      const group = this.occupancyUseGroups.find((g) => g.oug_name === this.selectedGroup)
-      return group ? group.oug_id : null
+      const group = this.occupancyUseGroups.find(
+        (g) => g.oug_name === this.selectedGroup
+      );
+      return group ? group.oug_id : null;
     },
     getOccupancyUseTypeId() {
       // This would need to be fetched from occupancy use types API based on selectedCategory
       // For now, returning null - will need to implement occupancy use types fetching
-      return null
+      return null;
     },
     async saveBpaConstruction() {
       try {
-        const bpacSiteId = localStorage.getItem('bpac_site_id')
+        const bpacSiteId = localStorage.getItem("bpac_site_id");
         if (!bpacSiteId) {
-          alert('Construction site ID not found. Please complete previous steps.')
-          return false
+          alert(
+            "Construction site ID not found. Please complete previous steps."
+          );
+          return false;
         }
 
         const bpaConstructionData = {
@@ -587,50 +671,56 @@ export default defineComponent({
           no_of_storey: parseInt(this.numberOfStorey),
           total_floor_area: parseFloat(this.totalFloorArea),
           lot_area: parseFloat(this.lotArea),
-          cost_building: parseFloat(this.costBuilding.replace(/,/g, '')) || 0,
-          cost_electrical: parseFloat(this.costElectrical.replace(/,/g, '')) || 0,
-          cost_mechanical: parseFloat(this.costMechanical.replace(/,/g, '')) || 0,
-          cost_electronics: parseFloat(this.costElectronics.replace(/,/g, '')) || 0,
-          cost_plumbing: parseFloat(this.costPlumbing.replace(/,/g, '')) || 0,
-          cost_others: parseFloat(this.costOthers.replace(/,/g, '')) || 0,
+          cost_building: parseFloat(this.costBuilding.replace(/,/g, "")) || 0,
+          cost_electrical:
+            parseFloat(this.costElectrical.replace(/,/g, "")) || 0,
+          cost_mechanical:
+            parseFloat(this.costMechanical.replace(/,/g, "")) || 0,
+          cost_electronics:
+            parseFloat(this.costElectronics.replace(/,/g, "")) || 0,
+          cost_plumbing: parseFloat(this.costPlumbing.replace(/,/g, "")) || 0,
+          cost_others: parseFloat(this.costOthers.replace(/,/g, "")) || 0,
           proposed_date: this.proposedDate,
           expected_date: this.expectedDate,
-        }
+        };
 
-        const response = await fetch('http://localhost:3000/api/bpa-construction', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(bpaConstructionData),
-        })
+        const response = await fetch(
+          "http://localhost:3000/api/bpa-construction",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bpaConstructionData),
+          }
+        );
 
         if (response.ok) {
-          const data = await response.json()
-          localStorage.setItem('bpac_id', data.bpac_id)
-          return true
+          const data = await response.json();
+          localStorage.setItem("bpac_id", data.bpac_id);
+          return true;
         } else {
-          const error = await response.json()
-          alert(`Error saving construction data: ${error.message}`)
-          return false
+          const error = await response.json();
+          alert(`Error saving construction data: ${error.message}`);
+          return false;
         }
       } catch (error) {
-        console.error('Error saving BPA construction:', error)
-        alert('An error occurred while saving construction data.')
-        return false
+        console.error("Error saving BPA construction:", error);
+        alert("An error occurred while saving construction data.");
+        return false;
       }
     },
     async saveOccupancyCharacter() {
       if (!this.formValid) {
-        alert('Please fill in all required fields before proceeding.')
-        return false
+        alert("Please fill in all required fields before proceeding.");
+        return false;
       }
 
-      const saved = await this.saveBpaConstruction()
+      const saved = await this.saveBpaConstruction();
       if (saved) {
         // Store data in localStorage for reference
         localStorage.setItem(
-          'occupancy_data',
+          "occupancy_data",
           JSON.stringify({
             selectedGroup: this.selectedGroup,
             selectedCategory: this.selectedCategory,
@@ -643,40 +733,40 @@ export default defineComponent({
             proposedDate: this.proposedDate,
             expectedDate: this.expectedDate,
           })
-        )
-        this.isSaved = true
-        return true
+        );
+        this.isSaved = true;
+        return true;
       }
-      return false
+      return false;
     },
     async saveForm() {
-      await this.saveOccupancyCharacter()
+      await this.saveOccupancyCharacter();
     },
 
     proceedToNext() {
-      this.router.push('/applicant/signatories')
+      this.$router.push("/bpam/applicant/unified-form/signatories");
     },
 
     async goToNextFormStep() {
-      const saved = await this.saveOccupancyCharacter()
+      const saved = await this.saveOccupancyCharacter();
       if (saved) {
-        this.router.push('/applicant/signatories')
+        this.$router.push("/bpam/applicant/unified-form/signatories");
       }
     },
 
     handleLogout() {
-      console.log('User logged out')
-      this.router.push('/login')
+      console.log("User logged out");
+      this.$router.push({ name: "Login" });
     },
     goToSidebarStep(index) {
-      this.sidebarStep = index
+      this.sidebarStep = index;
       if (index === 0) {
-        console.log('Navigating to step 1 (Applicant Details)...')
-        this.router.push('/applicant/applicantinformation')
+        console.log("Navigating to step 1 (Applicant Details)...");
+        this.$router.push("/bpam/applicant/unified-form/applicant-information");
       }
     },
   },
-})
+});
 </script>
 
 <style scoped>

@@ -8,7 +8,11 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
+              style="
+                border-right: 1px solid #e0e0e0;
+                height: 100%;
+                background: #fcfcff;
+              "
             >
               <div>
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -85,7 +89,9 @@
                       :value="step.value"
                       :complete="formStepValue > step.value"
                       :color="
-                        formStepValue >= step.value ? 'blue-darken-1' : 'grey lighten-2'
+                        formStepValue >= step.value
+                          ? 'blue-darken-1'
+                          : 'grey lighten-2'
                       "
                       class="stepper-item-custom"
                     />
@@ -117,7 +123,9 @@
 
                     <!-- APPLICANT/OWNER INFORMATION BOX -->
                     <v-card class="mb-4 card-section">
-                      <v-card-title class="text-h6 card-title-responsive section-title">
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                      >
                         <v-icon left color="blue-darken-3" class="mr-2">
                           mdi-account
                         </v-icon>
@@ -159,7 +167,9 @@
                         </v-row>
                         <v-row dense>
                           <v-col cols="12" sm="4">
-                            <div class="input-label">Community Tax Certificate No.</div>
+                            <div class="input-label">
+                              Community Tax Certificate No.
+                            </div>
                             <v-text-field
                               v-model="applicantCommunityTaxNo"
                               variant="plain"
@@ -193,7 +203,9 @@
                     </v-card>
                     <!-- ENGINEER'S INFORMATION -->
                     <v-card class="mb-4 card-section">
-                      <v-card-title class="text-h6 card-title-responsive section-title">
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                      >
                         <v-icon left color="blue-darken-3" class="mr-2">
                           mdi-account-hard-hat
                         </v-icon>
@@ -497,7 +509,7 @@ export default defineComponent({
       if (valid) {
         this.validationFailed = false;
         this.formStepValue = 2;
-        this.$router.push("/applicantlayout/constructioninformation");
+        this.$router.push("/opam/op-forms/forms-section");
       } else {
         this.validationFailed = true;
       }
@@ -506,7 +518,7 @@ export default defineComponent({
     handleLogout() {
       localStorage.removeItem("currentBuildingOwnerId");
       localStorage.removeItem("buildingOwnerData");
-      this.$router.push("/login");
+      this.$router.push({ name: "Login" });
     },
 
     goToStep(index) {
@@ -517,7 +529,7 @@ export default defineComponent({
     },
 
     goBack() {
-      this.$router.push("/opam/OPlocation");
+      this.$router.push("/opam/op-application/op-location");
     },
 
     async openSuccessDialog() {
@@ -530,7 +542,7 @@ export default defineComponent({
 
     closeDialog() {
       this.dialog = false;
-      this.$router.push("/opam/FormsSection");
+      this.$router.push("/opam/op-forms/forms-section");
       console.log("Dialog closed, navigating to FormsSection.");
     },
   },

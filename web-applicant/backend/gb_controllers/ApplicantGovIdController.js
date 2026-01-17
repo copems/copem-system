@@ -12,16 +12,20 @@ import pool from "../config/database.js";
 export const saveApplicantGovId = async (govIdData) => {
     const { id_no, date_issued, place_issued, applicant_id } = govIdData;
 
+    let conn;
     try {
-        const [result] = await pool.query(
-            `CALL sp_InsertApplicantGovId(?, ?, ?, ?, @p_agid_id)`,
+        conn = await pool.getConnection();
+        const result = await conn.query(
+            `INSERT INTO Applicant_Gov_ID (id_no, date_issued, place_issued, applicant_id, is_active)
+             VALUES (?, ?, ?, ?, TRUE)`,
             [id_no, date_issued, place_issued, applicant_id]
         );
 
-        const [rows] = await pool.query('SELECT @p_agid_id AS agid_id');
-        return rows[0].agid_id;
+        return Number(result.insertId);
     } catch (error) {
         throw new Error(`Error saving applicant government ID: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };
 
@@ -31,15 +35,19 @@ export const saveApplicantGovId = async (govIdData) => {
  * @returns {Promise<Object|null>} The government ID record or null if not found
  */
 export const getApplicantGovIdById = async (agidId) => {
+    let conn;
     try {
-        const [rows] = await pool.query(
-            `CALL sp_GetApplicantGovIdById(?)`,
+        conn = await pool.getConnection();
+        const rows = await conn.query(
+            `SELECT * FROM Applicant_Gov_ID WHERE agid_id = ?`,
             [agidId]
         );
 
-        return rows[0]?.[0] || null;
+        return rows[0] || null;
     } catch (error) {
         throw new Error(`Error fetching applicant government ID: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };
 
@@ -52,15 +60,19 @@ export const getApplicantGovIdById = async (agidId) => {
 export const updateApplicantGovId = async (agidId, govIdData) => {
     const { id_no, date_issued, place_issued, applicant_id, is_active } = govIdData;
 
+    let conn;
     try {
-        await pool.query(
-            `CALL sp_UpdateApplicantGovId(?, ?, ?, ?, ?, ?)`,
-            [agidId, id_no, date_issued, place_issued, applicant_id, is_active]
+        conn = await pool.getConnection();
+        await conn.query(
+            `UPDATE Applicant_Gov_ID SET id_no = ?, date_issued = ?, place_issued = ?, applicant_id = ?, is_active = ? WHERE agid_id = ?`,
+            [id_no, date_issued, place_issued, applicant_id, is_active, agidId]
         );
 
         return true;
     } catch (error) {
         throw new Error(`Error updating applicant government ID: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };
 
@@ -70,15 +82,19 @@ export const updateApplicantGovId = async (agidId, govIdData) => {
  * @returns {Promise<Array>} Array of government ID records
  */
 export const getApplicantGovIdsByApplicant = async (applicantId) => {
+    let conn;
     try {
-        const [rows] = await pool.query(
-            `CALL sp_GetApplicantGovIdsByApplicant(?)`,
+        conn = await pool.getConnection();
+        const rows = await conn.query(
+            `SELECT * FROM Applicant_Gov_ID WHERE applicant_id = ? AND is_active = TRUE`,
             [applicantId]
         );
 
-        return rows[0] || [];
+        return rows;
     } catch (error) {
         throw new Error(`Error fetching applicant government IDs: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };
 
@@ -88,14 +104,18 @@ export const getApplicantGovIdsByApplicant = async (applicantId) => {
  * @returns {Promise<boolean>} True if deactivation was successful
  */
 export const deactivateApplicantGovId = async (agidId) => {
+    let conn;
     try {
-        await pool.query(
-            `CALL sp_DeactivateApplicantGovId(?)`,
+        conn = await pool.getConnection();
+        await conn.query(
+            `UPDATE Applicant_Gov_ID SET is_active = FALSE WHERE agid_id = ?`,
             [agidId]
         );
 
         return true;
     } catch (error) {
         throw new Error(`Error deactivating applicant government ID: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };

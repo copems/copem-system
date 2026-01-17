@@ -2,7 +2,11 @@
   <v-app>
     <!-- Header: Fixed at top -->
     <v-app-bar elevation="1" color="white" height="60" style="flex-shrink: 0">
-      <v-container class="d-flex align-center px-6" fluid style="max-width: 1300px">
+      <v-container
+        class="d-flex align-center px-6"
+        fluid
+        style="max-width: 1300px"
+      >
         <h1 class="text-subtitle-1 font-weight-bold text-grey-darken-3">
           Occupancy Permit Portal
         </h1>
@@ -11,7 +15,12 @@
         <!-- Profile Menu -->
         <v-menu v-model="showProfileMenu" location="bottom end" offset="10">
           <template v-slot:activator="{ props }">
-            <v-btn variant="text" class="text-none px-2" v-bind="props" height="40">
+            <v-btn
+              variant="text"
+              class="text-none px-2"
+              v-bind="props"
+              height="40"
+            >
               <div class="d-flex align-center">
                 <v-avatar
                   color="blue-lighten-5"
@@ -25,7 +34,9 @@
                     Jacqueline Azada
                   </div>
                 </div>
-                <v-icon size="small" color="grey-lighten-1">mdi-chevron-down</v-icon>
+                <v-icon size="small" color="grey-lighten-1"
+                  >mdi-chevron-down</v-icon
+                >
               </div>
             </v-btn>
           </template>
@@ -119,7 +130,9 @@
               >
                 BUILDING PERMIT NUMBER
               </div>
-              <div class="text-h5 font-weight-bold text-blue-darken-2">BP-2024-001</div>
+              <div class="text-h5 font-weight-bold text-blue-darken-2">
+                BP-2024-001
+              </div>
             </v-card>
 
             <v-row dense class="mb-2">
@@ -161,8 +174,13 @@
                 >
                   PERMIT STATUS
                 </div>
-                <div class="d-flex align-center text-body-1" style="color: #2e7d32">
-                  <v-icon size="10" class="mr-2" color="#2e7d32">mdi-circle</v-icon>
+                <div
+                  class="d-flex align-center text-body-1"
+                  style="color: #2e7d32"
+                >
+                  <v-icon size="10" class="mr-2" color="#2e7d32"
+                    >mdi-circle</v-icon
+                  >
                   <span class="font-weight-bold" style="color: #2e7d32"
                     >Active & Valid</span
                   >
@@ -208,11 +226,18 @@
           </v-card-title>
 
           <v-card-text class="px-4 pb-4">
-            <v-timeline align="start" density="compact" side="end" truncate-line="both">
+            <v-timeline
+              align="start"
+              density="compact"
+              side="end"
+              truncate-line="both"
+            >
               <v-timeline-item
                 v-for="step in steps"
                 :key="step.id"
-                :dot-color="step.status === 'completed' ? 'primary' : 'grey-lighten-2'"
+                :dot-color="
+                  step.status === 'completed' ? 'primary' : 'grey-lighten-2'
+                "
                 :icon="step.status === 'completed' ? 'mdi-check' : ''"
                 :icon-color="step.status === 'completed' ? 'white' : ''"
                 size="x-small"
@@ -220,7 +245,9 @@
                 width="100%"
               >
                 <div class="d-flex flex-column w-100">
-                  <div class="d-flex align-center justify-space-between mb-1 w-100">
+                  <div
+                    class="d-flex align-center justify-space-between mb-1 w-100"
+                  >
                     <h4
                       class="text-body-2 font-weight-bold text-grey-darken-3 flex-grow-1 mr-4"
                     >
@@ -228,15 +255,24 @@
                     </h4>
 
                     <!-- Fixed Width Container for Chip -->
-                    <div style="width: 100px" class="flex-shrink-0 d-flex justify-end">
+                    <div
+                      style="width: 100px"
+                      class="flex-shrink-0 d-flex justify-end"
+                    >
                       <v-chip
-                        :color="step.status === 'completed' ? 'success' : 'grey'"
-                        :variant="step.status === 'completed' ? 'tonal' : 'tonal'"
+                        :color="
+                          step.status === 'completed' ? 'success' : 'grey'
+                        "
+                        :variant="
+                          step.status === 'completed' ? 'tonal' : 'tonal'
+                        "
                         size="x-small"
                         class="font-weight-medium justify-center"
                         style="width: 100%"
                       >
-                        {{ step.status === "completed" ? "Completed" : "Pending" }}
+                        {{
+                          step.status === "completed" ? "Completed" : "Pending"
+                        }}
                       </v-chip>
                     </div>
                   </div>
@@ -247,7 +283,9 @@
                   >
                     {{ step.applicationId }}
                   </div>
-                  <div class="text-caption font-weight-bold text-grey-darken-2 mb-1">
+                  <div
+                    class="text-caption font-weight-bold text-grey-darken-2 mb-1"
+                  >
                     {{ step.statusText }}
                   </div>
                   <div class="text-caption text-grey-darken-1">
@@ -265,7 +303,9 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const showProfileMenu = ref(false);
 
 const steps = ref([
@@ -311,7 +351,7 @@ const handleLogout = () => {
   localStorage.removeItem("currentBuildingOwnerId");
   localStorage.removeItem("buildingOwnerData");
   showProfileMenu.value = false;
-  window.location.href = "/Applicant-Login";
+  router.push({ name: "Login" });
 };
 </script>
 

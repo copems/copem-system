@@ -7,7 +7,11 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
+              style="
+                border-right: 1px solid #e0e0e0;
+                height: 100%;
+                background: #fcfcff;
+              "
             >
               <div>
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -107,7 +111,9 @@
                   </v-col>
 
                   <v-col cols="12" md="8">
-                    <v-card class="pa-6 rounded-xl card-shadow completion-forms-card">
+                    <v-card
+                      class="pa-6 rounded-xl card-shadow completion-forms-card"
+                    >
                       <v-card-title
                         class="text-h5 font-weight-bold card-title-responsive mb-1 gradient-text"
                       >
@@ -116,7 +122,9 @@
                         >
                         Completion Forms
                       </v-card-title>
-                      <v-card-subtitle class="mt-1 text-wrap mb-4 text-grey-darken-1">
+                      <v-card-subtitle
+                        class="mt-1 text-wrap mb-4 text-grey-darken-1"
+                      >
                         Click on a document type to download its specific forms.
                       </v-card-subtitle>
                       <v-row class="mt-1" align="stretch" justify="center">
@@ -133,10 +141,16 @@
                             class="d-flex flex-column align-center justify-center pa-4 text-center rounded-lg hoverable-card transition-ease doc-card"
                             @click="goToForm(form)"
                           >
-                            <div class="icon-bg mb-2 d-flex align-center justify-center">
-                              <v-icon size="44" color="#0000CC">{{ form.icon }}</v-icon>
+                            <div
+                              class="icon-bg mb-2 d-flex align-center justify-center"
+                            >
+                              <v-icon size="44" color="#0000CC">{{
+                                form.icon
+                              }}</v-icon>
                             </div>
-                            <v-card-text class="pa-0 font-weight-medium form-title-text">
+                            <v-card-text
+                              class="pa-0 font-weight-medium form-title-text"
+                            >
                               {{ form.title }}
                             </v-card-text>
                           </v-card>
@@ -198,17 +212,17 @@ export default {
         {
           title: "Completion Certificate",
           icon: "mdi-hammer",
-          to: "/opam/Completion",
+          to: "/opam/op-forms/completion",
         },
         {
           title: "Electrical Certificate",
           icon: "mdi-lightning-bolt",
-          to: "/opam/Electrical",
+          to: "/opam/op-forms/electrical",
         },
         {
           title: "Unified Application",
           icon: "mdi-file-document-edit-outline",
-          to: "/opam/Unified",
+          to: "/opam/op-forms/unified",
         },
       ],
     };
@@ -229,7 +243,10 @@ export default {
         if (this.$router) {
           this.$router.push(form.to);
         } else {
-          console.warn("Vue Router instance not found. Cannot navigate to:", form.to);
+          console.warn(
+            "Vue Router instance not found. Cannot navigate to:",
+            form.to
+          );
         }
       }
     },

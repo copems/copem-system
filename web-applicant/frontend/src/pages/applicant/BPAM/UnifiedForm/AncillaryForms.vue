@@ -57,7 +57,6 @@
             block
             color="white"
             outlined
-            to="/login"
             class="text-capitalize font-weight-bold"
             @click="handleLogout"
           >
@@ -165,7 +164,7 @@
 
             <div class="d-flex justify-end mt-6 mb-8">
               <router-link
-                to="/Applicant/bpuploadingofplans"
+                to="/bpam/applicant/unified-form/plan-upload"
                 style="text-decoration: none"
               >
                 <v-btn
@@ -184,7 +183,7 @@
                 elevation="2"
                 @click="handleSaveAndRedirect"
                 variant="elevated"
-                to="/applicant/bpadetails"
+                to="/bpam/applicant/unified-form/bpa-details"
                 size="large"
               >
                 Save
@@ -211,7 +210,7 @@ const sidebarSteps = ref([
 
 const handleLogout = () => {
   console.log("User logged out");
-  router.push("/login");
+  router.push({ name: "Login" });
 };
 
 // Handle Save Button
@@ -219,16 +218,16 @@ const handleSaveAndRedirect = async () => {
   const saved = await saveAncillaryForms();
   if (saved) {
     console.log("Application Saved");
-    router.push("/applicant/bpadetails");
+    router.push("/bpam/applicant/unified-form/bpa-details");
   }
 };
 
 const goToSidebarStep = (index) => {
   sidebarStep.value = index;
   if (index === 0) {
-    router.push("/applicant/applicantdetails");
+    router.push("/bpam/applicant/unified-form/applicant-information");
   } else if (index === 2) {
-    router.push("/applicant/uploadingofplans");
+    router.push("/bpam/applicant/unified-form/plan-upload");
   }
 };
 

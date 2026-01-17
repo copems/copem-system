@@ -7,7 +7,11 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
+              style="
+                border-right: 1px solid #e0e0e0;
+                height: 100%;
+                background: #fcfcff;
+              "
             >
               <div>
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -82,7 +86,9 @@
                       :value="step.value"
                       :complete="formStepValue > step.value"
                       :color="
-                        formStepValue >= step.value ? 'blue-darken-1' : 'grey lighten-2'
+                        formStepValue >= step.value
+                          ? 'blue-darken-1'
+                          : 'grey lighten-2'
                       "
                       class="stepper-item-custom"
                     />
@@ -148,7 +154,9 @@
                           </v-col>
                           <v-col cols="12">
                             <div class="plain-label">City/Municipal of:</div>
-                            <div class="plain-value">{{ cityMunicipality }}</div>
+                            <div class="plain-value">
+                              {{ cityMunicipality }}
+                            </div>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -184,11 +192,15 @@
                         <v-row dense>
                           <v-col cols="12" md="6">
                             <div class="plain-label">Occupancy Classified:</div>
-                            <div class="plain-value">{{ occupancyClassified }}</div>
+                            <div class="plain-value">
+                              {{ occupancyClassified }}
+                            </div>
                           </v-col>
                           <v-col cols="12" md="6">
                             <div class="plain-label">Date of Completion:</div>
-                            <div class="plain-value">{{ dateOfCompletion }}</div>
+                            <div class="plain-value">
+                              {{ dateOfCompletion }}
+                            </div>
                           </v-col>
                           <v-col cols="12" md="6">
                             <div class="plain-label">No. of Units:</div>
@@ -199,7 +211,9 @@
                             <div class="plain-value">{{ numberOfStoreys }}</div>
                           </v-col>
                           <v-col cols="12">
-                            <div class="plain-label">Total Floor Area (sq. m):</div>
+                            <div class="plain-label">
+                              Total Floor Area (sq. m):
+                            </div>
                             <div class="plain-value">{{ totalFloorArea }}</div>
                           </v-col>
                         </v-row>
@@ -265,15 +279,17 @@ export default defineComponent({
     };
   },
   methods: {
-    handleLogout() {},
+    handleLogout() {
+      this.$router.push({ name: "Login" });
+    },
     goToStep(index) {
       this.sidebarStep = index;
     },
     goNext() {
-      this.$router.push("/opam/OPsignatories");
+      this.$router.push("/opam/op-application/op-signatories");
     },
     goBack() {
-      this.$router.push("/opam/OPowner");
+      this.$router.push("/opam/op-application/op-owner");
     },
   },
 });

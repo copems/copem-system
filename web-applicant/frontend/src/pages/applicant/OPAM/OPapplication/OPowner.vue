@@ -7,7 +7,11 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
+              style="
+                border-right: 1px solid #e0e0e0;
+                height: 100%;
+                background: #fcfcff;
+              "
             >
               <div>
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -82,7 +86,9 @@
                       :value="step.value"
                       :complete="formStepValue > step.value"
                       :color="
-                        formStepValue >= step.value ? 'blue-darken-1' : 'grey lighten-2'
+                        formStepValue >= step.value
+                          ? 'blue-darken-1'
+                          : 'grey lighten-2'
                       "
                       class="stepper-item-custom"
                     />
@@ -180,7 +186,11 @@
                 </v-card>
 
                 <div class="d-flex justify-end mt-6 mb-8">
-                  <v-btn class="btn-rounded mr-2" variant="tonal" @click="goBack">
+                  <v-btn
+                    class="btn-rounded mr-2"
+                    variant="tonal"
+                    @click="goBack"
+                  >
                     <v-icon left>mdi-arrow-left</v-icon>Back
                   </v-btn>
                   <v-btn
@@ -233,13 +243,13 @@ export default defineComponent({
   },
   methods: {
     validateAndProceed() {
-      this.$router.push("/opam/OPlocation");
+      this.$router.push("/opam/op-application/op-location");
     },
     goBack() {
-      this.$router.push("/opam/OPtype");
+      this.$router.push("/opam/op-application/op-type");
     },
     handleLogout() {
-      this.$router.push("/login");
+      this.$router.push({ name: "Login" });
     },
     goToStep(index) {
       this.sidebarStep = index;

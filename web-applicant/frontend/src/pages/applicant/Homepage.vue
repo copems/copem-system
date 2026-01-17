@@ -155,7 +155,9 @@ if (typeof window !== "undefined") {
 
 const handleApplyNow = (serviceTitle) => {
   if (serviceTitle === "Building Permit Application") {
-    router.push("/bpam/applicantinformation");
+    router.push("/bpam/applicant/unified-form/applicant-information");
+  } else if (serviceTitle === "Occupancy Permit Application") {
+    router.push("/opam/op-application/op-apply");
   } else {
     // Handle other services in the future
     console.log(`Apply for: ${serviceTitle}`);

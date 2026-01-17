@@ -400,14 +400,11 @@ export default {
       return this.checklistItems.slice(midpoint);
     },
   },
-  // ========== METHODS BLOCK UPDATED FOR EXTERNAL URL ==========
   methods: {
     goBack() {
-      // This will navigate the user to the specified URL
-      window.location.href = "http://localhost:3000/";
+      this.$router.push({ name: "LandingPage" });
     },
   },
-  // =========================================================
 };
 </script>
 

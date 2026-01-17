@@ -47,23 +47,41 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { useAuthUserStore } from "@/stores/authUser";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+const authStore = useAuthStore();
+const authUserStore = useAuthUserStore();
 const showDropdown = ref(false);
 
-// Get user data from localStorage or session
-const userData = ref({
-  firstName: localStorage.getItem("userFirstName") || "User",
-  lastName: localStorage.getItem("userLastName") || "Name",
+// Load auth data on component mount
+onMounted(() => {
+  authUserStore.loadAuth();
 });
 
-const userName = computed(
-  () => `${userData.value.firstName} ${userData.value.lastName}`
-);
+const userName = computed(() => {
+  const user = authUserStore.user || authStore.user;
+  if (user) {
+    const firstName = user.first_name || user.firstName || "User";
+    const lastName = user.last_name || user.lastName || "Name";
+    return `${firstName} ${lastName}`;
+  }
+  return "User Name";
+});
+
 const userInitials = computed(() => {
-  const first = userData.value.firstName.charAt(0).toUpperCase();
-  const last = userData.value.lastName.charAt(0).toUpperCase();
-  return `${first}${last}`;
+  const user = authUserStore.user || authStore.user;
+  if (user) {
+    const firstName = user.first_name || user.firstName || "U";
+    const lastName = user.last_name || user.lastName || "N";
+    const first = firstName.charAt(0).toUpperCase();
+    const last = lastName.charAt(0).toUpperCase();
+    return `${first}${last}`;
+  }
+  return "UN";
 });
 
 const toggleDropdown = () => {
@@ -72,12 +90,12 @@ const toggleDropdown = () => {
 
 const logout = () => {
   console.log("Logging out...");
-  // Clear user data
-  localStorage.clear();
-  sessionStorage.clear();
+  // Clear auth stores
+  authStore.clearAuth();
+  authUserStore.logout();
   showDropdown.value = false;
   // Redirect to login
-  window.location.href = "/login";
+  router.push({ name: "Login" });
 };
 
 // Close dropdown when clicking outside

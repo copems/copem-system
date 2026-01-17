@@ -184,7 +184,7 @@ export default {
         this.alertType = "success";
         this.alertMessage = "Login successful!";
         setTimeout(() => {
-          this.$router.push("/Homepage");
+          this.$router.push({ name: "Homepage" });
         }, 1000);
       } catch (error) {
         this.alertType = "error";

@@ -12,19 +12,29 @@
         <v-col cols="12" md="9" class="main-content-wrapper d-flex flex-column">
           <div class="stepper-fixed-header pa-6 pb-2">
             <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-              <v-stepper v-model="formStepValue" alt-labels flat class="mb-0 mt-2 stepper-elevated">
+              <v-stepper
+                v-model="formStepValue"
+                alt-labels
+                flat
+                class="mb-0 mt-2 stepper-elevated"
+              >
                 <v-stepper-header>
                   <v-stepper-item
                     title="Applicant Information"
                     value="1"
                     :complete="parseInt(formStepValue) > 1"
-                    :color="parseInt(formStepValue) >= 1 ? 'blue-darken-1' : 'grey lighten-2'"
+                    :color="
+                      parseInt(formStepValue) >= 1
+                        ? 'blue-darken-1'
+                        : 'grey lighten-2'
+                    "
                     class="stepper-item-custom"
                   ></v-stepper-item>
                   <v-divider
                     :thickness="3"
                     :style="{
-                      'border-color': parseInt(formStepValue) > 1 ? '#1976D2' : '#e0e0e0',
+                      'border-color':
+                        parseInt(formStepValue) > 1 ? '#1976D2' : '#e0e0e0',
                     }"
                     class="mx-2"
                   ></v-divider>
@@ -32,13 +42,18 @@
                     title="Construction Information"
                     value="2"
                     :complete="parseInt(formStepValue) > 2"
-                    :color="parseInt(formStepValue) >= 2 ? 'blue-darken-1' : 'grey lighten-2'"
+                    :color="
+                      parseInt(formStepValue) >= 2
+                        ? 'blue-darken-1'
+                        : 'grey lighten-2'
+                    "
                     class="stepper-item-custom"
                   ></v-stepper-item>
                   <v-divider
                     :thickness="3"
                     :style="{
-                      'border-color': parseInt(formStepValue) > 2 ? '#1976D2' : '#e0e0e0',
+                      'border-color':
+                        parseInt(formStepValue) > 2 ? '#1976D2' : '#e0e0e0',
                     }"
                     class="mx-2"
                   ></v-divider>
@@ -46,13 +61,18 @@
                     title="Use or Character of Occupancy"
                     value="3"
                     :complete="parseInt(formStepValue) > 3"
-                    :color="parseInt(formStepValue) >= 3 ? 'blue-darken-1' : 'grey lighten-2'"
+                    :color="
+                      parseInt(formStepValue) >= 3
+                        ? 'blue-darken-1'
+                        : 'grey lighten-2'
+                    "
                     class="stepper-item-custom"
                   ></v-stepper-item>
                   <v-divider
                     :thickness="3"
                     :style="{
-                      'border-color': parseInt(formStepValue) > 3 ? '#1976D2' : '#e0e0e0',
+                      'border-color':
+                        parseInt(formStepValue) > 3 ? '#1976D2' : '#e0e0e0',
                     }"
                     class="mx-2"
                   ></v-divider>
@@ -60,7 +80,11 @@
                     title="Signatories Details"
                     value="4"
                     :complete="parseInt(formStepValue) > 4"
-                    :color="parseInt(formStepValue) >= 4 ? 'blue-darken-1' : 'grey lighten-2'"
+                    :color="
+                      parseInt(formStepValue) >= 4
+                        ? 'blue-darken-1'
+                        : 'grey lighten-2'
+                    "
                     class="stepper-item-custom"
                   ></v-stepper-item>
                 </v-stepper-header>
@@ -74,7 +98,9 @@
                 <v-card-text>
                   <v-form ref="form">
                     <v-card class="mb-4 card-section">
-                      <v-card-title class="text-h6 card-title-responsive section-title">
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                      >
                         <v-icon left color="blue-darken-3" class="mr-2"
                           >mdi-account-hard-hat</v-icon
                         >
@@ -122,7 +148,9 @@
                     </v-card>
 
                     <v-card class="mb-4 card-section">
-                      <v-card-title class="text-h6 card-title-responsive section-title">
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                      >
                         <v-icon left color="blue-darken-3" class="mr-2"
                           >mdi-badge-account-outline</v-icon
                         >
@@ -174,11 +202,19 @@
                                   hide-header
                                 ></v-date-picker>
                                 <v-card-actions>
-                                  <v-btn variant="text" color="primary" @click="clearValidity">
+                                  <v-btn
+                                    variant="text"
+                                    color="primary"
+                                    @click="clearValidity"
+                                  >
                                     Clear
                                   </v-btn>
                                   <v-spacer></v-spacer>
-                                  <v-btn variant="text" color="primary" @click="setTodayValidity">
+                                  <v-btn
+                                    variant="text"
+                                    color="primary"
+                                    @click="setTodayValidity"
+                                  >
                                     Today
                                   </v-btn>
                                 </v-card-actions>
@@ -242,8 +278,12 @@
                     </v-card>
 
                     <v-card class="mb-4 card-section">
-                      <v-card-title class="text-h6 card-title-responsive section-title">
-                        <v-icon left color="blue-darken-3" class="mr-2">mdi-home-map-marker</v-icon>
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                      >
+                        <v-icon left color="blue-darken-3" class="mr-2"
+                          >mdi-home-map-marker</v-icon
+                        >
                         ADDRESS
                       </v-card-title>
                       <v-divider></v-divider>
@@ -314,8 +354,12 @@
                     </v-card>
 
                     <v-card class="card-section">
-                      <v-card-title class="text-h6 card-title-responsive section-title">
-                        <v-icon left color="blue-darken-3" class="mr-2">mdi-account-check</v-icon>
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                      >
+                        <v-icon left color="blue-darken-3" class="mr-2"
+                          >mdi-account-check</v-icon
+                        >
                         WITH CONSENT LOT OWNER/AUTHORIZED REPRESENTATIVE
                       </v-card-title>
                       <v-divider></v-divider>
@@ -335,7 +379,9 @@
                                   v-model="lotOwnerLastName"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-account"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -346,7 +392,9 @@
                                   v-model="lotOwnerFirstName"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-account"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -357,7 +405,9 @@
                                   v-model="lotOwnerMiddleInitial"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-alpha-m-box-outline"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -371,7 +421,9 @@
                                   :items="provinces"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-map"
                                   color="blue-darken-3"
                                 ></v-select>
@@ -382,7 +434,9 @@
                                   v-model="lotOwnerMunicipality"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-home-city"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -396,7 +450,9 @@
                                   item-value="brgy_id"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   :loading="loadingBarangays"
                                   prepend-inner-icon="mdi-home-group"
                                   color="blue-darken-3"
@@ -408,7 +464,9 @@
                                   v-model="lotOwnerHouseNo"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-numeric"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -419,7 +477,9 @@
                                   v-model="lotOwnerStreet"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-road-variant"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -427,12 +487,16 @@
                             </v-row>
                             <v-row dense>
                               <v-col cols="12" sm="4">
-                                <div class="input-label">Gov't Issued ID No.</div>
+                                <div class="input-label">
+                                  Gov't Issued ID No.
+                                </div>
                                 <v-text-field
                                   v-model="lotOwnerGovIdNo"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-card-account-details"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -444,7 +508,9 @@
                                   variant="outlined"
                                   density="comfortable"
                                   type="date"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-calendar"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -455,7 +521,9 @@
                                   v-model="lotOwnerIdPlaceIssued"
                                   variant="outlined"
                                   density="comfortable"
-                                  :rules="lotOwnerConsent ? [rules.required] : []"
+                                  :rules="
+                                    lotOwnerConsent ? [rules.required] : []
+                                  "
                                   prepend-inner-icon="mdi-map-marker"
                                   color="blue-darken-3"
                                 ></v-text-field>
@@ -477,8 +545,13 @@
                 closable
                 @update:model-value="showValidationError = $event"
               >
-                <strong>Please fill out all required fields before submitting.</strong>
-                <p class="mb-0 text-caption mt-1">Check the highlighted fields above for errors.</p>
+                <strong
+                  >Please fill out all required fields before
+                  submitting.</strong
+                >
+                <p class="mb-0 text-caption mt-1">
+                  Check the highlighted fields above for errors.
+                </p>
               </v-alert>
 
               <div class="d-flex justify-end mt-6 mb-8">
@@ -519,10 +592,20 @@
     </v-container>
 
     <!-- Application Number Dialog -->
-    <v-dialog v-model="showApplicationNumberDialog" max-width="450" style="min-height: 600px">
-      <v-card class="pa-6 text-center rounded-xl" elevation="10" style="min-height: 600px">
+    <v-dialog
+      v-model="showApplicationNumberDialog"
+      max-width="450"
+      style="min-height: 600px"
+    >
+      <v-card
+        class="pa-6 text-center rounded-xl"
+        elevation="10"
+        style="min-height: 600px"
+      >
         <div class="d-flex justify-center mb-4">
-          <v-icon color="green-lighten-1" size="80"> mdi-check-circle-outline </v-icon>
+          <v-icon color="green-lighten-1" size="80">
+            mdi-check-circle-outline
+          </v-icon>
         </div>
 
         <v-card-title class="text-h5 font-weight-bold text-wrap mb-4">
@@ -530,20 +613,25 @@
         </v-card-title>
 
         <v-card-text class="text-subtitle-1 text-grey-darken-1 mb-6">
-          Your building permit application has been submitted. Here is your application reference
-          number:
+          Your building permit application has been submitted. Here is your
+          application reference number:
         </v-card-text>
 
         <v-card class="pa-6 mb-6 application-number-card" outlined>
-          <div class="text-h4 font-weight-bold" style="color: #0000cc; letter-spacing: 2px">
+          <div
+            class="text-h4 font-weight-bold"
+            style="color: #0000cc; letter-spacing: 2px"
+          >
             {{ generatedApplicationNumber }}
           </div>
-          <div class="text-caption text-grey-darken-2 mt-2">Application Reference Number</div>
+          <div class="text-caption text-grey-darken-2 mt-2">
+            Application Reference Number
+          </div>
         </v-card>
 
         <v-card-text class="text-body-2 text-grey mb-6">
-          Please save this number for your records. You will use it to track your application
-          status.
+          Please save this number for your records. You will use it to track
+          your application status.
         </v-card-text>
 
         <v-card-actions class="justify-center pt-4">
@@ -563,194 +651,205 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { useRouter } from 'vue-router'
-import Navigation from './Navigation.vue'
-import Header from '../../../components/header.vue'
+import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+import Navigation from "./Navigation.vue";
+import Header from "../../../components/header.vue";
 
 export default defineComponent({
-  name: 'BuildingPermitStep4',
+  name: "BuildingPermitStep4",
   components: { Navigation, Header },
   setup() {
-    const router = useRouter()
-    return { router }
+    const router = useRouter();
+    return { router };
   },
   data() {
     return {
-      formStepValue: '4',
-      engineerFirstName: '',
-      engineerLastName: '',
-      engineerMiddleInitial: '',
+      formStepValue: "4",
+      engineerFirstName: "",
+      engineerLastName: "",
+      engineerMiddleInitial: "",
 
-      prcNo: '',
+      prcNo: "",
       validity: null,
       validityMenu: false,
-      ptrNo: '',
+      ptrNo: "",
       dateIssued: null,
-      issuedAt: '',
-      tin: '',
+      issuedAt: "",
+      tin: "",
 
-      applicantFirstName: '',
-      applicantLastName: '',
-      applicantMiddleInitial: '',
+      applicantFirstName: "",
+      applicantLastName: "",
+      applicantMiddleInitial: "",
       applicantProvince: null,
-      applicantMunicipality: '',
+      applicantMunicipality: "",
       applicantBarangay: null,
-      applicantHouseNo: '',
-      applicantStreet: '',
-      applicantGovIdNo: '',
-      applicantIdDateIssued: '',
-      applicantIdPlaceIssued: '',
+      applicantHouseNo: "",
+      applicantStreet: "",
+      applicantGovIdNo: "",
+      applicantIdDateIssued: "",
+      applicantIdPlaceIssued: "",
 
       lotOwnerConsent: false,
-      lotOwnerFirstName: '',
-      lotOwnerLastName: '',
-      lotOwnerMiddleInitial: '',
+      lotOwnerFirstName: "",
+      lotOwnerLastName: "",
+      lotOwnerMiddleInitial: "",
       lotOwnerProvince: null,
-      lotOwnerMunicipality: '',
+      lotOwnerMunicipality: "",
       lotOwnerBarangay: null,
-      lotOwnerHouseNo: '',
-      lotOwnerStreet: '',
-      lotOwnerGovIdNo: '',
-      lotOwnerIdDateIssued: '',
-      lotOwnerIdPlaceIssued: '',
+      lotOwnerHouseNo: "",
+      lotOwnerStreet: "",
+      lotOwnerGovIdNo: "",
+      lotOwnerIdDateIssued: "",
+      lotOwnerIdPlaceIssued: "",
 
       province: null,
-      municipality: '',
+      municipality: "",
       barangay: null,
-      blkNo: '',
-      street: '',
+      blkNo: "",
+      street: "",
 
       provinces: [
-        'Albay',
-        'Camarines Norte',
-        'Camarines Sur',
-        'Catanduanes',
-        'Masbate',
-        'Sorsogon',
+        "Albay",
+        "Camarines Norte",
+        "Camarines Sur",
+        "Catanduanes",
+        "Masbate",
+        "Sorsogon",
       ],
       barangays: [],
       loadingBarangays: false,
       rules: {
-        required: (value) => !!value || 'This field is required.',
-        prcNo: (value) => (value && /^\d{6,7}$/.test(value)) || 'PRC No. should be 6-7 digits.',
-        ptrNo: (value) => (value && /^\d{6,8}$/.test(value)) || 'PTR No. should be 6-8 digits.',
+        required: (value) => !!value || "This field is required.",
+        prcNo: (value) =>
+          (value && /^\d{6,7}$/.test(value)) || "PRC No. should be 6-7 digits.",
+        ptrNo: (value) =>
+          (value && /^\d{6,8}$/.test(value)) || "PTR No. should be 6-8 digits.",
         tin: (value) =>
           (value && /^\d{3}-\d{3}-\d{3}-\d{3}$/.test(value)) ||
-          'TIN should be in XXX-XXX-XXX-XXX format.',
+          "TIN should be in XXX-XXX-XXX-XXX format.",
       },
 
       sidebarStep: 3,
       sidebarSteps: [
-        'Fill up the Unified Application Form',
-        'Upload Building Plans & Lot Plans',
-        'Download Filled-up Unified Application Form and Required Ancillary Permits ',
+        "Fill up the Unified Application Form",
+        "Upload Building Plans & Lot Plans",
+        "Download Filled-up Unified Application Form and Required Ancillary Permits ",
       ],
       showApplicationNumberDialog: false,
-      generatedApplicationNumber: '',
+      generatedApplicationNumber: "",
       showValidationError: false,
       isSaved: false,
       dataComponents: [],
-    }
+    };
   },
 
   mounted() {
-    this.fetchBarangays()
+    this.fetchBarangays();
   },
 
   computed: {
     formattedValidity() {
-      return this.formatDate(this.validity)
+      return this.formatDate(this.validity);
     },
   },
 
   methods: {
     async fetchBarangays() {
-      this.loadingBarangays = true
+      this.loadingBarangays = true;
       try {
-        const response = await fetch('http://localhost:3000/api/barangay')
+        const response = await fetch("http://localhost:3000/api/barangay");
         if (response.ok) {
-          const data = await response.json()
-          this.barangays = data
+          const data = await response.json();
+          this.barangays = data;
         }
       } catch (error) {
-        console.error('Error fetching barangays:', error)
+        console.error("Error fetching barangays:", error);
       } finally {
-        this.loadingBarangays = false
+        this.loadingBarangays = false;
       }
     },
     getSelectedBrgyCode(barangayId) {
-      const barangay = this.barangays.find((b) => b.brgy_id === barangayId)
-      return barangay ? barangay.brgy_code : null
+      const barangay = this.barangays.find((b) => b.brgy_id === barangayId);
+      return barangay ? barangay.brgy_code : null;
     },
     limitPrcNo(event) {
-      let value = (event.target ? event.target.value : event).replace(/\D/g, '')
+      let value = (event.target ? event.target.value : event).replace(
+        /\D/g,
+        ""
+      );
       if (value.length > 7) {
-        value = value.slice(0, 7)
+        value = value.slice(0, 7);
       }
-      this.prcNo = value
+      this.prcNo = value;
     },
     limitPtrNo(event) {
-      let value = (event.target ? event.target.value : event).replace(/\D/g, '')
+      let value = (event.target ? event.target.value : event).replace(
+        /\D/g,
+        ""
+      );
       if (value.length > 8) {
-        value = value.slice(0, 8)
+        value = value.slice(0, 8);
       }
-      this.ptrNo = value
+      this.ptrNo = value;
     },
     formatTin(event) {
-      let value = (event.target ? event.target.value : event).replace(/\D/g, '')
-      let formattedValue = ''
+      let value = (event.target ? event.target.value : event).replace(
+        /\D/g,
+        ""
+      );
+      let formattedValue = "";
       if (value.length > 0) {
-        formattedValue = value.slice(0, 3)
+        formattedValue = value.slice(0, 3);
       }
       if (value.length > 3) {
-        formattedValue += '-' + value.slice(3, 6)
+        formattedValue += "-" + value.slice(3, 6);
       }
       if (value.length > 6) {
-        formattedValue += '-' + value.slice(6, 9)
+        formattedValue += "-" + value.slice(6, 9);
       }
       if (value.length > 9) {
-        formattedValue += '-' + value.slice(9, 12)
+        formattedValue += "-" + value.slice(9, 12);
       }
-      this.tin = formattedValue
+      this.tin = formattedValue;
     },
 
     formatDate(date) {
-      if (!date) return null
-      const d = new Date(date)
-      if (isNaN(d.getTime())) return null
+      if (!date) return null;
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return null;
 
-      const day = d.getDate().toString().padStart(2, '0')
-      const month = (d.getMonth() + 1).toString().padStart(2, '0')
-      const year = d.getFullYear()
-      return `${day}/${month}/${year}`
+      const day = d.getDate().toString().padStart(2, "0");
+      const month = (d.getMonth() + 1).toString().padStart(2, "0");
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
     },
     clearValidity() {
-      this.validity = null
-      this.validityMenu = false
+      this.validity = null;
+      this.validityMenu = false;
     },
     setTodayValidity() {
-      this.validity = new Date()
-      this.validityMenu = false
+      this.validity = new Date();
+      this.validityMenu = false;
     },
 
     handleLogout() {
-      console.log('User logged out')
-      this.router.push('/login')
+      console.log("User logged out");
+      this.$router.push({ name: "Login" });
     },
     goToSidebarStep(index) {
-      this.sidebarStep = index
+      this.sidebarStep = index;
       if (index === 0) {
-        console.log('Navigating to step 1 (Applicant Details)...')
-        this.router.push('/applicant/applicantdetails')
+        console.log("Navigating to step 1 (Applicant Details)...");
+        this.$router.push("/bpam/applicant/unified-form/applicant-information");
       }
     },
     async saveSupervisor() {
       try {
-        const brgyCode = this.getSelectedBrgyCode(this.barangay)
+        const brgyCode = this.getSelectedBrgyCode(this.barangay);
         if (!brgyCode) {
-          alert('Please select a valid barangay.')
-          return null
+          alert("Please select a valid barangay.");
+          return null;
         }
 
         const supervisorData = {
@@ -766,46 +865,49 @@ export default defineComponent({
           date_issued: this.dateIssued,
           issued_at: this.issuedAt,
           tin: this.tin,
-        }
+        };
 
-        const response = await fetch('http://localhost:3000/api/bpac-supervisors', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(supervisorData),
-        })
+        const response = await fetch(
+          "http://localhost:3000/api/bpac-supervisors",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(supervisorData),
+          }
+        );
 
         if (response.ok) {
-          const data = await response.json()
-          return data.bpacs_id
+          const data = await response.json();
+          return data.bpacs_id;
         } else {
-          const error = await response.json()
-          alert(`Error saving supervisor: ${error.message}`)
-          return null
+          const error = await response.json();
+          alert(`Error saving supervisor: ${error.message}`);
+          return null;
         }
       } catch (error) {
-        console.error('Error saving supervisor:', error)
-        alert('An error occurred while saving supervisor data.')
-        return null
+        console.error("Error saving supervisor:", error);
+        alert("An error occurred while saving supervisor data.");
+        return null;
       }
     },
     async saveLotOwner() {
       if (!this.lotOwnerConsent) {
-        return null
+        return null;
       }
 
       try {
-        const bpacSiteId = localStorage.getItem('bpac_site_id')
+        const bpacSiteId = localStorage.getItem("bpac_site_id");
         if (!bpacSiteId) {
-          alert('Construction site ID not found.')
-          return null
+          alert("Construction site ID not found.");
+          return null;
         }
 
-        const brgyCode = this.getSelectedBrgyCode(this.lotOwnerBarangay)
+        const brgyCode = this.getSelectedBrgyCode(this.lotOwnerBarangay);
         if (!brgyCode) {
-          alert('Please select a valid barangay for lot owner.')
-          return null
+          alert("Please select a valid barangay for lot owner.");
+          return null;
         }
 
         const lotOwnerData = {
@@ -816,32 +918,35 @@ export default defineComponent({
           brgy_code: brgyCode,
           house_no: this.lotOwnerHouseNo,
           street: this.lotOwnerStreet,
-        }
+        };
 
-        const response = await fetch('http://localhost:3000/api/bpa-cs-lot-owner', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(lotOwnerData),
-        })
+        const response = await fetch(
+          "http://localhost:3000/api/bpa-cs-lot-owner",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(lotOwnerData),
+          }
+        );
 
         if (response.ok) {
-          const data = await response.json()
+          const data = await response.json();
           // Save lot owner gov ID if provided
           if (this.lotOwnerGovIdNo) {
-            await this.saveLotOwnerGovId(data.bpac_lot_owner_id)
+            await this.saveLotOwnerGovId(data.bpac_lot_owner_id);
           }
-          return data.bpac_lot_owner_id
+          return data.bpac_lot_owner_id;
         } else {
-          const error = await response.json()
-          alert(`Error saving lot owner: ${error.message}`)
-          return null
+          const error = await response.json();
+          alert(`Error saving lot owner: ${error.message}`);
+          return null;
         }
       } catch (error) {
-        console.error('Error saving lot owner:', error)
-        alert('An error occurred while saving lot owner data.')
-        return null
+        console.error("Error saving lot owner:", error);
+        alert("An error occurred while saving lot owner data.");
+        return null;
       }
     },
     async saveLotOwnerGovId(lotOwnerId) {
@@ -851,30 +956,33 @@ export default defineComponent({
           gov_id_no: this.lotOwnerGovIdNo,
           date_issued: this.lotOwnerIdDateIssued,
           place_issued: this.lotOwnerIdPlaceIssued,
-        }
+        };
 
-        const response = await fetch('http://localhost:3000/api/lot-owner-gov-id', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(govIdData),
-        })
+        const response = await fetch(
+          "http://localhost:3000/api/lot-owner-gov-id",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(govIdData),
+          }
+        );
 
         if (!response.ok) {
-          const error = await response.json()
-          console.error('Error saving lot owner gov ID:', error)
+          const error = await response.json();
+          console.error("Error saving lot owner gov ID:", error);
         }
       } catch (error) {
-        console.error('Error saving lot owner gov ID:', error)
+        console.error("Error saving lot owner gov ID:", error);
       }
     },
     async saveBpaConstructionApplication(supervisorId, applicationNumber) {
       try {
-        const bpacId = localStorage.getItem('bpac_id')
+        const bpacId = localStorage.getItem("bpac_id");
         if (!bpacId) {
-          alert('Construction data ID not found.')
-          return false
+          alert("Construction data ID not found.");
+          return false;
         }
 
         const applicationData = {
@@ -882,86 +990,89 @@ export default defineComponent({
           bpacs_id: supervisorId,
           application_no: applicationNumber,
           bpa_status_id: 1, // Assuming 1 is for "Submitted" or "Pending"
-        }
+        };
 
-        const response = await fetch('http://localhost:3000/api/bpa-construction-application', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(applicationData),
-        })
+        const response = await fetch(
+          "http://localhost:3000/api/bpa-construction-application",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(applicationData),
+          }
+        );
 
         if (response.ok) {
-          return true
+          return true;
         } else {
-          const error = await response.json()
-          alert(`Error saving application: ${error.message}`)
-          return false
+          const error = await response.json();
+          alert(`Error saving application: ${error.message}`);
+          return false;
         }
       } catch (error) {
-        console.error('Error saving BPA construction application:', error)
-        alert('An error occurred while submitting application.')
-        return false
+        console.error("Error saving BPA construction application:", error);
+        alert("An error occurred while submitting application.");
+        return false;
       }
     },
     async saveForm() {
       // Validate form before saving
-      const { valid } = await this.$refs.form.validate()
+      const { valid } = await this.$refs.form.validate();
       if (!valid) {
-        this.showValidationError = true
-        return
+        this.showValidationError = true;
+        return;
       }
 
-      this.showValidationError = false
+      this.showValidationError = false;
 
       // Save supervisor data
-      const supervisorId = await this.saveSupervisor()
+      const supervisorId = await this.saveSupervisor();
       if (!supervisorId) {
-        return
+        return;
       }
 
       // Save lot owner data if consent is given
       if (this.lotOwnerConsent) {
-        const lotOwnerId = await this.saveLotOwner()
+        const lotOwnerId = await this.saveLotOwner();
         if (!lotOwnerId) {
-          return
+          return;
         }
       }
 
       // Mark as saved
-      this.isSaved = true
-      alert('Signatory information saved successfully!')
+      this.isSaved = true;
+      alert("Signatory information saved successfully!");
     },
 
     async submitApplication() {
       // Validate form before submission
-      const { valid } = await this.$refs.form.validate()
+      const { valid } = await this.$refs.form.validate();
       if (!valid) {
-        this.showValidationError = true
-        return // Prevent submission if form is invalid
+        this.showValidationError = true;
+        return; // Prevent submission if form is invalid
       }
 
-      this.showValidationError = false
+      this.showValidationError = false;
 
       // Generate application number (BP-YYYY-XXXXXX format)
-      const year = new Date().getFullYear()
+      const year = new Date().getFullYear();
       const randomNum = Math.floor(Math.random() * 1000000)
         .toString()
-        .padStart(6, '0') // 6-digit number
-      this.generatedApplicationNumber = `BP-${year}-${randomNum}`
+        .padStart(6, "0"); // 6-digit number
+      this.generatedApplicationNumber = `BP-${year}-${randomNum}`;
 
       // Save supervisor data
-      const supervisorId = await this.saveSupervisor()
+      const supervisorId = await this.saveSupervisor();
       if (!supervisorId) {
-        return
+        return;
       }
 
       // Save lot owner data if consent is given
       if (this.lotOwnerConsent) {
-        const lotOwnerId = await this.saveLotOwner()
+        const lotOwnerId = await this.saveLotOwner();
         if (!lotOwnerId) {
-          return
+          return;
         }
       }
 
@@ -969,23 +1080,26 @@ export default defineComponent({
       const saved = await this.saveBpaConstructionApplication(
         supervisorId,
         this.generatedApplicationNumber
-      )
+      );
       if (!saved) {
-        return
+        return;
       }
 
       // Store application number in localStorage
-      localStorage.setItem('application_number', this.generatedApplicationNumber)
+      localStorage.setItem(
+        "application_number",
+        this.generatedApplicationNumber
+      );
 
       // Show success dialog
-      this.showApplicationNumberDialog = true
+      this.showApplicationNumberDialog = true;
     },
     closeApplicationDialog() {
-      this.showApplicationNumberDialog = false
-      this.$router.push('/applicant/planupload')
+      this.showApplicationNumberDialog = false;
+      this.$router.push("/bpam/applicant/unified-form/plan-upload");
     },
   },
-})
+});
 </script>
 
 <style scoped>
