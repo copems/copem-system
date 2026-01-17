@@ -3,16 +3,31 @@
     <v-card
       flat
       class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-      style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff; overflow-y: auto"
+      style="
+        border-right: 1px solid #e0e0e0;
+        height: 100%;
+        background: #fcfcff;
+        overflow-y: auto;
+      "
     >
       <div>
         <!-- User Info Section -->
-        <div v-if="applicantName" class="mb-4 pa-3 rounded-lg" style="background: #e3f0ff">
+        <div
+          v-if="applicantName"
+          class="mb-4 pa-3 rounded-lg"
+          style="background: #e3f0ff"
+        >
           <div class="text-caption text-blue-grey-darken-1">Welcome back</div>
           <div class="text-body-1 font-weight-bold text-blue-darken-3">
             {{ applicantName }}
           </div>
-          <v-chip v-if="hasDraftData" size="x-small" color="orange" text-color="white" class="mt-1">
+          <v-chip
+            v-if="hasDraftData"
+            size="x-small"
+            color="orange"
+            text-color="white"
+            class="mt-1"
+          >
             <v-icon start size="x-small">mdi-content-save-outline</v-icon>
             Draft Saved
           </v-chip>
@@ -35,7 +50,7 @@
             'active-step': sidebarStep === index,
           }"
           @click="goToStep(index)"
-          elevation="sidebarStep === index ? 2 : 0"
+          :elevation="sidebarStep === index ? 2 : 0"
           style="transition: box-shadow 0.16s, background 0.16s"
         >
           <v-avatar
@@ -71,10 +86,10 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { usePermitApplicantStore } from '@/stores/permitApplicant'
-import { useDraftStore } from '@/stores/draft'
+import { computed, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { usePermitApplicantStore } from "@/stores/permitApplicant";
+import { useDraftStore } from "@/stores/draft";
 
 // Define props
 const props = defineProps({
@@ -86,46 +101,46 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-})
+});
 
 // Define emits
-const emit = defineEmits(['go-to-step', 'logout'])
+const emit = defineEmits(["go-to-step", "logout"]);
 
 // Store instances
-const authStore = useAuthStore()
-const permitApplicantStore = usePermitApplicantStore()
-const draftStore = useDraftStore()
+const authStore = useAuthStore();
+const permitApplicantStore = usePermitApplicantStore();
+const draftStore = useDraftStore();
 
 // Computed properties from stores
-const currentUser = computed(() => authStore.currentUser)
-const applicantName = computed(() => permitApplicantStore.fullName)
-const hasDraftData = computed(() => draftStore.hasDraftData)
-const isAuthenticated = computed(() => authStore.isAuthenticated)
+const currentUser = computed(() => authStore.currentUser);
+const applicantName = computed(() => permitApplicantStore.fullName);
+const hasDraftData = computed(() => draftStore.hasDraftData);
+const isAuthenticated = computed(() => authStore.isAuthenticated);
 
 // Load applicant data on mount
 onMounted(async () => {
   if (isAuthenticated.value) {
     try {
       // Fetch permit applicant data
-      await permitApplicantStore.fetchCurrentApplicant()
+      await permitApplicantStore.fetchCurrentApplicant();
 
       // Load draft data
-      await draftStore.loadDrafts()
+      await draftStore.loadDrafts();
     } catch (error) {
-      console.error('Failed to load user data:', error)
+      console.error("Failed to load user data:", error);
     }
   }
-})
+});
 
 // Handle logout
 const handleLogout = () => {
-  emit('logout')
-}
+  emit("logout");
+};
 
 // Handle navigation
 const goToStep = (index) => {
-  emit('go-to-step', index)
-}
+  emit("go-to-step", index);
+};
 </script>
 
 <style scoped>

@@ -408,8 +408,41 @@ export default defineComponent({
   mounted() {
     this.fetchProvinces();
     this.loadUserData();
+    this.loadFormDataFromStorage();
+    // If province was previously selected, load cities and barangays
+    if (this.formData.province) {
+      this.fetchCityMunicipalities(this.formData.province);
+      if (this.formData.city_municipality) {
+        this.fetchBarangays(this.formData.city_municipality);
+      }
+    }
   },
   methods: {
+    saveFormDataToStorage() {
+      // Save current form data to localStorage
+      const formDataToSave = { ...this.formData };
+      localStorage.setItem(
+        "applicant_form_data",
+        JSON.stringify(formDataToSave)
+      );
+      console.log("Form data saved to localStorage:", formDataToSave);
+    },
+
+    loadFormDataFromStorage() {
+      // Load form data from localStorage if it exists
+      const savedFormData = localStorage.getItem("applicant_form_data");
+      if (savedFormData) {
+        try {
+          const parsedData = JSON.parse(savedFormData);
+          // Merge saved data with current form data, excluding applicant_id fields
+          Object.assign(this.formData, parsedData);
+          console.log("Form data loaded from localStorage:", parsedData);
+        } catch (error) {
+          console.error("Error parsing saved form data:", error);
+        }
+      }
+    },
+
     loadUserData() {
       // Load user data from auth stores
       const authStore = useAuthStore();
@@ -643,6 +676,8 @@ export default defineComponent({
     async saveForm() {
       const { valid } = await this.$refs.entryForm.validate();
       if (valid) {
+        // Save form data to localStorage before submitting
+        this.saveFormDataToStorage();
         await this.saveApplicantInformation();
       } else {
         this.snackbarMessage = "Please fill in all required fields";
@@ -652,6 +687,8 @@ export default defineComponent({
     },
 
     proceedToNext() {
+      // Save form data before navigating
+      this.saveFormDataToStorage();
       this.$router.push(
         "/bpam/applicant/unified-form/construction-information"
       );
@@ -660,6 +697,8 @@ export default defineComponent({
     async validateAndProceed() {
       const { valid } = await this.$refs.entryForm.validate();
       if (valid) {
+        // Save form data to localStorage before submitting
+        this.saveFormDataToStorage();
         const saved = await this.saveApplicantInformation();
         if (saved) {
           // Delay navigation slightly to show success message
@@ -689,6 +728,7 @@ export default defineComponent({
       if (!newVal) this.formData.form_of_ownership = null;
     },
     "formData.province"(newVal) {
+      this.saveFormDataToStorage();
       if (newVal) {
         this.fetchCityMunicipalities(newVal);
       } else {
@@ -699,12 +739,46 @@ export default defineComponent({
       }
     },
     "formData.city_municipality"(newVal) {
+      this.saveFormDataToStorage();
       if (newVal) {
         this.fetchBarangays(newVal);
       } else {
         this.barangays = [];
         this.formData.barangay = "";
       }
+    },
+    "formData.barangay"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.first_name"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.last_name"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.middle_initial"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.house_no"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.street"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.contact_no"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.tin"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.govt_issued_id"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.date_issued"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.place_issued"(newVal) {
+      this.saveFormDataToStorage();
     },
   },
 });

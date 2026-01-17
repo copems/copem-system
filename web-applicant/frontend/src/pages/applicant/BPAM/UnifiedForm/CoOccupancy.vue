@@ -413,7 +413,7 @@
 <script>
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import Header from "../../../components/header.vue";
+import Header from "../../../../components/Header.vue";
 
 export default defineComponent({
   name: "BuildingPermitStep3",

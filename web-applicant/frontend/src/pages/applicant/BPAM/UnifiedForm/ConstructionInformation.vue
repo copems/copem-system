@@ -497,12 +497,11 @@ export default defineComponent({
     async fetchBarangays() {
       this.loadingBarangays = true;
       try {
-        // Assuming Naga City has a specific citymun_id, adjust as needed
-        // You may need to get this from the previous form or configuration
-        const nagaCityId = 1; // Replace with actual citymun_id for Naga City
+        // Filter Barangay data by citymun_id = 617
+        const citymunId = 617;
 
         const response = await fetch(
-          `http://localhost:3000/api/barangay/city-mun/${nagaCityId}`
+          `http://localhost:3000/api/barangay/city-mun/${citymunId}`
         );
         const result = await response.json();
 
@@ -647,7 +646,7 @@ export default defineComponent({
     },
 
     proceedToNext() {
-      this.$router.push("/bpam/applicant/unified-form/co-occupancy");
+      this.$router.push("/pages/applicant/BPAM/UnifiedForm/CoOccupancy.vue");
     },
 
     async nextStep() {
@@ -657,7 +656,9 @@ export default defineComponent({
         setTimeout(() => {
           const nextStep = parseInt(this.formStepValue) + 1;
           if (nextStep === 3)
-            this.$router.push("/bpam/applicant/unified-form/co-occupancy");
+            this.$router.push(
+              "/pages/applicant/BPAM/UnifiedForm/CoOccupancy.vue"
+            );
         }, 1000);
       }
     },
