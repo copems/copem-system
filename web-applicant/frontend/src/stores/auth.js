@@ -64,6 +64,10 @@ export const useAuthStore = defineStore("auth", {
           localStorage.setItem('accessToken', data.accessToken);
           localStorage.setItem('refreshToken', data.refreshToken);
           localStorage.setItem('user', JSON.stringify(data.user));
+          // Also save user_id separately for easier access
+          if (data.user?.userId) {
+            localStorage.setItem('user_id', data.user.userId.toString());
+          }
 
           return { success: true, user: data.user };
         } else {

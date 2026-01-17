@@ -1,4 +1,4 @@
-import pool from "../congig/database.js";
+import pool from "../config/database.js";
 
 class BpaConstruction {
     constructor(bpac_id, applicant_id, bpac_site_id, work_scope_type_id, ou_type_id, applicant_gov_id, bpacs_lot_owner_id, bpacs_lo_gov_id, bpac_supervisor_id) {

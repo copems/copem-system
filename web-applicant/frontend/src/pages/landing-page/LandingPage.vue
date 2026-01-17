@@ -72,7 +72,7 @@
                   color="primary"
                   outlined
                   class="ma-2 rounded-pill to"
-                  to="/opam/bp-inquiry"
+                  to="/bp-inquiry"
                   >Inquiry
                 </v-btn>
               </v-card-actions>
@@ -99,7 +99,7 @@
                   color="primary"
                   outlined
                   class="ma-2 rounded-pill"
-                  to="/opam/op-inquiry"
+                  to="/op-inquiry"
                   >Inquiry</v-btn
                 >
               </v-card-actions>
