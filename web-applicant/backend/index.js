@@ -17,6 +17,7 @@ import ownershipTypeRoutes from './bp_routes/OwnershipTypeRoute.js';
 import workScopeTypeRoutes from './bp_routes/WorkScopeTypeRoute.js';
 import occupancyUseGroupRoutes from './bp_routes/OccupancyUseGroupRoute.js';
 import occupancyUseTypeRoutes from './bp_routes/OccupancyUseTypeRoute.js';
+import govIdTypeRoutes from './bp_routes/GovIdTypeRoute.js';
 
 dotenv.config();
 
@@ -83,6 +84,9 @@ app.use('/api/occupancy-use-group', occupancyUseGroupRoutes);
 
 // Occupancy Use Type routes
 app.use('/api/occupancy-use-type', occupancyUseTypeRoutes);
+
+// Government ID Type routes
+app.use('/api/gov-id-type', govIdTypeRoutes);
 
 const PORT = process.env.PORT || 3000;  
 app.listen(PORT, () => {

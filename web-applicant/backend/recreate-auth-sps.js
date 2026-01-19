@@ -40,6 +40,7 @@ CREATE PROCEDURE sp_RegisterUser(
     IN p_email VARCHAR(100),
     IN p_account_type VARCHAR(50),
     IN p_first_name VARCHAR(100),
+    IN p_middle_name VARCHAR(100),
     IN p_last_name VARCHAR(100)
 )
 BEGIN

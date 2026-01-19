@@ -66,6 +66,23 @@ export const getPermitApplicantById = async (applicantId) => {
     }
 };
 
+export const getPermitApplicantDetails = async (username) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query(
+            `CALL sp_GetPermitApplicantDetailsByUsername(?)`,
+            [username]
+        );
+
+        return rows[0] || null;
+    } catch (error) {
+        throw new Error(`Error fetching permit applicant: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
+    }
+};
+
 /**
  * Update permit applicant record
  * @param {number} applicantId - The applicant ID

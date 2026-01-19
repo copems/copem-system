@@ -127,6 +127,7 @@ BEGIN
         user_password,
         account_type,
         first_name,
+        middle_name,
         last_name
     FROM user_account
     WHERE username = p_username;

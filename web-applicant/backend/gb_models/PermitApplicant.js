@@ -2,12 +2,9 @@ import pool from "../config/database.js";
 
 //field declaration
 class PermitApplicant {
-    constructor(applicant_id, user_id) {
-        this.applicant_id = applicant_id;
-        this.user_id = user_id;
-        this.lastname = null;
-        this.firstname = null;
-        this.middlename = null;
+    constructor(username) {
+        this.applicant_id = 0;
+        this.username = username;
         this.contact_no = null;
         this.tin_no = null;
         this.brgy_code = null;
@@ -20,20 +17,8 @@ class PermitApplicant {
         return this.applicant_id;
     }
 
-    getUserId() {
-        return this.user_id;
-    }
-
-    getLastname() {
-        return this.lastname;
-    }
-
-    getFirstname() {
-        return this.firstname;
-    }
-
-    getMiddlename() {
-        return this.middlename;
+    getUsername() {
+        return this.username;
     }
 
     getContactNo() {

@@ -6,18 +6,19 @@ class Auth {
      * @param {string} username 
      * @param {string} passwordHash 
      * @param {string} email 
-     * @param {string} accountType - Account type (e.g., 'permit_applicant', 'building_official')
+     * @param {int} accountType - Account type (e.g., '3-permit_applicant', '2-building_official')
      * @param {string} firstName 
+     * @param {string} middleName 
      * @param {string} lastName 
      * @returns {Promise<Object>}
      */
-    static async registerUser(username, passwordHash, email, accountType, firstName, lastName) {
+    static async registerUser(username, passwordHash, email, accountType, firstName, middleName, lastName) {
         let conn;
         try {
             conn = await pool.getConnection();
             const rows = await conn.query(
-                'CALL sp_RegisterUser(?, ?, ?, ?, ?, ?)',
-                [username, passwordHash, email, accountType, firstName, lastName]
+                'CALL sp_RegisterUser(?, ?, ?, ?, ?, ?, ?)',
+                [username, passwordHash, email, accountType, firstName, lastName, middleName || '']
             );
             
             if (!rows || !rows[0] || rows[0].length === 0) {

@@ -1,5 +1,26 @@
 DELIMITER $$
 
+CREATE PROCEDURE sp_GetPermitApplicantDetailsByUsername(
+    IN p_username VARCHAR(100)
+)
+BEGIN
+    SELECT 
+        applicant_id,
+        username,
+        contact_no,
+        tin_no,
+        brgy_code,
+        house_no,
+        street
+    FROM Permit_Applicant
+    WHERE username = p_username;
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
 CREATE PROCEDURE sp_GetUserAccountByUsername(
     IN p_username VARCHAR(100)
 )
@@ -10,7 +31,7 @@ BEGIN
         user_password,
         account_type,
         is_active
-    FROM User_Account
+    FROM User_Accoun
     WHERE username = p_username;
 END$$
 
@@ -34,12 +55,9 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-
+DROP PROCEDURE IF EXISTS sp_InsertPermitApplicant$$
 CREATE PROCEDURE sp_InsertPermitApplicant(
-    IN p_user_id INTEGER,
-    IN p_lastname VARCHAR(50),
-    IN p_firstname VARCHAR(50),
-    IN p_middlename VARCHAR(50),
+    IN p_username VARCHAR(100),
     IN p_contact_no VARCHAR(50),
     IN p_tin_no VARCHAR(12),
     IN p_brgy_code VARCHAR(16),
@@ -49,10 +67,7 @@ CREATE PROCEDURE sp_InsertPermitApplicant(
 )
 BEGIN
     INSERT INTO Permit_Applicant (
-        user_id,
-        lastname,
-        firstname,
-        middlename,
+        username,
         contact_no,
         tin_no,
         brgy_code,
@@ -60,10 +75,7 @@ BEGIN
         street
     )
     VALUES (
-        p_user_id,
-        p_lastname,
-        p_firstname,
-        p_middlename,
+        p_username,
         p_contact_no,
         p_tin_no,
         p_brgy_code,
@@ -72,41 +84,39 @@ BEGIN
     );
     
     SET p_applicant_id = LAST_INSERT_ID();
+
+    SELECT p_applicant_id AS applicant_id;
+
 END$$
 
 DELIMITER ;
 
 DELIMITER $$
-
-CREATE PROCEDURE sp_GetPermitApplicantById(
-    IN p_applicant_id INTEGER
+DROP PROCEDURE IF EXISTS sp_GetPermitApplicantDetailsByUsername$$
+CREATE PROCEDURE sp_GetPermitApplicantDetailsByUsername(
+    IN p_username VARCHAR(100)
 )
 BEGIN
     SELECT 
         applicant_id,
-        user_id,
-        lastname,
-        firstname,
-        middlename,
+        username,
         contact_no,
         tin_no,
         brgy_code,
         house_no,
         street
     FROM Permit_Applicant
-    WHERE applicant_id = p_applicant_id;
+    WHERE username = p_username;
 END$$
 
 DELIMITER ;
 
-DELIMITER $$
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_UpdatePermitApplicant$$
 CREATE PROCEDURE sp_UpdatePermitApplicant(
     IN p_applicant_id INTEGER,
-    IN p_user_id INTEGER,
-    IN p_lastname VARCHAR(50),
-    IN p_firstname VARCHAR(50),
-    IN p_middlename VARCHAR(50),
+    IN p_username VARCHAR(100),
     IN p_contact_no VARCHAR(50),
     IN p_tin_no VARCHAR(12),
     IN p_brgy_code VARCHAR(16),
@@ -116,10 +126,6 @@ CREATE PROCEDURE sp_UpdatePermitApplicant(
 BEGIN
     UPDATE Permit_Applicant
     SET
-        user_id = p_user_id,
-        lastname = p_lastname,
-        firstname = p_firstname,
-        middlename = p_middlename,
         contact_no = p_contact_no,
         tin_no = p_tin_no,
         brgy_code = p_brgy_code,

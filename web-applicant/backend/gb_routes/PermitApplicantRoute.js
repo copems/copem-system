@@ -4,7 +4,8 @@ import {
     getPermitApplicantById,
     getPermitApplicantByUserId,
     getAllPermitApplicants,
-    updatePermitApplicant
+    updatePermitApplicant,
+    getPermitApplicantDetails
 } from "../gb_controllers/PermitApplicantController.js";
 
 const router = express.Router();
@@ -79,13 +80,13 @@ router.get("/user/:userId", async (req, res) => {
 });
 
 /**
- * @route   GET /api/permit-applicant/:id
- * @desc    Get permit applicant by ID
+ * @route   GET /api/permit-applicant/:username
+ * @desc    Get permit applicant by username
  * @access  Public
  */
-router.get("/:id", async (req, res) => {
+router.get("/:username", async (req, res) => {
     try {
-        const applicant = await getPermitApplicantById(req.params.id);
+        const applicant = await getPermitApplicantDetails(req.params.username);
         
         if (!applicant) {
             return res.status(404).json({

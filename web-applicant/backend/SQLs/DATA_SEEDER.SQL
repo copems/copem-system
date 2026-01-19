@@ -109,3 +109,17 @@ INSERT INTO Occupancy_Use_Type (ou_type_id, ou_group_id, ou_type_desc) VALUES
 -- GROUP K - (J-2) ACCESSORIES
 ('K1', 'J2', 'PRIVATE CAR PORT/GARAGE, TOWER, SWIMMING POOL, FENCE OVER 1.80M, STEEL/CONCRETE TANK'),
 ('KO', 'J2', 'OTHERS');
+
+
+INSERT INTO User_Account (username, user_password, account_type, is_active, first_name, middle_name, last_name) VALUES
+('admin', 'test123', 0, true, 'System', '', 'Administrator'),
+('eval.structural@naga.gov.ph', 'test123', 1, true, 'Eval', 'L.', 'Structural'),
+('app.permit@gmail.com', 'test123', 3, true, 'App', 'L.', 'Permit');
+
+INSERT INTO Gov_ID_Type (git_id, git_desc) VALUES
+('01', 'PHILIPPINE IDENTIFICATION (PhilID/e-PhilID)'),
+('02', 'DRIVER''S LICENSE'),
+('03', 'PASSPORT'),
+('04', 'VOTER''S ID'),
+('05', 'UNIFIED MULTI-PURPOSE ID (UMID) (GSIS/SSS)'),
+('06', 'PROFESSIONAL REGULATION COMMISSION (PRC ID)');

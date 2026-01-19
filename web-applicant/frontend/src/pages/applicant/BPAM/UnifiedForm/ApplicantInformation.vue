@@ -48,7 +48,7 @@
                             prepend-inner-icon="mdi-account"
                             color="blue-darken-3"
                             hide-details="auto"
-                            required
+                            disabled
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
@@ -61,7 +61,7 @@
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-account"
                             hide-details="auto"
-                            required
+                            disabled
                           ></v-text-field>
                         </v-col>
 
@@ -77,7 +77,7 @@
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-alpha-m-box-outline"
                             hide-details="auto"
-                            required
+                            disabled
                           ></v-text-field>
                         </v-col>
                       </v-row>
@@ -181,10 +181,13 @@
                             label="Contact No."
                             variant="outlined"
                             density="comfortable"
-                            :rules="[rules.required]"
+                            :rules="[rules.required, rules.contactNo]"
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-phone"
                             hide-details="auto"
+                            placeholder="09XXXXXXXXX"
+                            maxlength="11"
+                            @input="formatContactNo"
                             required
                           ></v-text-field>
                         </v-col>
@@ -210,16 +213,22 @@
                             label="TIN"
                             variant="outlined"
                             density="comfortable"
-                            :rules="[rules.required]"
+                            :rules="[rules.required, rules.tin]"
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-numeric"
                             hide-details="auto"
+                            placeholder="XXX-XXX-XXX-XXX"
+                            maxlength="15"
+                            @input="formatTin"
                             required
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="3">
-                          <v-text-field
+                          <v-select
                             v-model="formData.govt_issued_id"
+                            :items="govIdTypes"
+                            item-title="git_desc"
+                            item-value="git_id"
                             label="Gov't Issued ID"
                             variant="outlined"
                             density="comfortable"
@@ -227,8 +236,9 @@
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-card-account-details-outline"
                             hide-details="auto"
+                            :loading="loadingGovIdTypes"
                             required
-                          ></v-text-field>
+                          ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6" md="3">
                           <v-text-field
@@ -361,9 +371,11 @@ export default defineComponent({
       provinces: [],
       cityMunicipalities: [],
       barangays: [],
+      govIdTypes: [],
       loadingProvinces: false,
       loadingCities: false,
       loadingBarangays: false,
+      loadingGovIdTypes: false,
 
       saving: false,
       isSaved: false,
@@ -372,13 +384,29 @@ export default defineComponent({
       snackbarColor: "success",
       rules: {
         required: (value) => !!value || "This field is required.",
+        tin: (value) => {
+          if (!value) return true;
+          const tinPattern = /^\d{3}-\d{3}-\d{3}-\d{3}$/;
+          return (
+            tinPattern.test(value) || "TIN must be in format XXX-XXX-XXX-XXX"
+          );
+        },
+        contactNo: (value) => {
+          if (!value) return true;
+          const contactPattern = /^09\d{9}$/;
+          return (
+            contactPattern.test(value) ||
+            "Contact No. must start with 09 and be exactly 11 digits"
+          );
+        },
       },
     };
   },
   mounted() {
     this.fetchProvinces();
+    this.fetchGovIdTypes();
     this.loadUserData();
-    this.loadFormDataFromStorage();
+    //this.loadFormDataFromStorage();
     // If province was previously selected, load cities and barangays
     if (this.formData.province) {
       this.fetchCityMunicipalities(this.formData.province);
@@ -413,6 +441,35 @@ export default defineComponent({
       }
     },
 
+    formatTin(event) {
+      // Remove all non-digit characters
+      let value = this.formData.tin.replace(/\D/g, "");
+
+      // Limit to 12 digits
+      value = value.substring(0, 12);
+
+      // Format as XXX-XXX-XXX-XXX
+      let formatted = "";
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 3 === 0) {
+          formatted += "-";
+        }
+        formatted += value[i];
+      }
+
+      this.formData.tin = formatted;
+    },
+
+    formatContactNo(event) {
+      // Remove all non-digit characters
+      let value = this.formData.contact_no.replace(/\D/g, "");
+
+      // Limit to 11 digits
+      value = value.substring(0, 11);
+
+      this.formData.contact_no = value;
+    },
+
     loadUserData() {
       // Load user data from auth stores
       const authStore = useAuthStore();
@@ -433,6 +490,7 @@ export default defineComponent({
           user.contact_no || user.contactNo || user.phone || "";
       }
     },
+
     async fetchProvinces() {
       this.loadingProvinces = true;
       try {
@@ -448,6 +506,26 @@ export default defineComponent({
         this.snackbar = true;
       } finally {
         this.loadingProvinces = false;
+      }
+    },
+
+    async fetchGovIdTypes() {
+      this.loadingGovIdTypes = true;
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/gov-id-type"
+        );
+        if (response.data.success) {
+          console.log("Government ID Types fetched:", response.data);
+          this.govIdTypes = response.data.data;
+        }
+      } catch (error) {
+        console.error("Error fetching government ID types:", error);
+        this.snackbarMessage = "Failed to load government ID types";
+        this.snackbarColor = "error";
+        this.snackbar = true;
+      } finally {
+        this.loadingGovIdTypes = false;
       }
     },
 
@@ -561,10 +639,7 @@ export default defineComponent({
 
         // Prepare permit applicant data
         const applicantData = {
-          user_id: parseInt(userId),
-          lastname: this.formData.last_name,
-          firstname: this.formData.first_name,
-          middlename: this.formData.middle_initial,
+          username: authStore.user.username || authUserStore.user.username,
           contact_no: this.formData.contact_no,
           tin_no: this.formData.tin,
           brgy_code: brgyCode,

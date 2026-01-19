@@ -48,8 +48,8 @@ export const useAuthStore = defineStore("auth", {
 
       try {
         const response = await axios.post(`${API_BASE_URL}/auth/login`, {
-          username,
-          password,
+          username: username,
+          password: password,
         });
 
         const { data } = response.data;
@@ -94,9 +94,9 @@ export const useAuthStore = defineStore("auth", {
         const response = await axios.post(`${API_BASE_URL}/auth/register`, {
           username: userData.username,
           password: userData.password,
-          email: userData.email,
           role: userData.role || 'permit_applicant',
           first_name: userData.first_name,
+          middle_name: userData.middle_name,
           last_name: userData.last_name,
         });
 

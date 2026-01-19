@@ -67,7 +67,8 @@ const userName = computed(() => {
   if (user) {
     const firstName = user.first_name || user.firstName || "User";
     const lastName = user.last_name || user.lastName || "Name";
-    return `${firstName} ${lastName}`;
+    const middleName = user.middle_name || user.middleName || "Name";
+    return `${firstName} ${middleName} ${lastName}`;
   }
   return "User Name";
 });
