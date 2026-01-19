@@ -11,85 +11,11 @@
 
         <v-col cols="12" md="9" class="main-content-wrapper d-flex flex-column">
           <div class="stepper-fixed-header pa-6 pb-2">
-            <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-              <v-stepper
-                v-model="formStepValue"
-                alt-labels
-                flat
-                class="mb-0 mt-2 stepper-elevated"
-              >
-                <v-stepper-header>
-                  <v-stepper-item
-                    title="Applicant Information"
-                    value="1"
-                    :complete="parseInt(formStepValue) > 1"
-                    :color="
-                      parseInt(formStepValue) >= 1
-                        ? 'blue-darken-1'
-                        : 'grey lighten-2'
-                    "
-                    class="stepper-item-custom"
-                  ></v-stepper-item>
-                  <v-divider
-                    :thickness="3"
-                    :style="{
-                      'border-color':
-                        parseInt(formStepValue) > 1 ? '#1976D2' : '#e0e0e0',
-                    }"
-                    class="mx-2"
-                  ></v-divider>
-                  <v-stepper-item
-                    title="Construction Information"
-                    value="2"
-                    :complete="parseInt(formStepValue) > 2"
-                    :color="
-                      parseInt(formStepValue) >= 2
-                        ? 'blue-darken-1'
-                        : 'grey lighten-2'
-                    "
-                    class="stepper-item-custom"
-                  ></v-stepper-item>
-                  <v-divider
-                    :thickness="3"
-                    :style="{
-                      'border-color':
-                        parseInt(formStepValue) > 2 ? '#1976D2' : '#e0e0e0',
-                    }"
-                    class="mx-2"
-                  ></v-divider>
-                  <v-stepper-item
-                    title="Use or Character of Occupancy"
-                    value="3"
-                    :complete="parseInt(formStepValue) > 3"
-                    :color="
-                      parseInt(formStepValue) >= 3
-                        ? 'blue-darken-1'
-                        : 'grey lighten-2'
-                    "
-                    class="stepper-item-custom"
-                  ></v-stepper-item>
-                  <v-divider
-                    :thickness="3"
-                    :style="{
-                      'border-color':
-                        parseInt(formStepValue) > 3 ? '#1976D2' : '#e0e0e0',
-                    }"
-                    class="mx-2"
-                  ></v-divider>
-                  <v-stepper-item
-                    title="Signatories Details"
-                    value="4"
-                    :complete="parseInt(formStepValue) > 4"
-                    :color="
-                      parseInt(formStepValue) >= 4
-                        ? 'blue-darken-1'
-                        : 'grey lighten-2'
-                    "
-                    class="stepper-item-custom"
-                  ></v-stepper-item>
-                </v-stepper-header>
-              </v-stepper>
-            </v-container>
+            <Stepper
+              :model-value="formStepValue"
+              :steps="formSteps"
+              @update:model-value="formStepValue = $event"
+            />
           </div>
 
           <div class="scrollable-form-area pa-6 pt-0 pb-12">
@@ -104,15 +30,27 @@
                         <v-icon left color="blue-darken-3" class="mr-2"
                           >mdi-account-hard-hat</v-icon
                         >
-                        ENGINEER'S INFORMATION
+                        SUPERVISOR'S INFORMATION
                       </v-card-title>
                       <v-divider></v-divider>
                       <v-card-text>
                         <v-row dense>
                           <v-col cols="12" sm="4">
+                            <div class="input-label">Last Name</div>
+                            <v-text-field
+                              v-model="supervisorLastname"
+                              variant="outlined"
+                              density="comfortable"
+                              :rules="[rules.required]"
+                              prepend-inner-icon="mdi-account"
+                              color="blue-darken-3"
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col cols="12" sm="4">
                             <div class="input-label">First Name</div>
                             <v-text-field
-                              v-model="engineerFirstName"
+                              v-model="supervisorFirstname"
                               variant="outlined"
                               density="comfortable"
                               :rules="[rules.required]"
@@ -121,25 +59,93 @@
                               persistent-hint
                             ></v-text-field>
                           </v-col>
-                          <v-col cols="12" sm="4">
-                            <div class="input-label">Last Name</div>
-                            <v-text-field
-                              v-model="engineerLastName"
-                              variant="outlined"
-                              density="comfortable"
-                              :rules="[rules.required]"
-                              prepend-inner-icon="mdi-account"
-                              color="blue-darken-3"
-                            ></v-text-field>
-                          </v-col>
+
                           <v-col cols="12" sm="4">
                             <div class="input-label">M.I.</div>
                             <v-text-field
-                              v-model="engineerMiddleInitial"
+                              v-model="supervisorMiddlename"
                               variant="outlined"
                               density="comfortable"
                               :rules="[rules.required]"
                               prepend-inner-icon="mdi-alpha-m-box-outline"
+                              color="blue-darken-3"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                    </v-card>
+
+                    <v-card class="mb-4 card-section">
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                      >
+                        <v-icon left color="blue-darken-3" class="mr-2"
+                          >mdi-home-map-marker</v-icon
+                        >
+                        ADDRESS
+                      </v-card-title>
+                      <v-divider></v-divider>
+                      <v-card-text>
+                        <v-row dense>
+                          <v-col cols="12" sm="4">
+                            <div class="input-label">Province</div>
+                            <v-select
+                              v-model="supervisorProvince"
+                              :items="provinces"
+                              item-title="prov_name"
+                              item-value="prov_id"
+                              variant="outlined"
+                              density="comfortable"
+                              :rules="[rules.required]"
+                              prepend-inner-icon="mdi-map"
+                              @update:model-value="onProvinceChange"
+                              color="blue-darken-3"
+                            ></v-select>
+                          </v-col>
+                          <v-col cols="12" sm="4">
+                            <div class="input-label">Municipality</div>
+                            <v-select
+                              v-model="supervisorMunicipality"
+                              :items="municipalities"
+                              item-title="citymun_name"
+                              item-value="citymun_id"
+                              variant="outlined"
+                              density="comfortable"
+                              :rules="[rules.required]"
+                              :loading="loadingMunicipalities"
+                              :disabled="!supervisorProvince"
+                              prepend-inner-icon="mdi-home-city"
+                              @update:model-value="onMunicipalityChange"
+                              color="blue-darken-3"
+                            ></v-select>
+                          </v-col>
+                          <v-col cols="12" sm="4">
+                            <div class="input-label">Barangay</div>
+                            <v-select
+                              v-model="supervisorBarangay"
+                              :items="barangays"
+                              item-title="brgy_name"
+                              item-value="brgy_id"
+                              variant="outlined"
+                              density="comfortable"
+                              :rules="[rules.required]"
+                              :loading="loadingBarangays"
+                              prepend-inner-icon="mdi-home-group"
+                              color="blue-darken-3"
+                            ></v-select>
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            sm="12
+                          "
+                          >
+                            <div class="input-label">Detailed Address</div>
+                            <v-text-field
+                              v-model="supervisorAddressDetails"
+                              variant="outlined"
+                              density="comfortable"
+                              :rules="[rules.required]"
+                              prepend-inner-icon="mdi-address"
                               color="blue-darken-3"
                             ></v-text-field>
                           </v-col>
@@ -162,10 +168,10 @@
                           <v-col cols="12" sm="6">
                             <div class="input-label">PRC No.</div>
                             <v-text-field
-                              v-model="prcNo"
+                              v-model="supervisorPRCNo"
                               variant="outlined"
                               density="comfortable"
-                              :rules="[rules.required, rules.prcNo]"
+                              :rules="[rules.required, rules.supervisorPRCNo]"
                               :maxlength="7"
                               @input="limitPrcNo"
                               prepend-inner-icon="mdi-numeric"
@@ -197,7 +203,7 @@
                               </template>
                               <div>
                                 <v-date-picker
-                                  v-model="validity"
+                                  v-model="supervisorPRCValidity"
                                   @update:model-value="validityMenu = false"
                                   hide-header
                                 ></v-date-picker>
@@ -225,10 +231,10 @@
                           <v-col cols="12" sm="4">
                             <div class="input-label">PTR No.</div>
                             <v-text-field
-                              v-model="ptrNo"
+                              v-model="supervisorPTRNo"
                               variant="outlined"
                               density="comfortable"
-                              :rules="[rules.required, rules.ptrNo]"
+                              :rules="[rules.required, rules.supervisorPTRNo]"
                               :maxlength="8"
                               @input="limitPtrNo"
                               prepend-inner-icon="mdi-numeric"
@@ -239,7 +245,7 @@
                           <v-col cols="12" sm="4">
                             <div class="input-label">Date Issued</div>
                             <v-text-field
-                              v-model="dateIssued"
+                              v-model="supervisorPTRDateIssued"
                               type="date"
                               variant="outlined"
                               density="comfortable"
@@ -252,7 +258,7 @@
                           <v-col cols="12" sm="4">
                             <div class="input-label">Issued At</div>
                             <v-text-field
-                              v-model="issuedAt"
+                              v-model="supervisorPTRIssuedAt"
                               variant="outlined"
                               density="comfortable"
                               :rules="[rules.required]"
@@ -263,89 +269,13 @@
                           <v-col cols="12" sm="6">
                             <div class="input-label">TIN</div>
                             <v-text-field
-                              v-model="tin"
+                              v-model="supervisorTIN"
                               variant="outlined"
                               density="comfortable"
-                              :rules="[rules.required, rules.tin]"
+                              :rules="[rules.required, rules.supervisorTIN]"
                               :maxlength="15"
                               @input="formatTin"
                               prepend-inner-icon="mdi-card-account-details"
-                              color="blue-darken-3"
-                            ></v-text-field>
-                          </v-col>
-                        </v-row>
-                      </v-card-text>
-                    </v-card>
-
-                    <v-card class="mb-4 card-section">
-                      <v-card-title
-                        class="text-h6 card-title-responsive section-title"
-                      >
-                        <v-icon left color="blue-darken-3" class="mr-2"
-                          >mdi-home-map-marker</v-icon
-                        >
-                        ADDRESS
-                      </v-card-title>
-                      <v-divider></v-divider>
-                      <v-card-text>
-                        <v-row dense>
-                          <v-col cols="12" sm="4">
-                            <div class="input-label">Province</div>
-                            <v-select
-                              v-model="province"
-                              :items="provinces"
-                              variant="outlined"
-                              density="comfortable"
-                              :rules="[rules.required]"
-                              prepend-inner-icon="mdi-map"
-                              color="blue-darken-3"
-                            ></v-select>
-                          </v-col>
-                          <v-col cols="12" sm="4">
-                            <div class="input-label">Municipality</div>
-                            <v-text-field
-                              v-model="municipality"
-                              variant="outlined"
-                              density="comfortable"
-                              :rules="[rules.required]"
-                              prepend-inner-icon="mdi-home-city"
-                              color="blue-darken-3"
-                            ></v-text-field>
-                          </v-col>
-                          <v-col cols="12" sm="4">
-                            <div class="input-label">Barangay</div>
-                            <v-select
-                              v-model="barangay"
-                              :items="barangays"
-                              item-title="brgy_name"
-                              item-value="brgy_id"
-                              variant="outlined"
-                              density="comfortable"
-                              :rules="[rules.required]"
-                              :loading="loadingBarangays"
-                              prepend-inner-icon="mdi-home-group"
-                              color="blue-darken-3"
-                            ></v-select>
-                          </v-col>
-                          <v-col cols="12" sm="4">
-                            <div class="input-label">Block No.</div>
-                            <v-text-field
-                              v-model="blkNo"
-                              variant="outlined"
-                              density="comfortable"
-                              :rules="[rules.required]"
-                              prepend-inner-icon="mdi-numeric"
-                              color="blue-darken-3"
-                            ></v-text-field>
-                          </v-col>
-                          <v-col cols="12" sm="8">
-                            <div class="input-label">Street</div>
-                            <v-text-field
-                              v-model="street"
-                              variant="outlined"
-                              density="comfortable"
-                              :rules="[rules.required]"
-                              prepend-inner-icon="mdi-road-variant"
                               color="blue-darken-3"
                             ></v-text-field>
                           </v-col>
@@ -559,7 +489,7 @@
                   color="blue-grey-lighten-4"
                   class="mr-2 btn-rounded"
                   elevation="2"
-                  to="/applicant/bpcharacter"
+                  to="/bpam/applicant/unified-form/construction-information"
                   variant="tonal"
                 >
                   <v-icon left>mdi-arrow-left</v-icon>Back
@@ -654,29 +584,39 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import Navigation from "./Navigation.vue";
-import Header from "../../../components/header.vue";
+import Stepper from "./Stepper.vue";
+import Header from "../../../../components/Header.vue";
 
 export default defineComponent({
   name: "BuildingPermitStep4",
-  components: { Navigation, Header },
+  components: { Navigation, Stepper, Header },
   setup() {
     const router = useRouter();
     return { router };
   },
   data() {
     return {
-      formStepValue: "4",
-      engineerFirstName: "",
-      engineerLastName: "",
-      engineerMiddleInitial: "",
-
-      prcNo: "",
-      validity: null,
+      formStepValue: 3,
+      formSteps: [
+        { title: "Applicant Information", value: 1 },
+        { title: "Construction Information", value: 2 },
+        { title: "Signatories Details", value: 3 },
+      ],
+      supervisorFirstname: "",
+      supervisorLastname: "",
+      supervisorMiddlename: "",
+      supervisorProvince: null,
+      supervisorMunicipality: null,
+      supervisorBarangay: null,
+      supervisorAddressDetails: "",
+      street: "",
+      supervisorPRCNo: "",
+      supervisorPRCValidity: null,
       validityMenu: false,
-      ptrNo: "",
-      dateIssued: null,
-      issuedAt: "",
-      tin: "",
+      supervisorPTRNo: "",
+      supervisorPTRDateIssued: null,
+      supervisorPTRIssuedAt: "",
+      supervisorTIN: "",
 
       applicantFirstName: "",
       applicantLastName: "",
@@ -703,29 +643,19 @@ export default defineComponent({
       lotOwnerIdDateIssued: "",
       lotOwnerIdPlaceIssued: "",
 
-      province: null,
-      municipality: "",
-      barangay: null,
-      blkNo: "",
-      street: "",
-
-      provinces: [
-        "Albay",
-        "Camarines Norte",
-        "Camarines Sur",
-        "Catanduanes",
-        "Masbate",
-        "Sorsogon",
-      ],
+      provinces: [],
+      municipalities: [],
       barangays: [],
+      loadingProvinces: false,
+      loadingMunicipalities: false,
       loadingBarangays: false,
       rules: {
         required: (value) => !!value || "This field is required.",
-        prcNo: (value) =>
+        supervisorPRCNo: (value) =>
           (value && /^\d{6,7}$/.test(value)) || "PRC No. should be 6-7 digits.",
-        ptrNo: (value) =>
+        supervisorPTRNo: (value) =>
           (value && /^\d{6,8}$/.test(value)) || "PTR No. should be 6-8 digits.",
-        tin: (value) =>
+        supervisorTIN: (value) =>
           (value && /^\d{3}-\d{3}-\d{3}-\d{3}$/.test(value)) ||
           "TIN should be in XXX-XXX-XXX-XXX format.",
       },
@@ -741,32 +671,100 @@ export default defineComponent({
       showValidationError: false,
       isSaved: false,
       dataComponents: [],
+      savedSupervisorId: null,
+      savedLotOwnerId: null,
     };
   },
 
   mounted() {
-    this.fetchBarangays();
+    this.fetchProvinces();
   },
 
   computed: {
     formattedValidity() {
-      return this.formatDate(this.validity);
+      return this.formatDate(this.supervisorPRCValidity);
     },
   },
 
   methods: {
-    async fetchBarangays() {
-      this.loadingBarangays = true;
+    async fetchProvinces() {
+      this.loadingProvinces = true;
       try {
-        const response = await fetch("http://localhost:3000/api/barangay");
+        const response = await fetch("http://localhost:3000/api/province");
         if (response.ok) {
           const data = await response.json();
-          this.barangays = data;
+          this.provinces = data.data || data;
+        }
+      } catch (error) {
+        console.error("Error fetching provinces:", error);
+      } finally {
+        this.loadingProvinces = false;
+      }
+    },
+    async fetchMunicipalities(provId) {
+      if (!provId) return;
+      this.loadingMunicipalities = true;
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/city-mun/province/${provId}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          this.municipalities = data.data || data;
+        }
+      } catch (error) {
+        console.error("Error fetching municipalities:", error);
+      } finally {
+        this.loadingMunicipalities = false;
+      }
+    },
+    async fetchBarangaysByMunicipality(citymunId) {
+      if (!citymunId) return;
+      this.loadingBarangays = true;
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/barangay/city-mun/${citymunId}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          this.barangays = data.data || data;
         }
       } catch (error) {
         console.error("Error fetching barangays:", error);
       } finally {
         this.loadingBarangays = false;
+      }
+    },
+    async fetchBarangays() {
+      this.loadingBarangays = true;
+      try {
+        // If a municipality is selected, fetch barangays for it
+        if (this.supervisorMunicipality) {
+          await this.fetchBarangaysByMunicipality(this.supervisorMunicipality);
+        } else {
+          // Otherwise, leave barangays empty until municipality is selected
+          this.barangays = [];
+        }
+      } catch (error) {
+        console.error("Error fetching barangays:", error);
+      } finally {
+        this.loadingBarangays = false;
+      }
+    },
+    onProvinceChange() {
+      this.supervisorMunicipality = null;
+      this.supervisorBarangay = null;
+      this.municipalities = [];
+      this.barangays = [];
+      if (this.supervisorProvince) {
+        this.fetchMunicipalities(this.supervisorProvince);
+      }
+    },
+    onMunicipalityChange() {
+      this.supervisorBarangay = null;
+      this.barangays = [];
+      if (this.supervisorMunicipality) {
+        this.fetchBarangaysByMunicipality(this.supervisorMunicipality);
       }
     },
     getSelectedBrgyCode(barangayId) {
@@ -781,7 +779,7 @@ export default defineComponent({
       if (value.length > 7) {
         value = value.slice(0, 7);
       }
-      this.prcNo = value;
+      this.supervisorPRCNo = value;
     },
     limitPtrNo(event) {
       let value = (event.target ? event.target.value : event).replace(
@@ -791,7 +789,7 @@ export default defineComponent({
       if (value.length > 8) {
         value = value.slice(0, 8);
       }
-      this.ptrNo = value;
+      this.supervisorPTRNo = value;
     },
     formatTin(event) {
       let value = (event.target ? event.target.value : event).replace(
@@ -811,7 +809,7 @@ export default defineComponent({
       if (value.length > 9) {
         formattedValue += "-" + value.slice(9, 12);
       }
-      this.tin = formattedValue;
+      this.supervisorTIN = formattedValue;
     },
 
     formatDate(date) {
@@ -825,11 +823,11 @@ export default defineComponent({
       return `${day}/${month}/${year}`;
     },
     clearValidity() {
-      this.validity = null;
+      this.supervisorPRCValidity = null;
       this.validityMenu = false;
     },
     setTodayValidity() {
-      this.validity = new Date();
+      this.supervisorPRCValidity = new Date();
       this.validityMenu = false;
     },
 
@@ -846,26 +844,38 @@ export default defineComponent({
     },
     async saveSupervisor() {
       try {
-        const brgyCode = this.getSelectedBrgyCode(this.barangay);
+        // Validate barangay selection
+        if (!this.supervisorBarangay) {
+          alert("Please select a barangay.");
+          return null;
+        }
+
+        const brgyCode = this.getSelectedBrgyCode(this.supervisorBarangay);
         if (!brgyCode) {
-          alert("Please select a valid barangay.");
+          console.error(
+            "Barangay not found. Selected ID:",
+            this.supervisorBarangay
+          );
+          console.error("Available barangays:", this.barangays);
+          alert("Please select a valid barangay from the dropdown.");
           return null;
         }
 
         const supervisorData = {
-          first_name: this.engineerFirstName,
-          last_name: this.engineerLastName,
-          middle_initial: this.engineerMiddleInitial,
+          lastname: this.supervisorLastname,
+          firstname: this.supervisorFirstname,
+          middlename: this.supervisorMiddlename,
+          address_details: this.supervisorAddressDetails,
           brgy_code: brgyCode,
-          block_no: this.blkNo,
-          street: this.street,
-          prc_no: this.prcNo,
-          validity: this.validity,
-          ptr_no: this.ptrNo,
-          date_issued: this.dateIssued,
-          issued_at: this.issuedAt,
-          tin: this.tin,
+          prc_no: this.supervisorPRCNo,
+          validity: this.supervisorPRCValidity,
+          ptr_no: this.supervisorPTRNo,
+          issued_date: this.supervisorPTRDateIssued,
+          issued_at: this.supervisorPTRIssuedAt,
+          tin_no: this.supervisorTIN,
         };
+
+        console.log("Saving supervisor data:", supervisorData);
 
         const response = await fetch(
           "http://localhost:3000/api/bpac-supervisors",
@@ -878,17 +888,25 @@ export default defineComponent({
           }
         );
 
+        console.log("Response status:", response.status);
+
         if (response.ok) {
           const data = await response.json();
-          return data.bpacs_id;
+          console.log("Response data:", data);
+          const bpacsId = data.data?.bpacs_id;
+          console.log("Extracted BPACS ID:", bpacsId);
+          return bpacsId;
         } else {
           const error = await response.json();
+          console.error("Error response:", error);
           alert(`Error saving supervisor: ${error.message}`);
           return null;
         }
       } catch (error) {
         console.error("Error saving supervisor:", error);
-        alert("An error occurred while saving supervisor data.");
+        alert(
+          "An error occurred while saving supervisor data: " + error.message
+        );
         return null;
       }
     },
@@ -1018,81 +1036,91 @@ export default defineComponent({
     },
     async saveForm() {
       // Validate form before saving
-      const { valid } = await this.$refs.form.validate();
-      if (!valid) {
-        this.showValidationError = true;
-        return;
-      }
-
-      this.showValidationError = false;
-
-      // Save supervisor data
-      const supervisorId = await this.saveSupervisor();
-      if (!supervisorId) {
-        return;
-      }
-
-      // Save lot owner data if consent is given
-      if (this.lotOwnerConsent) {
-        const lotOwnerId = await this.saveLotOwner();
-        if (!lotOwnerId) {
+      try {
+        const { valid } = await this.$refs.form.validate();
+        if (!valid) {
+          this.showValidationError = true;
           return;
         }
-      }
 
-      // Mark as saved
-      this.isSaved = true;
-      alert("Signatory information saved successfully!");
+        this.showValidationError = false;
+
+        // Save supervisor data
+        const supervisorId = await this.saveSupervisor();
+        if (!supervisorId) {
+          alert("Failed to save supervisor information. Please try again.");
+          return;
+        }
+
+        // Store the supervisor ID for later use
+        this.savedSupervisorId = supervisorId;
+
+        // Save lot owner data if consent is given
+        if (this.lotOwnerConsent) {
+          const lotOwnerId = await this.saveLotOwner();
+          if (!lotOwnerId) {
+            alert("Failed to save lot owner information. Please try again.");
+            return;
+          }
+          this.savedLotOwnerId = lotOwnerId;
+        }
+
+        // Mark as saved
+        this.isSaved = true;
+        alert("Signatory information saved successfully!");
+      } catch (error) {
+        console.error("Error in saveForm:", error);
+        alert("An error occurred while saving the form. Please try again.");
+      }
     },
 
     async submitApplication() {
-      // Validate form before submission
-      const { valid } = await this.$refs.form.validate();
-      if (!valid) {
-        this.showValidationError = true;
-        return; // Prevent submission if form is invalid
-      }
-
-      this.showValidationError = false;
-
-      // Generate application number (BP-YYYY-XXXXXX format)
-      const year = new Date().getFullYear();
-      const randomNum = Math.floor(Math.random() * 1000000)
-        .toString()
-        .padStart(6, "0"); // 6-digit number
-      this.generatedApplicationNumber = `BP-${year}-${randomNum}`;
-
-      // Save supervisor data
-      const supervisorId = await this.saveSupervisor();
-      if (!supervisorId) {
-        return;
-      }
-
-      // Save lot owner data if consent is given
-      if (this.lotOwnerConsent) {
-        const lotOwnerId = await this.saveLotOwner();
-        if (!lotOwnerId) {
+      try {
+        // Verify that data has been saved first
+        if (!this.isSaved || !this.savedSupervisorId) {
+          alert(
+            "Please save the signatory information first before submitting."
+          );
           return;
         }
+
+        // Generate application number (BP-YYYY-XXXXXX format)
+        const year = new Date().getFullYear();
+        const randomNum = Math.floor(Math.random() * 1000000)
+          .toString()
+          .padStart(6, "0"); // 6-digit number
+        this.generatedApplicationNumber = `BP-${year}-${randomNum}`;
+
+        console.log(
+          "Submitting application with supervisor ID:",
+          this.savedSupervisorId
+        );
+        console.log("Application Number:", this.generatedApplicationNumber);
+
+        // Save the final BPA construction application with application number
+        const saved = await this.saveBpaConstructionApplication(
+          this.savedSupervisorId,
+          this.generatedApplicationNumber
+        );
+        if (!saved) {
+          alert("Failed to submit application. Please try again.");
+          return;
+        }
+
+        // Store application number in localStorage
+        localStorage.setItem(
+          "application_number",
+          this.generatedApplicationNumber
+        );
+
+        // Show success dialog
+        this.showApplicationNumberDialog = true;
+      } catch (error) {
+        console.error("Error in submitApplication:", error);
+        alert(
+          "An error occurred while submitting the application. Please try again."
+        );
       }
-
-      // Save the final BPA construction application with application number
-      const saved = await this.saveBpaConstructionApplication(
-        supervisorId,
-        this.generatedApplicationNumber
-      );
-      if (!saved) {
-        return;
-      }
-
-      // Store application number in localStorage
-      localStorage.setItem(
-        "application_number",
-        this.generatedApplicationNumber
-      );
-
-      // Show success dialog
-      this.showApplicationNumberDialog = true;
     },
     closeApplicationDialog() {
       this.showApplicationNumberDialog = false;
@@ -1118,6 +1146,16 @@ export default defineComponent({
   overflow: hidden;
   display: flex;
 }
+
+/* Main Container */
+.content-area {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.fill-height {
+  height: 100vh;
+}
 .content-area .v-row {
   width: 100%;
 }
@@ -1126,17 +1164,21 @@ export default defineComponent({
   height: 100vh;
   overflow: hidden;
   background: #fafdff;
+  display: flex;
+  flex-direction: column;
 }
 
 .stepper-fixed-header {
   flex-shrink: 0;
   background: #fafdff;
   z-index: 50;
+  overflow: hidden;
 }
 
 .scrollable-form-area {
   flex-grow: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
 }
 

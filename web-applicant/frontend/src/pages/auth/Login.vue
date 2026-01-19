@@ -146,8 +146,8 @@ export default {
   name: "LoginPage",
   data() {
     return {
-      email: "",
-      password: "",
+      email: "applicant.name@email.com",
+      password: "password",
       showPassword: false,
       loading: false,
       alertMessage: "",

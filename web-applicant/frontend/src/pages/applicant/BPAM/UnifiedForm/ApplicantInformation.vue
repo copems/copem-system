@@ -10,41 +10,11 @@
 
       <v-col cols="12" md="9" class="main-content-wrapper d-flex flex-column">
         <div class="stepper-fixed-header pa-6 pb-2">
-          <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-            <v-stepper
-              v-model="formStepValue"
-              alt-labels
-              flat
-              class="stepper-elevated"
-            >
-              <v-stepper-header>
-                <v-stepper-item
-                  v-for="(step, index) in formSteps"
-                  :key="`step-${index}`"
-                  :title="step.title"
-                  :value="step.value"
-                  :complete="formStepValue > step.value"
-                  :color="
-                    formStepValue >= step.value
-                      ? 'blue-darken-1'
-                      : 'grey-lighten-2'
-                  "
-                  class="stepper-item-custom"
-                >
-                  <template v-if="index < formSteps.length - 1" #divider>
-                    <v-divider
-                      :thickness="3"
-                      :style="{
-                        'border-color':
-                          formStepValue > step.value ? '#1976D2' : '#e0e0e0',
-                      }"
-                      class="mx-2"
-                    ></v-divider>
-                  </template>
-                </v-stepper-item>
-              </v-stepper-header>
-            </v-stepper>
-          </v-container>
+          <Stepper
+            :model-value="formStepValue"
+            :steps="formSteps"
+            @update:model-value="formStepValue = $event"
+          />
         </div>
 
         <div class="scrollable-form-area pa-6 pt-0 pb-12">
@@ -346,12 +316,13 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 import Navigation from "./Navigation.vue";
+import Stepper from "./Stepper.vue";
 import Header from "@/components/Header.vue";
 import { useAuthStore } from "@/stores/auth";
 import { useAuthUserStore } from "@/stores/authUser";
 
 export default defineComponent({
-  components: { Navigation, Header },
+  components: { Navigation, Stepper, Header },
   name: "BuildingPermitPage",
   data() {
     return {
@@ -359,8 +330,7 @@ export default defineComponent({
       formSteps: [
         { title: "Applicant Information", value: 1 },
         { title: "Construction Information", value: 2 },
-        { title: "Use or Character of Occupancy", value: 3 },
-        { title: "Signatories Details", value: 4 },
+        { title: "Signatories Details", value: 3 },
       ],
       sidebarStep: 0,
       sidebarSteps: [
@@ -797,15 +767,34 @@ export default defineComponent({
   background: #fafdff;
 }
 
+/* Main Container */
+.content-area {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.fill-height {
+  height: 100vh;
+}
+
+.main-content-wrapper {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .stepper-fixed-header {
   flex-shrink: 0;
   background: #fafdff;
   z-index: 50;
+  overflow: hidden;
 }
 
 .scrollable-form-area {
   flex-grow: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
 }
 

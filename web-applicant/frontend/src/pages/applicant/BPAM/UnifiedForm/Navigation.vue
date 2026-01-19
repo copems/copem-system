@@ -2,12 +2,12 @@
   <v-col cols="12" md="3" class="pa-0 nav-column">
     <v-card
       flat
-      class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
+      class="pa-4 quick-guide-card d-flex flex-column elevation-2"
       style="
         border-right: 1px solid #e0e0e0;
         height: 100%;
         background: #fcfcff;
-        overflow-y: auto;
+        overflow: hidden;
       "
     >
       <div>
@@ -148,32 +148,58 @@ const goToStep = (index) => {
 .nav-column {
   display: flex;
   flex-direction: column;
-  max-height: 100%;
+  max-height: 100vh;
   flex-shrink: 0;
+  height: 100vh;
 }
+
 .quick-guide-card {
-  height: 100%;
+  height: 100vh;
   background: #fcfcff;
   border-right: 1px solid #e0e0e0;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
+
+.quick-guide-card > div:first-child {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.quick-guide-card > div:first-child::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-guide-card > div:last-child {
+  flex-shrink: 0;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
 .quick-guide-step {
   transition: background 0.2s, box-shadow 0.2s;
 }
+
 .quick-guide-step:hover {
   background: #e3f0ff !important;
   box-shadow: 0 2px 12px rgba(59, 130, 246, 0.08);
 }
+
 .active-step {
   background: #e7efff !important;
   box-shadow: 0 4px 20px rgba(59, 130, 246, 0.12);
 }
+
 .quick-guide-avatar {
   transition: background 0.2s;
 }
+
 .step-label {
   color: #23407c;
 }
+
 .clickable-step {
   cursor: pointer;
 }

@@ -7,9 +7,11 @@ class BpaConstructionSite {
         this.lot_no = null;
         this.block_no = null;
         this.tct_no = null;
+        this.tax_dec_no = null;
         this.street = null;
         this.brgy_code = brgy_code;
         this.applicant_owned = null;
+
     }
 
     // Getters
@@ -31,6 +33,10 @@ class BpaConstructionSite {
 
     getTctNo() {
         return this.tct_no;
+    }
+
+    getTaxDecNo() {
+        return this.tax_dec_no;
     }
 
     getStreet() {
@@ -64,6 +70,9 @@ class BpaConstructionSite {
 
     setTctNo(tct_no) {
         this.tct_no = tct_no;
+    }
+    setTaxDecNo(tax_dec_no) {
+        this.tax_dec_no = tax_dec_no;
     }
 
     setStreet(street) {

@@ -15,13 +15,29 @@ export const saveBpaCsLotOwner = async (lotOwnerData) => {
     const { bpac_site_id, lastname, firstname, middlename, address_details, brgy_code } = lotOwnerData;
 
     try {
-        const [result] = await pool.query(
+        const result = await pool.query(
             `CALL sp_InsertBpaCsLotOwner(?, ?, ?, ?, ?, ?, @p_bpacs_lot_owner_id)`,
             [bpac_site_id, lastname, firstname, middlename, address_details, brgy_code]
         );
 
-        const [rows] = await pool.query('SELECT @p_bpacs_lot_owner_id AS bpacs_lot_owner_id');
-        return rows[0].bpacs_lot_owner_id;
+        // For stored procedures with mysql2/promise, result is [rows, fields]
+        let rows = result[0];
+        
+        console.log("DB Result structure (BpaCsLotOwner):", { rows, rowsType: Array.isArray(rows), rowsLength: rows?.length });
+        
+        if (!Array.isArray(rows) || rows.length === 0) {
+            if (rows && typeof rows === 'object' && !Array.isArray(rows)) {
+                const bpacLotOwnerId = rows.bpacs_lot_owner_id;
+                if (bpacLotOwnerId) return bpacLotOwnerId;
+            }
+            throw new Error("Failed to retrieve lot owner ID from database. Ensure stored procedure returns the ID.");
+        }
+        
+        const firstRow = rows[0];
+        if (!firstRow || !firstRow.bpacs_lot_owner_id) {
+            throw new Error("Failed to retrieve lot owner ID from database. Returned data is invalid.");
+        }
+        return firstRow.bpacs_lot_owner_id;
     } catch (error) {
         throw new Error(`Error saving BPA CS lot owner: ${error.message}`);
     }

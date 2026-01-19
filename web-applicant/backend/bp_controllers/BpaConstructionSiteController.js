@@ -13,7 +13,7 @@ import pool from "../config/database.js";
  * @returns {Promise<number>} The newly created bpac_site_id
  */
 export const saveBpaConstructionSite = async (siteData) => {
-    const { applicant_id, lot_no, block_no, tct_no, street, brgy_code, applicant_owned } = siteData;
+    const { applicant_id, lot_no, block_no, tct_no, tax_dec_no, street, brgy_code, applicant_owned } = siteData;
     
     let conn;
     try {
@@ -22,8 +22,8 @@ export const saveBpaConstructionSite = async (siteData) => {
         
         // Call the stored procedure with output parameter
         await conn.query(
-            `CALL sp_InsertBpaConstructionSite(?, ?, ?, ?, ?, ?, ?, @p_bpac_site_id)`,
-            [applicant_id, lot_no, block_no, tct_no, street, brgy_code, applicant_owned]
+            `CALL sp_InsertBpaConstructionSite(?, ?, ?, ?, ?, ?, ?, ?, @p_bpac_site_id)`,
+            [applicant_id, lot_no, block_no, tct_no, tax_dec_no, street, brgy_code, applicant_owned ? 1 : 0]
         );
 
         // Get the output parameter value using same connection (MariaDB returns directly, not as array)
@@ -74,12 +74,12 @@ export const getBpaConstructionSiteById = async (bpacSiteId) => {
  * @returns {Promise<boolean>} True if update was successful
  */
 export const updateBpaConstructionSite = async (bpacSiteId, siteData) => {
-    const { applicant_id, lot_no, block_no, tct_no, street, brgy_code, applicant_owned } = siteData;
+    const { applicant_id, lot_no, block_no, tct_no, tax_dec_no, street, brgy_code } = siteData;
 
     try {
         await pool.query(
-            `CALL sp_UpdateBpaConstructionSite(?, ?, ?, ?, ?, ?, ?, ?)`,
-            [bpacSiteId, applicant_id, lot_no, block_no, tct_no, street, brgy_code, applicant_owned]
+            `CALL sp_UpdateBpaConstructionSite(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [bpacSiteId, applicant_id, lot_no, block_no, tct_no, tax_dec_no, street, brgy_code, applicant_owned]
         );
 
         return true;

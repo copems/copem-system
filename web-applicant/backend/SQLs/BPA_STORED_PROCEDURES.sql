@@ -137,10 +137,12 @@ CREATE PROCEDURE sp_InsertBpaConstructionSite(
     IN p_lot_no VARCHAR(255),
     IN p_block_no VARCHAR(255),
     IN p_tct_no VARCHAR(255),
+    IN p_tax_dec_no VARCHAR(255),
     IN p_street VARCHAR(100),
     IN p_brgy_code VARCHAR(16),
     IN p_applicant_owned BOOLEAN,
     OUT p_bpac_site_id INTEGER
+
 )
 BEGIN
     INSERT INTO BPA_Construction_Site (
@@ -148,6 +150,7 @@ BEGIN
         lot_no,
         block_no,
         tct_no,
+        tax_dec_no,
         street,
         brgy_code,
         applicant_owned
@@ -157,6 +160,7 @@ BEGIN
         p_lot_no,
         p_block_no,
         p_tct_no,
+        p_tax_dec_no,
         p_street,
         p_brgy_code,
         p_applicant_owned
@@ -179,6 +183,7 @@ BEGIN
         lot_no,
         block_no,
         tct_no,
+        tax_dec_no,
         street,
         brgy_code,
         applicant_owned
@@ -196,6 +201,7 @@ CREATE PROCEDURE sp_UpdateBpaConstructionSite(
     IN p_lot_no VARCHAR(255),
     IN p_block_no VARCHAR(255),
     IN p_tct_no VARCHAR(255),
+    IN p_tax_dec_no VARCHAR(255),
     IN p_street VARCHAR(100),
     IN p_brgy_code VARCHAR(16),
     IN p_applicant_owned BOOLEAN
@@ -207,6 +213,7 @@ BEGIN
         lot_no = p_lot_no,
         block_no = p_block_no,
         tct_no = p_tct_no,
+        tax_dec_no = p_tax_dec_no,
         street = p_street,
         brgy_code = p_brgy_code,
         applicant_owned = p_applicant_owned
@@ -227,6 +234,7 @@ BEGIN
         lot_no,
         block_no,
         tct_no,
+        tax_dec_no,
         street,
         brgy_code,
         applicant_owned
@@ -248,10 +256,11 @@ BEGIN
         lot_no,
         block_no,
         tct_no,
+        tax_dec_no,
         street,
         brgy_code,
         applicant_owned
-    FROM BPA_Construction_Site
+            FROM BPA_Construction_Site
     WHERE brgy_code = p_brgy_code;
 END$$
 
@@ -556,3 +565,4 @@ BEGIN
 END$$
 
 DELIMITER ;
+

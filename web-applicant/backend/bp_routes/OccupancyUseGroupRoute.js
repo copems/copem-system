@@ -1,25 +1,25 @@
 import express from "express";
 import {
-    saveBarangay,
-    getBarangayById,
-    updateBarangay,
-    getBarangaysByCityMun
-} from "../gb_controllers/BarangayController.js";
+    saveOccupancyUseGroup,
+    getOccupancyUseGroupById,
+    updateOccupancyUseGroup,
+    getAllOccupancyUseGroups
+} from "../bp_controllers/OccupancyUseGroupController.js";
 
 const router = express.Router();
 
 /**
- * @route   POST /api/barangay
- * @desc    Create a new barangay
+ * @route   POST /api/occupancy-use-group
+ * @desc    Create a new occupancy use group
  * @access  Public
  */
 router.post("/", async (req, res) => {
     try {
-        const brgyId = await saveBarangay(req.body);
+        const ouGroupId = await saveOccupancyUseGroup(req.body);
         res.status(201).json({
             success: true,
-            message: "Barangay created successfully",
-            data: { brgy_id: brgyId }
+            message: "Occupancy use group created successfully",
+            data: { ou_group_id: ouGroupId }
         });
     } catch (error) {
         res.status(500).json({
@@ -30,17 +30,17 @@ router.post("/", async (req, res) => {
 });
 
 /**
- * @route   GET /api/barangay/city-mun/:citymunId
- * @desc    Get all barangays by city/municipality ID
+ * @route   GET /api/occupancy-use-group
+ * @desc    Get all occupancy use groups
  * @access  Public
  */
-router.get("/city-mun/:citymunId", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        const barangays = await getBarangaysByCityMun(req.params.citymunId);
+        const occupancyUseGroups = await getAllOccupancyUseGroups();
         
         res.status(200).json({
             success: true,
-            data: barangays
+            data: occupancyUseGroups
         });
     } catch (error) {
         res.status(500).json({
@@ -51,24 +51,24 @@ router.get("/city-mun/:citymunId", async (req, res) => {
 });
 
 /**
- * @route   GET /api/barangay/:id
- * @desc    Get barangay by ID
+ * @route   GET /api/occupancy-use-group/:id
+ * @desc    Get occupancy use group by ID
  * @access  Public
  */
 router.get("/:id", async (req, res) => {
     try {
-        const barangay = await getBarangayById(req.params.id);
+        const occupancyUseGroup = await getOccupancyUseGroupById(req.params.id);
         
-        if (!barangay) {
+        if (!occupancyUseGroup) {
             return res.status(404).json({
                 success: false,
-                message: "Barangay not found"
+                message: "Occupancy use group not found"
             });
         }
 
         res.status(200).json({
             success: true,
-            data: barangay
+            data: occupancyUseGroup
         });
     } catch (error) {
         res.status(500).json({
@@ -79,24 +79,24 @@ router.get("/:id", async (req, res) => {
 });
 
 /**
- * @route   PUT /api/barangay/:id
- * @desc    Update barangay by ID
+ * @route   PUT /api/occupancy-use-group/:id
+ * @desc    Update occupancy use group by ID
  * @access  Public
  */
 router.put("/:id", async (req, res) => {
     try {
-        const updated = await updateBarangay(req.params.id, req.body);
+        const updated = await updateOccupancyUseGroup(req.params.id, req.body);
         
         if (!updated) {
             return res.status(404).json({
                 success: false,
-                message: "Barangay not found or update failed"
+                message: "Occupancy use group not found or update failed"
             });
         }
 
         res.status(200).json({
             success: true,
-            message: "Barangay updated successfully"
+            message: "Occupancy use group updated successfully"
         });
     } catch (error) {
         res.status(500).json({

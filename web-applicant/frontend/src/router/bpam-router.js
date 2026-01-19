@@ -93,12 +93,6 @@ export const bpamRoutes = [
           import("@/pages/applicant/BPAM/UnifiedForm/BPADetails.vue"),
       },
       {
-        path: "co-occupancy",
-        name: "CoOccupancy",
-        component: () =>
-          import("@/pages/applicant/BPAM/UnifiedForm/CoOccupancy.vue"),
-      },
-      {
         path: "construction-information",
         name: "ConstructionInformation",
         component: () =>

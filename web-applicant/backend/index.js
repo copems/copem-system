@@ -15,6 +15,8 @@ import bpacSupervisorsRoutes from './bp_routes/BpacSupervisorsRoute.js';
 import bpApplicationStatusRoutes from './bp_routes/BpApplicationStatusRoute.js';
 import ownershipTypeRoutes from './bp_routes/OwnershipTypeRoute.js';
 import workScopeTypeRoutes from './bp_routes/WorkScopeTypeRoute.js';
+import occupancyUseGroupRoutes from './bp_routes/OccupancyUseGroupRoute.js';
+import occupancyUseTypeRoutes from './bp_routes/OccupancyUseTypeRoute.js';
 
 dotenv.config();
 
@@ -75,6 +77,12 @@ app.use('/api/ownership-type', ownershipTypeRoutes);
 
 // Work Scope Type routes
 app.use('/api/work-scope-type', workScopeTypeRoutes);
+
+// Occupancy Use Group routes
+app.use('/api/occupancy-use-group', occupancyUseGroupRoutes);
+
+// Occupancy Use Type routes
+app.use('/api/occupancy-use-type', occupancyUseTypeRoutes);
 
 const PORT = process.env.PORT || 3000;  
 app.listen(PORT, () => {

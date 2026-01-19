@@ -10,41 +10,11 @@
 
       <v-col cols="12" md="9" class="main-content-bg d-flex flex-column pa-0">
         <div class="stepper-fixed-container pa-6 pb-2">
-          <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-            <v-stepper
-              v-model="formStepValue"
-              alt-labels
-              flat
-              class="mb-0 mt-2 stepper-elevated"
-            >
-              <v-stepper-header>
-                <v-stepper-item
-                  v-for="n in 4"
-                  :key="`step-${n}`"
-                  :title="getStepTitle(n)"
-                  :value="n.toString()"
-                  :complete="parseInt(formStepValue) > n"
-                  :color="
-                    parseInt(formStepValue) >= n
-                      ? 'blue-darken-1'
-                      : 'grey-lighten-2'
-                  "
-                  class="stepper-item-custom"
-                >
-                  <template v-if="n < 4" #divider>
-                    <v-divider
-                      :thickness="3"
-                      :style="{
-                        'border-color':
-                          parseInt(formStepValue) > n ? '#1976D2' : '#e0e0e0',
-                      }"
-                      class="mx-2"
-                    ></v-divider>
-                  </template>
-                </v-stepper-item>
-              </v-stepper-header>
-            </v-stepper>
-          </v-container>
+          <Stepper
+            :model-value="formStepValue"
+            :steps="formSteps"
+            @update:model-value="formStepValue = $event"
+          />
         </div>
 
         <div class="scrollable-content pa-6 pt-0">
@@ -71,7 +41,7 @@
 
               <v-card-text>
                 <v-form ref="form" v-model="formValid">
-                  <div v-if="formStepValue === '2'">
+                  <div v-if="formStepValue === 2">
                     <v-card class="mb-4 card-section">
                       <v-card-title
                         class="text-h6 card-title-responsive section-title"
@@ -94,17 +64,20 @@
                             ></v-checkbox>
                           </v-col>
                           <v-col cols="12" md="6">
-                            <v-text-field
-                              v-model="form_of_ownership"
+                            <v-select
+                              v-model="ownershipType"
+                              :items="ownershipTypes"
+                              item-title="ot_desc"
+                              item-value="ot_id"
                               label="Form of Ownership"
                               variant="outlined"
-                              density="comfortable"
                               :disabled="!is_enterprise"
+                              density="comfortable"
                               :rules="[is_enterprise ? rules.required : true]"
-                              color="blue-darken-3"
                               prepend-inner-icon="mdi-account-group-outline"
-                              hide-details="auto"
-                            ></v-text-field>
+                              color="blue-darken-3"
+                              :loading="loadingOwnershipTypes"
+                            ></v-select>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -120,22 +93,18 @@
                       <v-divider></v-divider>
                       <v-card-text>
                         <v-row dense>
-                          <v-col cols="12" sm="4">
-                            <div class="input-label">Barangay</div>
-                            <v-select
-                              v-model="barangay"
-                              :items="barangays"
-                              item-title="brgy_name"
-                              item-value="brgy_id"
+                          <v-col cols="12" sm="2">
+                            <div class="input-label">Lot No.</div>
+                            <v-text-field
+                              v-model="lotNo"
                               variant="outlined"
                               density="comfortable"
                               :rules="[rules.required]"
-                              prepend-inner-icon="mdi-home-group"
+                              prepend-inner-icon="mdi-numeric"
                               color="blue-darken-3"
-                              :loading="loadingBarangays"
-                            ></v-select>
+                            ></v-text-field>
                           </v-col>
-                          <v-col cols="12" sm="4">
+                          <v-col cols="12" sm="2">
                             <div class="input-label">BLK. No.</div>
                             <v-text-field
                               v-model="blkNo"
@@ -156,6 +125,21 @@
                               prepend-inner-icon="mdi-road-variant"
                               color="blue-darken-3"
                             ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="4">
+                            <div class="input-label">Barangay</div>
+                            <v-select
+                              v-model="barangay"
+                              :items="barangays"
+                              item-title="brgy_name"
+                              item-value="brgy_id"
+                              variant="outlined"
+                              density="comfortable"
+                              :rules="[rules.required]"
+                              prepend-inner-icon="mdi-home-group"
+                              color="blue-darken-3"
+                              :loading="loadingBarangays"
+                            ></v-select>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -207,22 +191,29 @@
                       <v-divider></v-divider>
                       <v-card-text>
                         <v-row dense>
-                          <v-col cols="12">
+                          <v-col cols="6">
                             <div class="input-label">Select Scope of Work</div>
                             <v-select
-                              v-model="selectedScope"
-                              :items="scopeOfWork"
+                              v-model="workScopeType"
+                              :items="workScopeTypes"
+                              item-title="scope_desc"
+                              item-value="ws_type_id"
                               variant="outlined"
                               density="comfortable"
-                              multiple
                               :rules="[rules.requiredScope]"
                               chips
                               prepend-inner-icon="mdi-format-list-bulleted"
                               color="blue-darken-3"
+                              :loading="loadingWorkScopeTypes"
                             ></v-select>
                           </v-col>
                           <v-col
-                            v-if="selectedScope.includes('Other (Specify)')"
+                            v-if="
+                              workScopeType &&
+                              workScopeTypes.find(
+                                (ws) => ws.ws_type_id === workScopeType
+                              )?.ws_type_desc === 'Other (Specify)'
+                            "
                             cols="12"
                           >
                             <v-text-field
@@ -235,12 +226,21 @@
                               prepend-inner-icon="mdi-pencil"
                             ></v-text-field>
                           </v-col>
+                          <v-col cols="12" sm="6">
+                            <div class="input-label">Remarks</div>
+                            <v-text-field
+                              v-model="remarks"
+                              variant="outlined"
+                              density="comfortable"
+                              :rules="[rules.required]"
+                              prepend-inner-icon="mdi-comment-alert"
+                              color="blue-darken-3"
+                            ></v-text-field>
+                          </v-col>
                         </v-row>
                       </v-card-text>
                     </v-card>
-                  </div>
 
-                  <div v-if="formStepValue === '3'">
                     <v-card class="mb-4 card-section">
                       <v-card-title class="text-h6 section-title">
                         <v-icon left color="blue-darken-3" class="mr-2"
@@ -254,23 +254,219 @@
                           <v-col cols="12" md="6">
                             <v-select
                               v-model="selectedGroup"
-                              :items="groups"
+                              :items="occupancyUseGroups"
+                              item-title="ou_group_desc"
+                              item-value="ou_group_id"
                               label="Groups"
                               variant="outlined"
                               prepend-inner-icon="mdi-format-list-bulleted"
                               color="blue-darken-3"
+                              :loading="loadingOccupancyGroups"
                             ></v-select>
                           </v-col>
                           <v-col cols="12" md="6">
                             <v-select
                               v-model="selectedCategory"
-                              :items="categories"
+                              :items="occupancyUseTypes"
+                              item-title="ou_type_desc"
+                              item-value="ou_type_id"
                               label="Category"
                               variant="outlined"
                               :disabled="!selectedGroup"
                               prepend-inner-icon="mdi-shape"
                               color="blue-darken-3"
+                              :loading="loadingOccupancyTypes"
                             ></v-select>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                    </v-card>
+
+                    <v-card class="card-section">
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                      >
+                        <v-icon left color="blue-darken-3" class="mr-2"
+                          >mdi-file-document-outline</v-icon
+                        >
+                        PROJECT DETAILS
+                      </v-card-title>
+                      <v-divider></v-divider>
+                      <v-card-text>
+                        <v-row dense>
+                          <v-col cols="12" md="6">
+                            <div class="input-label">Occupancy Classified</div>
+                            <v-text-field
+                              v-model="occupancyClassified"
+                              variant="outlined"
+                              density="comfortable"
+                              prepend-inner-icon="mdi-clipboard-outline"
+                              hide-details
+                            ></v-text-field>
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            md="6"
+                            class="d-flex flex-column justify-center"
+                          >
+                            <div class="input-label mb-1">
+                              Total Estimated Cost
+                            </div>
+                            <div
+                              class="font-weight-bold text-h5 gradient-cost px-2 py-1"
+                            >
+                              ₱ {{ totalEstimatedCostComputed }}
+                            </div>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <div class="input-label">Number of Units</div>
+                            <v-text-field
+                              v-model="numberOfUnits"
+                              variant="outlined"
+                              density="comfortable"
+                              prepend-inner-icon="mdi-counter"
+                              hide-details
+                              @keypress="isNumber($event)"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <div class="input-label">Building</div>
+                            <v-text-field
+                              v-model="costBuilding"
+                              variant="outlined"
+                              density="comfortable"
+                              prefix="₱"
+                              prepend-inner-icon="mdi-home-city"
+                              hide-details
+                              @keypress="isNumber($event)"
+                              @blur="formatNumber('costBuilding')"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <div class="input-label">Electrical</div>
+                            <v-text-field
+                              v-model="costElectrical"
+                              variant="outlined"
+                              density="comfortable"
+                              prefix="₱"
+                              prepend-inner-icon="mdi-flash"
+                              hide-details
+                              @keypress="isNumber($event)"
+                              @blur="formatNumber('costElectrical')"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <div class="input-label">Number of Storey</div>
+                            <v-text-field
+                              v-model="numberOfStorey"
+                              variant="outlined"
+                              density="comfortable"
+                              prepend-inner-icon="mdi-numeric"
+                              hide-details
+                              @keypress="isNumber($event)"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <div class="input-label">Mechanical</div>
+                            <v-text-field
+                              v-model="costMechanical"
+                              variant="outlined"
+                              density="comfortable"
+                              prefix="₱"
+                              prepend-inner-icon="mdi-cog"
+                              hide-details
+                              @keypress="isNumber($event)"
+                              @blur="formatNumber('costMechanical')"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <div class="input-label">Electronics</div>
+                            <v-text-field
+                              v-model="costElectronics"
+                              variant="outlined"
+                              density="comfortable"
+                              prefix="₱"
+                              prepend-inner-icon="mdi-television"
+                              hide-details
+                              @keypress="isNumber($event)"
+                              @blur="formatNumber('costElectronics')"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <div class="input-label">
+                              Total Floor Area (sq. m)
+                            </div>
+                            <v-text-field
+                              v-model="totalFloorArea"
+                              variant="outlined"
+                              density="comfortable"
+                              prepend-inner-icon="mdi-ruler-square"
+                              hide-details
+                              @keypress="isNumber($event)"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <div class="input-label">Plumbing</div>
+                            <v-text-field
+                              v-model="costPlumbing"
+                              variant="outlined"
+                              density="comfortable"
+                              prefix="₱"
+                              prepend-inner-icon="mdi-pipe"
+                              hide-details
+                              @keypress="isNumber($event)"
+                              @blur="formatNumber('costPlumbing')"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <div class="input-label">Others</div>
+                            <v-text-field
+                              v-model="costOthers"
+                              variant="outlined"
+                              density="comfortable"
+                              prefix="₱"
+                              prepend-inner-icon="mdi-dots-horizontal"
+                              hide-details
+                              @keypress="isNumber($event)"
+                              @blur="formatNumber('costOthers')"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <div class="input-label">Lot Area (sq. m)</div>
+                            <v-text-field
+                              v-model="lotArea"
+                              variant="outlined"
+                              density="comfortable"
+                              prepend-inner-icon="mdi-map"
+                              hide-details
+                              @keypress="isNumber($event)"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <div class="input-label">
+                              Proposed Date of Construction
+                            </div>
+                            <v-text-field
+                              v-model="proposedDate"
+                              type="date"
+                              variant="outlined"
+                              density="comfortable"
+                              prepend-inner-icon="mdi-calendar"
+                              hide-details
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <div class="input-label">
+                              Expected Date of Completion
+                            </div>
+                            <v-text-field
+                              v-model="expectedDate"
+                              type="date"
+                              variant="outlined"
+                              density="comfortable"
+                              prepend-inner-icon="mdi-calendar-check"
+                              hide-details
+                            ></v-text-field>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -342,11 +538,12 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import Navigation from "./Navigation.vue";
+import Stepper from "./Stepper.vue";
 import Header from "@/components/Header.vue";
 
 export default defineComponent({
   name: "BuildingPermitStep2",
-  components: { Navigation, Header },
+  components: { Navigation, Stepper, Header },
 
   setup() {
     const router = useRouter();
@@ -356,15 +553,21 @@ export default defineComponent({
   data() {
     return {
       // Form State
-      formStepValue: "2",
+      formStepValue: 2,
+      formSteps: [
+        { title: "Applicant Information", value: 1 },
+        { title: "Construction Information", value: 2 },
+        { title: "Signatories Details", value: 3 },
+      ],
       formValid: false,
 
       // Enterprise Information
       is_enterprise: false,
-      form_of_ownership: "",
+      ownershipType: null,
 
       // Location Data
       barangay: null,
+      lotNo: "",
       blkNo: "",
       street: "",
       cityMunicipality: "Naga City",
@@ -382,34 +585,32 @@ export default defineComponent({
       snackbarColor: "success",
 
       // Scope of Work Logic
-      selectedScope: [],
+      workScopeType: null,
+      workScopeTypes: [],
+      loadingWorkScopeTypes: false,
+
       otherDetails: "",
-      scopeOfWork: [
-        "New Construction",
-        "Erection",
-        "Addition",
-        "Alteration",
-        "Renovation",
-        "Conversion",
-        "Repair",
-        "Moving",
-        "Raising",
-        "Accessory Building/Structure",
-        "Legalization of Existing Building",
-        "Other (Specify)",
-      ],
+      remarks: "",
 
       // Location Reference
       barangays: [],
       loadingBarangays: false,
 
+      // Ownership Type Reference
+      ownershipTypes: [],
+      loadingOwnershipTypes: false,
+
       // Validation Rules
       rules: {
         required: (value) => !!value || "This field is required.",
         requiredScope: (value) =>
-          value.length > 0 || "Please select at least one scope of work.",
+          (value && value.length > 0) ||
+          "Please select at least one scope of work.",
         requiredOther: (value) => {
-          if (this.selectedScope.includes("Other (Specify)")) {
+          if (
+            this.workScopeType &&
+            this.workScopeType.includes("Other (Specify)")
+          ) {
             return !!value || "Please specify details for 'Other'.";
           }
           return true;
@@ -419,45 +620,25 @@ export default defineComponent({
       // Occupancy Groupings
       selectedGroup: null,
       selectedCategory: null,
-      groupCategoryData: {
-        "GROUP A: RESIDENTIAL (DWELLINGS)": [
-          "SINGLE",
-          "DUPLEX",
-          "RESIDENTIAL R-1, R-2",
-          "OTHERS",
-        ],
-        "GROUP B: RESIDENTIAL": [
-          "HOTEL",
-          "MOTEL",
-          "TOWNHOUSE",
-          "DORMITORY",
-          "OTHERS",
-        ],
-        "GROUP C: EDUCATIONAL & RECREATIONAL": [
-          "SCHOOL BUILDING",
-          "SCHOOL AUDITORIUM, GYMNASIUM",
-          "OTHERS",
-        ],
-        "GROUP E: COMMERCIAL": [
-          "BANK",
-          "STORE",
-          "SHOPPING CENTER/MALL",
-          "OTHERS",
-        ],
-        "GROUP F: LIGHT INDUSTRIAL": ["FACTORY/PLANT", "OTHERS"],
-        "GROUP G: MEDIUM INDUSTRIAL": [
-          "STORAGE/WAREHOUSE",
-          "FACTORY",
-          "OTHERS",
-        ],
-        "GROUP H: ASSEMBLY": ["THEATER, AUDITORIUM", "OTHERS"],
-        "GROUP I: ASSEMBLY": ["COLISEUM, SPORTS COMPLEX", "OTHERS"],
-        "GROUP J: AGRICULTURAL & ACCESSORIES": [
-          "AGRICULTURAL STRUCTURES",
-          "ACCESSORIES",
-          "OTHERS",
-        ],
-      },
+      occupancyUseGroups: [],
+      occupancyUseTypes: [],
+      loadingOccupancyGroups: false,
+      loadingOccupancyTypes: false,
+
+      // Project Details Fields
+      occupancyClassified: "",
+      numberOfUnits: "",
+      numberOfStorey: "",
+      totalFloorArea: "",
+      lotArea: "",
+      costBuilding: "",
+      costElectrical: "",
+      costMechanical: "",
+      costElectronics: "",
+      costPlumbing: "",
+      costOthers: "",
+      proposedDate: "",
+      expectedDate: "",
 
       // Sidebar Progress
       sidebarStep: 0,
@@ -470,27 +651,47 @@ export default defineComponent({
   },
 
   computed: {
-    groups() {
-      return Object.keys(this.groupCategoryData);
-    },
-    categories() {
-      return this.selectedGroup
-        ? this.groupCategoryData[this.selectedGroup]
-        : [];
+    totalEstimatedCostComputed() {
+      const costs = [
+        this.costBuilding,
+        this.costElectrical,
+        this.costMechanical,
+        this.costElectronics,
+        this.costPlumbing,
+        this.costOthers,
+      ];
+      const total = costs.reduce((sum, cost) => {
+        const cleanedCost =
+          parseFloat((cost || "0").toString().replace(/,/g, "")) || 0;
+        return sum + cleanedCost;
+      }, 0);
+
+      return total.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
     },
   },
 
   watch: {
-    selectedGroup() {
+    selectedGroup(newVal) {
       this.selectedCategory = null;
+      if (newVal) {
+        this.fetchOccupancyUseTypes(newVal);
+      } else {
+        this.occupancyUseTypes = [];
+      }
     },
     is_enterprise(newVal) {
-      if (!newVal) this.form_of_ownership = "";
+      if (!newVal) this.ownershipType = null;
     },
   },
 
   mounted() {
     this.fetchBarangays();
+    this.fetchOwnershipTypes();
+    this.fetchWorkScopeTypes();
+    this.fetchOccupancyUseGroups();
   },
 
   methods: {
@@ -522,11 +723,114 @@ export default defineComponent({
       }
     },
 
+    async fetchOccupancyUseGroups() {
+      this.loadingOccupancyGroups = true;
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/occupancy-use-group`
+        );
+        const result = await response.json();
+
+        if (result.success) {
+          this.occupancyUseGroups = result.data;
+        } else {
+          this.snackbarMessage = "Failed to load occupancy use groups";
+          this.snackbarColor = "error";
+          this.snackbar = true;
+        }
+      } catch (error) {
+        console.error("Error fetching occupancy use groups:", error);
+        this.snackbarMessage = "Failed to load occupancy use groups";
+        this.snackbarColor = "error";
+        this.snackbar = true;
+      } finally {
+        this.loadingOccupancyGroups = false;
+      }
+    },
+
+    async fetchOccupancyUseTypes(groupId) {
+      this.loadingOccupancyTypes = true;
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/occupancy-use-type/group/${groupId}`
+        );
+        const result = await response.json();
+
+        if (result.success) {
+          this.occupancyUseTypes = result.data;
+        } else {
+          this.snackbarMessage = "Failed to load occupancy use types";
+          this.snackbarColor = "error";
+          this.snackbar = true;
+        }
+      } catch (error) {
+        console.error("Error fetching occupancy use types:", error);
+        this.snackbarMessage = "Failed to load occupancy use types";
+        this.snackbarColor = "error";
+        this.snackbar = true;
+      } finally {
+        this.loadingOccupancyTypes = false;
+      }
+    },
+
+    async fetchOwnershipTypes() {
+      this.loadingOwnershipTypes = true;
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/ownership-type`
+        );
+        const result = await response.json();
+
+        if (result.success) {
+          this.ownershipTypes = result.data;
+        } else {
+          this.snackbarMessage = "Failed to load ownership types";
+          this.snackbarColor = "error";
+          this.snackbar = true;
+        }
+      } catch (error) {
+        console.error("Error fetching ownership types:", error);
+        this.snackbarMessage = "Failed to load ownership types";
+        this.snackbarColor = "error";
+        this.snackbar = true;
+      } finally {
+        this.loadingOwnershipTypes = false;
+      }
+    },
+
+    async fetchWorkScopeTypes() {
+      this.loadingWorkScopeTypes = true;
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/work-scope-type`
+        );
+        const result = await response.json();
+
+        if (result.success) {
+          this.workScopeTypes = result.data;
+        } else {
+          this.snackbarMessage = "Failed to load work scope types";
+          this.snackbarColor = "error";
+          this.snackbar = true;
+        }
+      } catch (error) {
+        console.error("Error fetching work scope types:", error);
+        this.snackbarMessage = "Failed to load work scope types";
+        this.snackbarColor = "error";
+        this.snackbar = true;
+      } finally {
+        this.loadingWorkScopeTypes = false;
+      }
+    },
+
     getSelectedBrgyCode() {
       const selectedBarangay = this.barangays.find(
         (brgy) => brgy.brgy_id === this.barangay
       );
       return selectedBarangay ? selectedBarangay.brgy_code : null;
+    },
+    getOwnershipTypeId() {
+      return this.ownershipType ? this.ownershipType.ot_id : null;
     },
 
     async saveConstructionSite() {
@@ -545,12 +849,12 @@ export default defineComponent({
 
         const constructionSiteData = {
           applicant_id: parseInt(applicantId),
-          lot_no: this.tctNo, // Using TCT No as lot number
+          lot_no: this.lotNo,
           block_no: this.blkNo,
           tct_no: this.tctNo,
+          tax_dec_no: this.taxDecNo,
           street: this.street,
           brgy_code: brgyCode,
-          applicant_owned: !this.is_enterprise, // If not enterprise, owned by applicant
         };
 
         const response = await fetch(
@@ -598,10 +902,9 @@ export default defineComponent({
         // Store additional construction information in localStorage for next steps
         const constructionData = {
           bpac_site_id: siteId,
-          is_enterprise: this.is_enterprise,
-          form_of_ownership: this.form_of_ownership,
-          scope_of_work: this.selectedScope,
-          scope_other_details: this.selectedScope.includes("Other (Specify)")
+          ownership_type_id: this.getOwnershipTypeId(),
+          scope_of_work: this.workScopeType,
+          scope_other_details: this.workScopeType.includes("Other (Specify)")
             ? this.otherDetails
             : null,
           tax_declaration_no: this.taxDecNo,
@@ -631,14 +934,31 @@ export default defineComponent({
       }
     },
 
-    getStepTitle(n) {
-      const titles = [
-        "Applicant Information",
-        "Construction Information",
-        "Use or Character of Occupancy",
-        "Signatories Details",
-      ];
-      return titles[n - 1];
+    isNumber(event) {
+      const charCode = event.which ? event.which : event.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        event.preventDefault();
+      }
+    },
+
+    formatNumber(fieldName) {
+      let value = this[fieldName] ? this[fieldName].replace(/,/g, "") : "";
+      value = value.replace(/[^\d.]/g, "");
+      const parts = value.split(".");
+      let integer = parts[0];
+      const decimal = parts[1];
+
+      integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+      if (decimal !== undefined) {
+        this[fieldName] = integer + "." + decimal.slice(0, 2);
+      } else {
+        this[fieldName] = integer;
+      }
     },
 
     async saveForm() {
@@ -646,7 +966,7 @@ export default defineComponent({
     },
 
     proceedToNext() {
-      this.$router.push("/pages/applicant/BPAM/UnifiedForm/CoOccupancy.vue");
+      this.$router.push("/bpam/applicant/unified-form/signatories");
     },
 
     async nextStep() {
@@ -656,9 +976,7 @@ export default defineComponent({
         setTimeout(() => {
           const nextStep = parseInt(this.formStepValue) + 1;
           if (nextStep === 3)
-            this.$router.push(
-              "/pages/applicant/BPAM/UnifiedForm/CoOccupancy.vue"
-            );
+            this.$router.push("/bpam/applicant/unified-form/signatories");
         }, 1000);
       }
     },
@@ -689,21 +1007,35 @@ export default defineComponent({
   background: #f6fafd;
 }
 
+/* Main Container */
+.content-area {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.fill-height {
+  height: 100vh;
+}
+
 .main-content-bg {
   background: #fafdff;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .stepper-fixed-container {
   flex: 0 0 auto;
   z-index: 50;
   background: #fafdff;
+  overflow: hidden;
 }
 
 .scrollable-content {
   flex: 1 1 auto;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
 }
 
