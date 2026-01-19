@@ -286,8 +286,7 @@ export default {
   background-attachment: fixed;
   position: relative;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+
   color: white;
   padding: 0 16px;
   overflow: hidden;
@@ -372,10 +371,9 @@ export default {
 .login-card-wrapper {
   position: absolute;
   top: 50%;
-  right: 6vw;
   transform: translateY(-50%);
   display: flex;
-  align-items: center;
+  align-items: left;
   justify-content: flex-end;
   z-index: 20;
 }
