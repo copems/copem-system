@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <div style="height: 64px"></div>
     <v-main class="grey-background">
       <!-- Print Form button outside and above the card -->
       <div class="print-btn-row">

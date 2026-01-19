@@ -1,3 +1,11 @@
+<style>
+html,
+body,
+.v-application {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+</style>
 <template>
   <v-app>
     <v-main>
@@ -166,7 +174,7 @@
                   elevation="2"
                   size="large"
                   class="text-capitalize font-weight-bold occupancy-permit-btn"
-                  to="/opam/op-application/op-type"
+                  to="/opam/op-application/op-owner"
                 >
                   Apply for Occupancy Permit
                   <v-icon left size="24" color="#23407c">mdi-arrow-right</v-icon>
@@ -273,18 +281,11 @@ export default {
   display: flex;
 }
 
-.content-area {
-  flex: 1;
-  overflow-y: auto;
-  padding-bottom: 0;
-  height: 100%;
-}
-
 .main-content-bg {
   background: linear-gradient(90deg, #fafdff 70%, #f3f7ff 100%);
   border-radius: 0 24px 24px 0;
-  min-height: 100%;
-  height: 100%;
+  min-height: 50%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;

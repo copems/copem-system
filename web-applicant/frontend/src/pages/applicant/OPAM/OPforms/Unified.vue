@@ -12,17 +12,18 @@
       </div>
       <v-container fluid>
         <div class="ui-preview-container">
-          <div class="printable-form unified-form" style="position: relative">
-            <v-btn
-              rounded="pill"
-              elevation="3"
-              size="large"
-              class="download-btn-custom print-btn-top"
-              @click="printForm"
-              style="position: absolute; top: 18px; right: 24px; z-index: 2"
-            >
-              PRINT FORM
-            </v-btn>
+          <div class="printable-form unified-form">
+            <div class="d-flex justify-end mb-4">
+              <v-btn
+                rounded="pill"
+                elevation="3"
+                size="large"
+                class="download-btn-custom"
+                @click="printForm"
+              >
+                PRINT FORM
+              </v-btn>
+            </div>
             <div class="header-section">
               <div class="gov-title">Republic of the Philippines</div>
               <div class="gov-title">City/Municipality of Naga</div>

@@ -415,12 +415,11 @@ export default defineComponent({
   name: "OccupancySignatoriesPage",
   data() {
     return {
-      formStepValue: 4,
+      formStepValue: 3,
       formSteps: [
-        { title: "Application", value: 1 },
-        { title: "Owner/Applicant", value: 2 },
-        { title: "Application Details", value: 3 },
-        { title: "Signatories Details", value: 4 },
+        { title: "Owner/Applicant", value: 1 },
+        { title: "Application Details", value: 2 },
+        { title: "Signatories Details", value: 3 },
       ],
       sidebarStep: 0,
       sidebarSteps: [

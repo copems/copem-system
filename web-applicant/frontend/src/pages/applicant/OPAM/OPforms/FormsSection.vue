@@ -276,7 +276,6 @@ export default {
 .no-scroll {
   height: 100vh;
   overflow: hidden !important;
-  padding-top: 88px;
 }
 .v-main.no-scroll {
   display: flex;
@@ -285,12 +284,12 @@ export default {
 }
 .content-area {
   flex: 1;
-  overflow-y: auto;
-  padding-bottom: 24px;
+  overflow: hidden;
 }
 .main-content-bg {
   background: #f6fafd;
   border-radius: 0 24px 24px 0;
+  overflow: hidden;
 }
 .page-title-gradient {
   color: white;
@@ -417,5 +416,13 @@ export default {
     width: 100% !important;
     height: 140px !important;
   }
+}
+</style>
+<style>
+html,
+body,
+.v-application {
+  height: 100% !important;
+  overflow: hidden !important;
 }
 </style>

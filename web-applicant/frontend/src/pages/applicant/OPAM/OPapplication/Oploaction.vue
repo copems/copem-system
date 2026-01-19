@@ -232,12 +232,11 @@ export default defineComponent({
 
   data() {
     return {
-      formStepValue: 3,
+      formStepValue: 2,
       formSteps: [
-        { title: "Application", value: 1 },
-        { title: "Owner/Applicant", value: 2 },
-        { title: "Application Details", value: 3 },
-        { title: "Signatories Details", value: 4 },
+        { title: "Owner/Applicant", value: 1 },
+        { title: "Application Details", value: 2 },
+        { title: "Signatories Details", value: 3 },
       ],
       sidebarStep: 0,
       sidebarSteps: [
