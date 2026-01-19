@@ -33,7 +33,8 @@
                       'Administrative Aide',
                       'Engineer',
                       'Architect',
-                      'Inspector',
+                      'Building Inspector',
+                      'Chief Inspector',
                       'Building Official',
                     ]"
                     class="mb-3"
@@ -100,12 +101,6 @@
                   >
                     {{ loading ? "Signing in..." : "Sign In" }}
                   </v-btn>
-
-                  <div class="text-center mt-6">
-                    <span class="text-grey-darken-1"
-                      >Need access? Contact your system administrator</span
-                    >
-                  </div>
                 </v-form>
               </v-card-text>
             </v-card>
@@ -384,7 +379,8 @@ export default {
   border: none;
   background: #ffffffea;
   transition: box-shadow 0.18s;
-  width: 450px;
+  width: 430px;
+  height: auto;
 }
 .login-card:hover {
   box-shadow: 0 12px 48px rgba(25, 118, 210, 0.17) !important;
