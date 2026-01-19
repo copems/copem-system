@@ -88,7 +88,7 @@
                         <v-icon left color="blue-darken-3" class="mr-2"
                           >mdi-map-marker</v-icon
                         >
-                        PROJECT LOCATION
+                        PROJECT LOCATION & LOT INFORMATION
                       </v-card-title>
                       <v-divider></v-divider>
                       <v-card-text>
@@ -141,29 +141,18 @@
                               :loading="loadingBarangays"
                             ></v-select>
                           </v-col>
-                        </v-row>
-                      </v-card-text>
-                    </v-card>
-
-                    <v-card class="mb-4 card-section">
-                      <v-card-title class="text-h6 section-title">
-                        <v-icon left color="blue-darken-3" class="mr-2"
-                          >mdi-file-document-outline</v-icon
-                        >
-                        LOT INFORMATION
-                      </v-card-title>
-                      <v-divider></v-divider>
-                      <v-card-text>
-                        <v-row dense>
                           <v-col cols="12" sm="6">
                             <div class="input-label">TCT No.</div>
                             <v-text-field
                               v-model="tctNo"
                               variant="outlined"
                               density="comfortable"
-                              :rules="[rules.required]"
+                              :rules="[rules.required, rules.tctNo]"
                               prepend-inner-icon="mdi-numeric"
                               color="blue-darken-3"
+                              maxlength="6"
+                              placeholder="XXXXXX"
+                              @input="formatTctNo"
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6">
@@ -172,9 +161,12 @@
                               v-model="taxDecNo"
                               variant="outlined"
                               density="comfortable"
-                              :rules="[rules.required]"
+                              :rules="[rules.required, rules.taxDecNo]"
                               prepend-inner-icon="mdi-numeric"
                               color="blue-darken-3"
+                              maxlength="6"
+                              placeholder="XXXX to XXXXXX"
+                              @input="formatTaxDecNo"
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -297,11 +289,13 @@
                           <v-col cols="12" md="6">
                             <div class="input-label">Occupancy Classified</div>
                             <v-text-field
-                              v-model="occupancyClassified"
+                              v-model="occupancyClassifiedComputed"
                               variant="outlined"
                               density="comfortable"
                               prepend-inner-icon="mdi-clipboard-outline"
                               hide-details
+                              readonly
+                              bg-color="grey-lighten-4"
                             ></v-text-field>
                           </v-col>
                           <v-col
@@ -453,6 +447,7 @@
                               density="comfortable"
                               prepend-inner-icon="mdi-calendar"
                               hide-details
+                              :min="minDate"
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" md="3">
@@ -466,6 +461,7 @@
                               density="comfortable"
                               prepend-inner-icon="mdi-calendar-check"
                               hide-details
+                              :min="minExpectedDate"
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -615,6 +611,18 @@ export default defineComponent({
           }
           return true;
         },
+        tctNo: (value) => {
+          if (!value) return true;
+          const tctPattern = /^\d{6}$/;
+          return tctPattern.test(value) || "TCT No. must be exactly 6 digits";
+        },
+        taxDecNo: (value) => {
+          if (!value) return true;
+          const taxDecPattern = /^\d{4,6}$/;
+          return (
+            taxDecPattern.test(value) || "Tax Dec No. must be 4 to 6 digits"
+          );
+        },
       },
 
       // Occupancy Groupings
@@ -670,6 +678,38 @@ export default defineComponent({
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       });
+    },
+    occupancyClassifiedComputed() {
+      const group = this.occupancyUseGroups.find(
+        (g) => g.ou_group_id === this.selectedGroup
+      );
+      const category = this.occupancyUseTypes.find(
+        (c) => c.ou_type_id === this.selectedCategory
+      );
+
+      if (group && category) {
+        // Extract the main part of the group description (e.g., "RESIDENTIAL" from "RESIDENTIAL (DWELLING UNITS)")
+        const groupName = group.ou_group_desc.split("(")[0].trim();
+        return `${groupName}: ${category.ou_type_desc}`;
+      } else if (group) {
+        return group.ou_group_desc.split("(")[0].trim();
+      }
+      return "";
+    },
+    minDate() {
+      // Get tomorrow's date as the minimum selectable date
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow.toISOString().split("T")[0];
+    },
+    minExpectedDate() {
+      // If proposed date is set, use it as minimum, otherwise use tomorrow
+      if (this.proposedDate) {
+        return this.proposedDate;
+      }
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow.toISOString().split("T")[0];
     },
   },
 
@@ -943,6 +983,16 @@ export default defineComponent({
       ) {
         event.preventDefault();
       }
+    },
+
+    formatTctNo() {
+      // Remove all non-digit characters and limit to 6 digits
+      this.tctNo = this.tctNo.replace(/\D/g, "").substring(0, 6);
+    },
+
+    formatTaxDecNo() {
+      // Remove all non-digit characters and limit to 6 digits
+      this.taxDecNo = this.taxDecNo.replace(/\D/g, "").substring(0, 6);
     },
 
     formatNumber(fieldName) {

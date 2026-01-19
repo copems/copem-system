@@ -145,8 +145,11 @@
                               variant="outlined"
                               density="comfortable"
                               :rules="[rules.required]"
-                              prepend-inner-icon="mdi-address"
+                              placeholder=""
+                              prepend-inner-icon="mdi-map-marker-outline"
                               color="blue-darken-3"
+                              hint="Format: House No./Unit No., Building Name, Street Name, Subdivision/Village, Postal Code"
+                              persistent-hint
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -174,6 +177,7 @@
                               :rules="[rules.required, rules.supervisorPRCNo]"
                               :maxlength="7"
                               @input="limitPrcNo"
+                              placeholder="XXXXXXX"
                               prepend-inner-icon="mdi-numeric"
                               color="blue-darken-3"
                             ></v-text-field>
@@ -181,51 +185,16 @@
 
                           <v-col cols="12" sm="6">
                             <div class="input-label">Validity</div>
-                            <v-menu
-                              v-model="validityMenu"
-                              :close-on-content-click="false"
-                              transition="scale-transition"
-                              offset-y
-                              min-width="auto"
-                            >
-                              <template v-slot:activator="{ props }">
-                                <v-text-field
-                                  v-model="formattedValidity"
-                                  placeholder="dd/mm/yyyy"
-                                  variant="outlined"
-                                  density="comfortable"
-                                  :rules="[rules.required]"
-                                  prepend-inner-icon="mdi-calendar"
-                                  readonly
-                                  v-bind="props"
-                                  color="blue-darken-3"
-                                ></v-text-field>
-                              </template>
-                              <div>
-                                <v-date-picker
-                                  v-model="supervisorPRCValidity"
-                                  @update:model-value="validityMenu = false"
-                                  hide-header
-                                ></v-date-picker>
-                                <v-card-actions>
-                                  <v-btn
-                                    variant="text"
-                                    color="primary"
-                                    @click="clearValidity"
-                                  >
-                                    Clear
-                                  </v-btn>
-                                  <v-spacer></v-spacer>
-                                  <v-btn
-                                    variant="text"
-                                    color="primary"
-                                    @click="setTodayValidity"
-                                  >
-                                    Today
-                                  </v-btn>
-                                </v-card-actions>
-                              </div>
-                            </v-menu>
+                            <v-text-field
+                              v-model="supervisorPRCValidity"
+                              type="date"
+                              variant="outlined"
+                              density="comfortable"
+                              prepend-inner-icon="mdi-calendar"
+                              :rules="[rules.required]"
+                              :min="minValidityDate"
+                              color="blue-darken-3"
+                            ></v-text-field>
                           </v-col>
 
                           <v-col cols="12" sm="4">
@@ -235,8 +204,9 @@
                               variant="outlined"
                               density="comfortable"
                               :rules="[rules.required, rules.supervisorPTRNo]"
-                              :maxlength="8"
-                              @input="limitPtrNo"
+                              :maxlength="12"
+                              @input="formatPtrNo"
+                              placeholder="XXXXXXX-XXXX"
                               prepend-inner-icon="mdi-numeric"
                               color="blue-darken-3"
                             ></v-text-field>
@@ -251,6 +221,7 @@
                               density="comfortable"
                               prepend-inner-icon="mdi-calendar-check"
                               :rules="[rules.required]"
+                              :max="maxDateIssuedDate"
                               color="blue-darken-3"
                             ></v-text-field>
                           </v-col>
@@ -275,6 +246,7 @@
                               :rules="[rules.required, rules.supervisorTIN]"
                               :maxlength="15"
                               @input="formatTin"
+                              placeholder="XXX-XXX-XXX-XXX"
                               prepend-inner-icon="mdi-card-account-details"
                               color="blue-darken-3"
                             ></v-text-field>
@@ -652,9 +624,11 @@ export default defineComponent({
       rules: {
         required: (value) => !!value || "This field is required.",
         supervisorPRCNo: (value) =>
-          (value && /^\d{6,7}$/.test(value)) || "PRC No. should be 6-7 digits.",
+          (value && /^\d{7}$/.test(value)) ||
+          "PRC No. must be exactly 7 digits.",
         supervisorPTRNo: (value) =>
-          (value && /^\d{6,8}$/.test(value)) || "PTR No. should be 6-8 digits.",
+          (value && /^\d{7}-\d{4}$/.test(value)) ||
+          "PTR No. must be in XXXXXXX-XXXX format.",
         supervisorTIN: (value) =>
           (value && /^\d{3}-\d{3}-\d{3}-\d{3}$/.test(value)) ||
           "TIN should be in XXX-XXX-XXX-XXX format.",
@@ -683,6 +657,17 @@ export default defineComponent({
   computed: {
     formattedValidity() {
       return this.formatDate(this.supervisorPRCValidity);
+    },
+    minValidityDate() {
+      // Validity must be in the future (starting from tomorrow)
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow.toISOString().split("T")[0];
+    },
+    maxDateIssuedDate() {
+      // Date Issued must be today or in the past
+      const today = new Date();
+      return today.toISOString().split("T")[0];
     },
   },
 
@@ -781,15 +766,25 @@ export default defineComponent({
       }
       this.supervisorPRCNo = value;
     },
-    limitPtrNo(event) {
+    formatPtrNo(event) {
+      // Remove all non-digit characters
       let value = (event.target ? event.target.value : event).replace(
         /\D/g,
         ""
       );
-      if (value.length > 8) {
-        value = value.slice(0, 8);
+      // Limit to 11 digits (7 + 4)
+      if (value.length > 11) {
+        value = value.slice(0, 11);
       }
-      this.supervisorPTRNo = value;
+      // Format as XXXXXXX-XXXX
+      let formatted = "";
+      if (value.length > 0) {
+        formatted = value.slice(0, 7);
+      }
+      if (value.length > 7) {
+        formatted += "-" + value.slice(7, 11);
+      }
+      this.supervisorPTRNo = formatted;
     },
     formatTin(event) {
       let value = (event.target ? event.target.value : event).replace(
