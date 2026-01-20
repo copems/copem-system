@@ -557,7 +557,7 @@ import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import Navigation from "./Navigation.vue";
 import Stepper from "./Stepper.vue";
-import Header from "../../../../components/Header.vue";
+import Header from "@/components/Header.vue";
 
 export default defineComponent({
   name: "BuildingPermitStep4",
@@ -994,33 +994,41 @@ export default defineComponent({
       try {
         const bpacId = localStorage.getItem("bpac_id");
         if (!bpacId) {
-          alert("Construction data ID not found.");
+          alert(
+            "Construction data ID not found. Please complete Step 2 first."
+          );
           return false;
         }
 
-        const applicationData = {
-          bpac_id: bpacId,
-          bpacs_id: supervisorId,
+        // Update the existing BPA construction record with supervisor ID and application number
+        const updateData = {
+          bpac_supervisor_id: supervisorId,
+          bpacs_lot_owner_id: this.savedLotOwnerId || null,
           application_no: applicationNumber,
-          bpa_status_id: 1, // Assuming 1 is for "Submitted" or "Pending"
+          is_draft: false, // Mark as submitted (no longer a draft)
         };
 
         const response = await fetch(
-          "http://localhost:3000/api/bpa-construction-application",
+          `http://localhost:3000/api/bpa-construction/${bpacId}`,
           {
-            method: "POST",
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(applicationData),
+            body: JSON.stringify(updateData),
           }
         );
 
         if (response.ok) {
+          console.log(
+            "BPA Construction updated successfully with application number:",
+            applicationNumber
+          );
           return true;
         } else {
           const error = await response.json();
-          alert(`Error saving application: ${error.message}`);
+          console.error("Error updating construction:", error);
+          alert(`Error submitting application: ${error.message}`);
           return false;
         }
       } catch (error) {

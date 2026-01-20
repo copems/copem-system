@@ -3,6 +3,7 @@ import pool from "../config/database.js";
 /**
  * Save a new applicant government ID record
  * @param {Object} govIdData - The government ID data
+ * @param {number} govIdData.git_id - Government ID type ID
  * @param {string} govIdData.id_no - ID number
  * @param {Date} govIdData.date_issued - Date issued
  * @param {string} govIdData.place_issued - Place issued
@@ -10,15 +11,15 @@ import pool from "../config/database.js";
  * @returns {Promise<number>} The newly created agid_id
  */
 export const saveApplicantGovId = async (govIdData) => {
-    const { id_no, date_issued, place_issued, applicant_id } = govIdData;
+    const { git_id, id_no, date_issued, place_issued, applicant_id } = govIdData;
 
     let conn;
     try {
         conn = await pool.getConnection();
         const result = await conn.query(
-            `INSERT INTO Applicant_Gov_ID (id_no, date_issued, place_issued, applicant_id, is_active)
-             VALUES (?, ?, ?, ?, TRUE)`,
-            [id_no, date_issued, place_issued, applicant_id]
+            `INSERT INTO Applicant_Gov_ID (git_id, id_no, date_issued, place_issued, applicant_id, is_active)
+             VALUES (?, ?, ?, ?, ?, TRUE)`,
+            [git_id, id_no, date_issued, place_issued, applicant_id]
         );
 
         return Number(result.insertId);

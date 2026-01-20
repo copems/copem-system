@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS BPA_Construction_Site
 (
 	bpac_site_id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	applicant_id INTEGER NOT NULL,
-		FOREIGN KEY (applicant_id) REFERENCES Permit_Applicant(applicant_id),
+	FOREIGN KEY (applicant_id) REFERENCES Permit_Applicant(applicant_id),
 	lot_no VARCHAR(255) NOT NULL,
 	block_no VARCHAR(255) NOT NULL,
 	tct_no VARCHAR(255) NOT NULL,

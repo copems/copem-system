@@ -248,6 +248,7 @@
                             density="comfortable"
                             type="date"
                             :rules="[rules.required]"
+                            :max="maxDate"
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-calendar"
                             hide-details="auto"
@@ -274,9 +275,8 @@
               </v-card-text>
             </v-card>
 
-            <div class="d-flex justify-end mt-6 mb-8">
+            <div class="d-flex justify-end mt-6 mb-8 ga-3">
               <v-btn
-                v-if="!isSaved"
                 color="blue-darken-3"
                 class="btn-rounded"
                 elevation="2"
@@ -285,12 +285,12 @@
                 :loading="saving"
                 :disabled="saving"
               >
-                {{ saving ? "Saving..." : "Save" }}
+                {{ saving ? "Saving..." : isSaved ? "Update" : "Save" }}
                 <v-icon right>mdi-content-save</v-icon>
               </v-btn>
               <v-btn
-                v-else
-                color="blue-darken-3"
+                v-if="isSaved"
+                color="green-darken-2"
                 class="btn-rounded"
                 elevation="2"
                 @click="proceedToNext"
@@ -377,6 +377,11 @@ export default defineComponent({
       loadingBarangays: false,
       loadingGovIdTypes: false,
 
+      // Draft management
+      existingApplicantId: null,
+      existingGovIdId: null,
+      isLoadingDraft: false,
+
       saving: false,
       isSaved: false,
       snackbar: false,
@@ -402,20 +407,169 @@ export default defineComponent({
       },
     };
   },
+  computed: {
+    maxDate() {
+      // Get today's date in YYYY-MM-DD format
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    },
+  },
   mounted() {
     this.fetchProvinces();
     this.fetchGovIdTypes();
     this.loadUserData();
-    //this.loadFormDataFromStorage();
-    // If province was previously selected, load cities and barangays
-    if (this.formData.province) {
-      this.fetchCityMunicipalities(this.formData.province);
-      if (this.formData.city_municipality) {
-        this.fetchBarangays(this.formData.city_municipality);
-      }
-    }
+    // Load existing draft from database if exists
+    this.loadExistingDraft();
   },
   methods: {
+    async loadExistingDraft() {
+      this.isLoadingDraft = true;
+      try {
+        // First check if applicant_id exists in localStorage
+        const savedApplicantId = localStorage.getItem("applicant_id");
+        const savedGovIdId = localStorage.getItem("applicant_gov_id");
+
+        if (savedApplicantId) {
+          // Verify the applicant actually exists in the database
+          try {
+            const verifyResponse = await fetch(
+              `http://localhost:3000/api/permit-applicant/id/${savedApplicantId}`
+            );
+
+            if (verifyResponse.ok) {
+              const verifyResult = await verifyResponse.json();
+              if (verifyResult.success && verifyResult.data) {
+                // Applicant exists in database, load from localStorage
+                this.existingApplicantId = savedApplicantId;
+                this.existingGovIdId = savedGovIdId;
+                this.isSaved = true;
+
+                // Load applicant data from localStorage
+                this.loadFormDataFromStorage();
+
+                // Load location data if province was selected
+                if (this.formData.province) {
+                  await this.fetchCityMunicipalities(this.formData.province);
+                  if (this.formData.city_municipality) {
+                    await this.fetchBarangays(this.formData.city_municipality);
+                  }
+                }
+                console.log(
+                  "Draft loaded from localStorage (verified in DB):",
+                  {
+                    applicantId: savedApplicantId,
+                    govIdId: savedGovIdId,
+                  }
+                );
+                return;
+              }
+            }
+
+            // If we get here, the applicant doesn't exist in DB - clear stale localStorage
+            console.log("Applicant ID in localStorage is stale, clearing...");
+            localStorage.removeItem("applicant_id");
+            localStorage.removeItem("applicant_gov_id");
+            localStorage.removeItem("applicant_form_data");
+            localStorage.removeItem("bpac_id");
+            localStorage.removeItem("bpac_site_id");
+          } catch (error) {
+            console.log(
+              "Error verifying applicant, clearing stale data:",
+              error.message
+            );
+            localStorage.removeItem("applicant_id");
+            localStorage.removeItem("applicant_gov_id");
+          }
+        }
+
+        // If no localStorage data, try to fetch from database by username
+        const authStore = useAuthStore();
+        const authUserStore = useAuthUserStore();
+
+        let username = authStore.user?.username || authUserStore.user?.username;
+        if (!username) {
+          const userStr = localStorage.getItem("user");
+          if (userStr) {
+            try {
+              const userObj = JSON.parse(userStr);
+              username = userObj.username;
+            } catch (e) {
+              console.error("Error parsing user from localStorage:", e);
+            }
+          }
+        }
+
+        if (!username) {
+          username = localStorage.getItem("username");
+        }
+
+        if (username) {
+          try {
+            const response = await fetch(
+              `http://localhost:3000/api/permit-applicant/username/${username}`
+            );
+
+            if (response.ok) {
+              const result = await response.json();
+              if (result.success && result.data) {
+                const applicant = result.data;
+                console.log("Found existing applicant:", applicant);
+
+                // Store in localStorage and local state
+                this.existingApplicantId = applicant.applicant_id;
+                localStorage.setItem("applicant_id", applicant.applicant_id);
+
+                // Populate form with existing data
+                this.formData.contact_no = applicant.contact_no || "";
+                this.formData.tin = applicant.tin_no || "";
+                this.formData.house_no = applicant.house_no || "";
+                this.formData.street = applicant.street || "";
+
+                // Try to get the gov ID if exists
+                if (applicant.applicant_id) {
+                  const govIdResponse = await fetch(
+                    `http://localhost:3000/api/applicant-gov-id/applicant/${applicant.applicant_id}`
+                  );
+                  if (govIdResponse.ok) {
+                    const govIdResult = await govIdResponse.json();
+                    if (
+                      govIdResult.success &&
+                      govIdResult.data &&
+                      govIdResult.data.length > 0
+                    ) {
+                      const govId = govIdResult.data[0];
+                      this.existingGovIdId = govId.agid_id;
+                      localStorage.setItem("applicant_gov_id", govId.agid_id);
+                      this.formData.govt_issued_id = govId.git_id || "";
+                      this.formData.date_issued = govId.date_issued
+                        ? govId.date_issued.split("T")[0]
+                        : "";
+                      this.formData.place_issued = govId.place_issued || "";
+                    }
+                  }
+                }
+
+                this.isSaved = true;
+                this.saveFormDataToStorage();
+              }
+            }
+          } catch (error) {
+            console.log(
+              "No existing applicant found, starting fresh:",
+              error.message
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Error loading draft:", error);
+      } finally {
+        this.isLoadingDraft = false;
+      }
+    },
+
     saveFormDataToStorage() {
       // Save current form data to localStorage
       const formDataToSave = { ...this.formData };
@@ -637,9 +791,38 @@ export default defineComponent({
           return false;
         }
 
+        // Get username from multiple sources
+        let username = authStore.user?.username || authUserStore.user?.username;
+
+        // Try from localStorage if not found in stores
+        if (!username) {
+          const userStr = localStorage.getItem("user");
+          if (userStr) {
+            try {
+              const userObj = JSON.parse(userStr);
+              username = userObj.username;
+            } catch (e) {
+              console.error("Error parsing user from localStorage:", e);
+            }
+          }
+        }
+
+        // Also try direct username from localStorage
+        if (!username) {
+          username = localStorage.getItem("username");
+        }
+
+        if (!username) {
+          this.snackbarMessage = "Username not found. Please login again.";
+          this.snackbarColor = "error";
+          this.snackbar = true;
+          this.saving = false;
+          return false;
+        }
+
         // Prepare permit applicant data
         const applicantData = {
-          username: authStore.user.username || authUserStore.user.username,
+          username: username,
           contact_no: this.formData.contact_no,
           tin_no: this.formData.tin,
           brgy_code: brgyCode,
@@ -647,58 +830,136 @@ export default defineComponent({
           street: this.formData.street,
         };
 
-        // Save permit applicant
-        const applicantResponse = await fetch(
-          "http://localhost:3000/api/permit-applicant",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(applicantData),
-          }
-        );
+        let applicantId;
 
-        const applicantResult = await applicantResponse.json();
-
-        if (!applicantResult.success) {
-          throw new Error(
-            applicantResult.message || "Failed to save applicant information"
+        // Check if we're updating an existing applicant or creating a new one
+        if (this.existingApplicantId) {
+          // Update existing applicant
+          const applicantResponse = await fetch(
+            `http://localhost:3000/api/permit-applicant/${this.existingApplicantId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(applicantData),
+            }
           );
+
+          const applicantResult = await applicantResponse.json();
+
+          if (!applicantResult.success) {
+            throw new Error(
+              applicantResult.message ||
+                "Failed to update applicant information"
+            );
+          }
+
+          applicantId = this.existingApplicantId;
+          console.log("Updated existing applicant:", applicantId);
+        } else {
+          // Create new applicant
+          console.log(
+            "[ApplicantInformation] Creating new applicant with data:",
+            JSON.stringify(applicantData)
+          );
+
+          const applicantResponse = await fetch(
+            "http://localhost:3000/api/permit-applicant",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(applicantData),
+            }
+          );
+
+          console.log(
+            "[ApplicantInformation] Response status:",
+            applicantResponse.status
+          );
+          const applicantResult = await applicantResponse.json();
+          console.log(
+            "[ApplicantInformation] Response body:",
+            JSON.stringify(applicantResult)
+          );
+
+          if (!applicantResult.success) {
+            throw new Error(
+              applicantResult.message || "Failed to save applicant information"
+            );
+          }
+
+          applicantId = applicantResult.data.applicant_id;
+          this.existingApplicantId = applicantId;
+          console.log("Created new applicant:", applicantId);
         }
 
-        const applicantId = applicantResult.data.applicant_id;
-
-        // Save government ID information
+        // Save or update government ID information
         const govIdData = {
           applicant_id: applicantId,
-          id_no: this.formData.govt_issued_id,
+          git_id: this.formData.govt_issued_id,
+          id_no: this.formData.govt_issued_id, // TODO: Need to add a separate field for actual ID number
           date_issued: this.formData.date_issued,
           place_issued: this.formData.place_issued,
         };
 
-        const govIdResponse = await fetch(
-          "http://localhost:3000/api/applicant-gov-id",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(govIdData),
-          }
-        );
+        let govIdId;
 
-        const govIdResult = await govIdResponse.json();
-
-        if (!govIdResult.success) {
-          throw new Error(
-            govIdResult.message || "Failed to save government ID information"
+        if (this.existingGovIdId) {
+          // Update existing gov ID
+          const govIdResponse = await fetch(
+            `http://localhost:3000/api/applicant-gov-id/${this.existingGovIdId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(govIdData),
+            }
           );
+
+          const govIdResult = await govIdResponse.json();
+
+          if (!govIdResult.success) {
+            throw new Error(
+              govIdResult.message ||
+                "Failed to update government ID information"
+            );
+          }
+
+          govIdId = this.existingGovIdId;
+          console.log("Updated existing gov ID:", govIdId);
+        } else {
+          // Create new gov ID
+          const govIdResponse = await fetch(
+            "http://localhost:3000/api/applicant-gov-id",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(govIdData),
+            }
+          );
+
+          const govIdResult = await govIdResponse.json();
+
+          if (!govIdResult.success) {
+            throw new Error(
+              govIdResult.message || "Failed to save government ID information"
+            );
+          }
+
+          govIdId = govIdResult.data.agid_id;
+          this.existingGovIdId = govIdId;
+          console.log("Created new gov ID:", govIdId);
         }
 
         // Store applicant_id and gov_id for next steps
         localStorage.setItem("applicant_id", applicantId);
-        localStorage.setItem("applicant_gov_id", govIdResult.data.agid_id);
+        localStorage.setItem("applicant_gov_id", govIdId);
 
         this.snackbarMessage = "Applicant information saved successfully!";
         this.snackbarColor = "success";

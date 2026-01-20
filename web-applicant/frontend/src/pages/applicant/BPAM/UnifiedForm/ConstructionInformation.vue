@@ -536,6 +536,8 @@ import { useRouter } from "vue-router";
 import Navigation from "./Navigation.vue";
 import Stepper from "./Stepper.vue";
 import Header from "@/components/Header.vue";
+import constructionSiteService from "@/services/constructionSiteService";
+import bpaConstructionService from "@/services/bpaConstructionInsertService";
 
 export default defineComponent({
   name: "BuildingPermitStep2",
@@ -558,19 +560,19 @@ export default defineComponent({
       formValid: false,
 
       // Enterprise Information
-      is_enterprise: false,
-      ownershipType: null,
+      is_enterprise: true,
+      ownershipType: null, // Will be set after fetching ownership types
 
       // Location Data
-      barangay: null,
-      lotNo: "",
-      blkNo: "",
-      street: "",
+      barangay: null, // Will be set after fetching barangays
+      lotNo: "15",
+      blkNo: "3",
+      street: "Rizal Street",
       cityMunicipality: "Naga City",
 
       // Lot Information
-      tctNo: "",
-      taxDecNo: "",
+      tctNo: "123456",
+      taxDecNo: "98765",
 
       // Feedback UI
       errorMessage: "",
@@ -580,13 +582,17 @@ export default defineComponent({
       snackbarMessage: "",
       snackbarColor: "success",
 
+      // Draft management
+      draftBpacId: null,
+      draftBpacSiteId: null,
+
       // Scope of Work Logic
-      workScopeType: null,
+      workScopeType: null, // Will be set after fetching work scope types
       workScopeTypes: [],
       loadingWorkScopeTypes: false,
 
       otherDetails: "",
-      remarks: "",
+      remarks: "New construction for residential building",
 
       // Location Reference
       barangays: [],
@@ -626,8 +632,8 @@ export default defineComponent({
       },
 
       // Occupancy Groupings
-      selectedGroup: null,
-      selectedCategory: null,
+      selectedGroup: null, // Will be set after fetching groups
+      selectedCategory: null, // Will be set after fetching categories
       occupancyUseGroups: [],
       occupancyUseTypes: [],
       loadingOccupancyGroups: false,
@@ -635,18 +641,18 @@ export default defineComponent({
 
       // Project Details Fields
       occupancyClassified: "",
-      numberOfUnits: "",
-      numberOfStorey: "",
-      totalFloorArea: "",
-      lotArea: "",
-      costBuilding: "",
-      costElectrical: "",
-      costMechanical: "",
-      costElectronics: "",
-      costPlumbing: "",
-      costOthers: "",
-      proposedDate: "",
-      expectedDate: "",
+      numberOfUnits: "4",
+      numberOfStorey: "2",
+      totalFloorArea: "250.50",
+      lotArea: "300.00",
+      costBuilding: "1,500,000.00",
+      costElectrical: "150,000.00",
+      costMechanical: "100,000.00",
+      costElectronics: "75,000.00",
+      costPlumbing: "80,000.00",
+      costOthers: "50,000.00",
+      proposedDate: "2026-02-15",
+      expectedDate: "2026-12-31",
 
       // Sidebar Progress
       sidebarStep: 0,
@@ -732,9 +738,152 @@ export default defineComponent({
     this.fetchOwnershipTypes();
     this.fetchWorkScopeTypes();
     this.fetchOccupancyUseGroups();
+    // Load draft if exists
+    this.loadDraft();
   },
 
   methods: {
+    async loadDraft() {
+      try {
+        const applicantId = localStorage.getItem("applicant_id");
+        if (!applicantId) {
+          console.log("No applicant ID found, redirecting to Step 1");
+          this.snackbarMessage = "Please complete Applicant Information first";
+          this.snackbarColor = "warning";
+          this.snackbar = true;
+          setTimeout(() => {
+            this.$router.push(
+              "/bpam/applicant/unified-form/applicant-information"
+            );
+          }, 1500);
+          return;
+        }
+
+        // Verify the applicant exists in the database
+        try {
+          const verifyResponse = await fetch(
+            `http://localhost:3000/api/permit-applicant/id/${applicantId}`
+          );
+
+          if (!verifyResponse.ok) {
+            console.log("Applicant ID is stale, redirecting to Step 1");
+            // Clear stale localStorage
+            localStorage.removeItem("applicant_id");
+            localStorage.removeItem("applicant_gov_id");
+            localStorage.removeItem("applicant_form_data");
+            localStorage.removeItem("bpac_id");
+            localStorage.removeItem("bpac_site_id");
+
+            this.snackbarMessage =
+              "Session expired. Please complete Applicant Information again";
+            this.snackbarColor = "warning";
+            this.snackbar = true;
+            setTimeout(() => {
+              this.$router.push(
+                "/bpam/applicant/unified-form/applicant-information"
+              );
+            }, 1500);
+            return;
+          }
+        } catch (error) {
+          console.error("Error verifying applicant:", error);
+        }
+
+        const result = await bpaConstructionService.getLatestDraft(applicantId);
+
+        if (result.success && result.data) {
+          const draft = result.data;
+          console.log("Loading draft:", draft);
+
+          // Store the draft ID for updating
+          this.draftBpacId = draft.bpac_id;
+          this.draftBpacSiteId = draft.bpac_site_id;
+
+          // Populate form fields from draft
+          this.is_enterprise = draft.ownership_type_id ? true : false;
+          this.ownershipType = draft.ownership_type_id;
+
+          // Load construction site data
+          if (draft.bpac_site_id) {
+            await this.loadConstructionSiteData(draft.bpac_site_id);
+          }
+
+          this.workScopeType = draft.work_scope_type_id;
+          this.remarks = draft.workscope_remarks || "";
+          this.otherDetails = draft.ou_type_others || "";
+          this.selectedCategory = draft.ou_type_id;
+          this.numberOfUnits = draft.num_units?.toString() || "";
+          this.numberOfStorey = draft.num_storey?.toString() || "";
+          this.totalFloorArea = draft.total_floor_area?.toString() || "";
+          this.lotArea = draft.lot_area?.toString() || "";
+
+          // Load costs
+          this.costBuilding = this.formatCurrency(draft.building_cost);
+          this.costElectrical = this.formatCurrency(draft.electrical_cost);
+          this.costMechanical = this.formatCurrency(draft.mechanical_cost);
+          this.costElectronics = this.formatCurrency(draft.electronic_cost);
+          this.costPlumbing = this.formatCurrency(draft.plumbing_cost);
+
+          // Load dates
+          if (draft.construction_date) {
+            this.proposedDate = new Date(draft.construction_date)
+              .toISOString()
+              .split("T")[0];
+          }
+          if (draft.completion_date) {
+            this.expectedDate = new Date(draft.completion_date)
+              .toISOString()
+              .split("T")[0];
+          }
+
+          this.snackbarMessage = "Draft loaded successfully!";
+          this.snackbarColor = "info";
+          this.snackbar = true;
+        }
+      } catch (error) {
+        console.error("Error loading draft:", error);
+        // Don't show error to user - just log it
+      }
+    },
+
+    async loadConstructionSiteData(siteId) {
+      try {
+        const result = await constructionSiteService.getById(siteId);
+        if (result.success && result.data) {
+          const site = result.data.data;
+          this.lotNo = site.bpacs_lot_no || "";
+          this.blkNo = site.bpacs_blk_no || "";
+          this.street = site.bpacs_street || "";
+          this.tctNo = site.bpacs_tct_no || "";
+          this.taxDecNo = site.bpacs_tax_dec_no || "";
+
+          // Set barangay if available
+          if (site.bpacs_brgy_id) {
+            // Wait for barangays to load
+            await new Promise((resolve) => {
+              const checkBarangays = setInterval(() => {
+                if (this.barangays.length > 0) {
+                  clearInterval(checkBarangays);
+                  resolve();
+                }
+              }, 100);
+            });
+            this.barangay = site.bpacs_brgy_id;
+          }
+        }
+      } catch (error) {
+        console.error("Error loading construction site data:", error);
+      }
+    },
+
+    formatCurrency(value) {
+      if (!value) return "";
+      return parseFloat(value).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    },
+
     async fetchBarangays() {
       this.loadingBarangays = true;
       try {
@@ -863,6 +1012,31 @@ export default defineComponent({
       }
     },
 
+    setSampleData() {
+      // Set sample data after a short delay to ensure reference data is loaded
+      setTimeout(() => {
+        // Set first barangay if available
+        if (this.barangays.length > 0) {
+          this.barangay = this.barangays[0].brgy_id;
+        }
+
+        // Set first ownership type if available
+        if (this.ownershipTypes.length > 0) {
+          this.ownershipType = this.ownershipTypes[0];
+        }
+
+        // Set first work scope type if available
+        if (this.workScopeTypes.length > 0) {
+          this.workScopeType = this.workScopeTypes[0].ws_type_id;
+        }
+
+        // Set first occupancy group if available
+        if (this.occupancyUseGroups.length > 0) {
+          this.selectedGroup = this.occupancyUseGroups[0].ou_group_id;
+        }
+      }, 1000);
+    },
+
     getSelectedBrgyCode() {
       const selectedBarangay = this.barangays.find(
         (brgy) => brgy.brgy_id === this.barangay
@@ -870,7 +1044,12 @@ export default defineComponent({
       return selectedBarangay ? selectedBarangay.brgy_code : null;
     },
     getOwnershipTypeId() {
-      return this.ownershipType ? this.ownershipType.ot_id : null;
+      // If enterprise, use selected ownership type
+      if (this.is_enterprise && this.ownershipType) {
+        return this.ownershipType;
+      }
+      // If not enterprise (individual), use default ownership type '01' for Individual
+      return "01"; // Default to Individual ownership
     },
 
     async saveConstructionSite() {
@@ -895,20 +1074,12 @@ export default defineComponent({
           tax_dec_no: this.taxDecNo,
           street: this.street,
           brgy_code: brgyCode,
+          applicant_owned: !this.is_enterprise,
         };
 
-        const response = await fetch(
-          "http://localhost:3000/api/bpa-construction-site",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(constructionSiteData),
-          }
+        const result = await constructionSiteService.create(
+          constructionSiteData
         );
-
-        const result = await response.json();
 
         if (!result.success) {
           throw new Error(
@@ -917,11 +1088,56 @@ export default defineComponent({
         }
 
         // Store construction site ID for later use
-        localStorage.setItem("bpac_site_id", result.data.bpac_site_id);
+        const siteId = result.data.data.bpac_site_id;
+        this.draftBpacSiteId = siteId;
+        localStorage.setItem("bpac_site_id", siteId);
 
-        return result.data.bpac_site_id;
+        return siteId;
       } catch (error) {
         console.error("Error saving construction site:", error);
+        throw error;
+      }
+    },
+
+    async updateConstructionSite(siteId) {
+      try {
+        const applicantId = localStorage.getItem("applicant_id");
+        if (!applicantId) {
+          throw new Error(
+            "Applicant ID not found. Please complete Step 1 first."
+          );
+        }
+
+        const brgyCode = this.getSelectedBrgyCode();
+        if (!brgyCode) {
+          throw new Error("Invalid barangay selection");
+        }
+
+        const constructionSiteData = {
+          applicant_id: parseInt(applicantId),
+          lot_no: this.lotNo,
+          block_no: this.blkNo,
+          tct_no: this.tctNo,
+          tax_dec_no: this.taxDecNo,
+          street: this.street,
+          brgy_code: brgyCode,
+          applicant_owned: !this.is_enterprise,
+        };
+
+        const result = await constructionSiteService.update(
+          siteId,
+          constructionSiteData
+        );
+
+        if (!result.success) {
+          throw new Error(
+            result.message || "Failed to update construction site information"
+          );
+        }
+
+        return siteId;
+      } catch (error) {
+        console.error("Error updating construction site:", error);
         throw error;
       }
     },
@@ -936,11 +1152,100 @@ export default defineComponent({
           return false;
         }
 
-        // Save construction site first
-        const siteId = await this.saveConstructionSite();
+        // Save or update construction site first
+        const siteId = this.draftBpacSiteId
+          ? await this.updateConstructionSite(this.draftBpacSiteId)
+          : await this.saveConstructionSite();
+
+        // Get applicant ID
+        const applicantId = localStorage.getItem("applicant_id");
+        if (!applicantId) {
+          throw new Error(
+            "Applicant ID not found. Please complete Step 1 first."
+          );
+        }
+
+        // Get applicant government ID from localStorage if available
+        const applicantGovId = localStorage.getItem("applicant_gov_id");
+
+        // Helper function to clean currency values
+        const cleanCurrency = (value) => {
+          if (!value) return 0;
+          return parseFloat(value.toString().replace(/,/g, "")) || 0;
+        };
+
+        // Generate area number based on barangay code and timestamp
+        const brgyCode = this.getSelectedBrgyCode();
+        const areaNo = `AREA-${brgyCode}-${Date.now().toString().slice(-6)}`;
+
+        // Set lot owner fields to null for now (will be updated in signatories step)
+        const lotOwnerId = null;
+        const lotOwnerGovId = null;
+
+        // Prepare BPA construction data
+        const bpaConstructionData = {
+          application_no:
+            localStorage.getItem("application_no") || `APP-${Date.now()}`,
+          applicant_id: parseInt(applicantId),
+          area_no: areaNo,
+          ownership_type_id: this.getOwnershipTypeId(),
+          bpac_site_id: siteId,
+          work_scope_type_id: this.workScopeType,
+          workscope_remarks: this.remarks || null,
+          ou_type_id: this.selectedCategory || null,
+          ou_type_others: this.otherDetails || null,
+          num_units: parseInt(this.numberOfUnits) || null,
+          num_storey: parseInt(this.numberOfStorey) || null,
+          total_floor_area: parseFloat(this.totalFloorArea) || null,
+          lot_area: parseFloat(this.lotArea) || null,
+          building_cost: cleanCurrency(this.costBuilding),
+          electrical_cost: cleanCurrency(this.costElectrical),
+          electrical_equipment_cost: 0,
+          mechanical_cost: cleanCurrency(this.costMechanical),
+          mechanical_equipment_cost: 0,
+          electronic_cost: cleanCurrency(this.costElectronics),
+          electronic_equipment_cost: 0,
+          plumbing_cost: cleanCurrency(this.costPlumbing),
+          plumbing_equipment_cost: 0,
+          construction_date: this.proposedDate || null,
+          completion_date: this.expectedDate || null,
+          applicant_gov_id: applicantGovId ? parseInt(applicantGovId) : null,
+          bpacs_lot_owner_id: lotOwnerId,
+          bpacs_lo_gov_id: lotOwnerGovId,
+          bpac_supervisor_id: null,
+          applicant_owned: !this.is_enterprise,
+          is_draft: true, // Always save as draft
+        };
+
+        let constructionResult;
+        if (this.draftBpacId) {
+          // Update existing draft
+          constructionResult = await bpaConstructionService.update(
+            this.draftBpacId,
+            bpaConstructionData
+          );
+        } else {
+          // Create new draft
+          constructionResult = await bpaConstructionService.create(
+            bpaConstructionData
+          );
+        }
+
+        if (!constructionResult.success) {
+          throw new Error(
+            constructionResult.message ||
+              "Failed to save BPA construction information"
+          );
+        }
+
+        // Store construction ID for later use
+        const bpacId = this.draftBpacId || constructionResult.data.data.bpac_id;
+        this.draftBpacId = bpacId;
+        localStorage.setItem("bpac_id", bpacId);
 
         // Store additional construction information in localStorage for next steps
-        const constructionData = {
+        const constructionInfo = {
+          bpac_id: bpacId,
           bpac_site_id: siteId,
           ownership_type_id: this.getOwnershipTypeId(),
           scope_of_work: this.workScopeType,
@@ -948,15 +1253,16 @@ export default defineComponent({
             ? this.otherDetails
             : null,
           tax_declaration_no: this.taxDecNo,
+          is_enterprise: this.is_enterprise,
         };
 
         localStorage.setItem(
           "construction_info",
-          JSON.stringify(constructionData)
+          JSON.stringify(constructionInfo)
         );
 
-        this.successMessage = "Construction information saved successfully!";
-        this.snackbarMessage = "Construction information saved successfully!";
+        this.successMessage = "Construction information saved as draft!";
+        this.snackbarMessage = "Construction information saved as draft!";
         this.snackbarColor = "success";
         this.snackbar = true;
         this.isSaved = true;
@@ -1022,12 +1328,8 @@ export default defineComponent({
     async nextStep() {
       const saved = await this.saveConstructionInformation();
       if (saved) {
-        // Delay navigation slightly to show success message
-        setTimeout(() => {
-          const nextStep = parseInt(this.formStepValue) + 1;
-          if (nextStep === 3)
-            this.$router.push("/bpam/applicant/unified-form/signatories");
-        }, 1000);
+        // Redirect to signatories step
+        this.$router.push("/bpam/applicant/unified-form/signatories");
       }
     },
 

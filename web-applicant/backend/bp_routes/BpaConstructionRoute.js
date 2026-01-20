@@ -4,7 +4,8 @@ import {
     getBpaConstructionById,
     updateBpaConstruction,
     getBpaConstructionsByApplicant,
-    getBpaConstructionByApplicationNo
+    getBpaConstructionByApplicationNo,
+    getLatestDraftByApplicant
 } from "../bp_controllers/BpaConstructionController.js";
 
 const router = express.Router();
@@ -108,6 +109,27 @@ router.get("/applicant/:applicantId", async (req, res) => {
 });
 
 /**
+ * @route   GET /api/bpa-construction/applicant/:applicantId/draft
+ * @desc    Get the latest draft for an applicant
+ * @access  Public
+ */
+router.get("/applicant/:applicantId/draft", async (req, res) => {
+    try {
+        const draft = await getLatestDraftByApplicant(req.params.applicantId);
+        
+        res.status(200).json({
+            success: true,
+            data: draft
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+/**
  * @route   GET /api/bpa-construction/application/:applicationNo
  * @desc    Get BPA construction by application number
  * @access  Public
@@ -126,6 +148,27 @@ router.get("/application/:applicationNo", async (req, res) => {
         res.status(200).json({
             success: true,
             data: construction
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+/**
+ * @route   GET /api/bpa-construction/draft/:applicantId
+ * @desc    Get the latest draft for an applicant
+ * @access  Public
+ */
+router.get("/draft/:applicantId", async (req, res) => {
+    try {
+        const draft = await getLatestDraftByApplicant(req.params.applicantId);
+        
+        res.status(200).json({
+            success: true,
+            data: draft
         });
     } catch (error) {
         res.status(500).json({

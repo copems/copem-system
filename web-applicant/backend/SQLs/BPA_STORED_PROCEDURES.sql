@@ -572,3 +572,27 @@ END$$
 
 DELIMITER ;
 
+DELIMITER $$
+
+CREATE PROCEDURE sp_get_applicant_details_by_user_id(
+    IN p_user_id INTEGER
+)
+BEGIN
+    SELECT 
+        pa.applicant_id,
+        pa.username,
+        pa.contact_no,
+        pa.tin_no,
+        pa.brgy_code,
+        pa.house_no,
+        pa.street,
+        ua.user_id,
+        ua.account_type,
+        ua.is_active
+    FROM Permit_Applicant pa
+    INNER JOIN User_Account ua ON pa.username = ua.username
+    WHERE ua.user_id = p_user_id;
+END$$
+
+DELIMITER ;
+

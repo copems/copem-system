@@ -3,6 +3,7 @@ import {
     savePermitApplicant,
     getPermitApplicantById,
     getPermitApplicantByUserId,
+    getPermitApplicantByUsername,
     getAllPermitApplicants,
     updatePermitApplicant,
     getPermitApplicantDetails
@@ -37,13 +38,16 @@ router.get("/", async (req, res) => {
  */
 router.post("/", async (req, res) => {
     try {
+        console.log('[POST /api/permit-applicant] Request body:', JSON.stringify(req.body, null, 2));
         const applicantId = await savePermitApplicant(req.body);
+        console.log('[POST /api/permit-applicant] Created applicant_id:', applicantId);
         res.status(201).json({
             success: true,
             message: "Permit applicant created successfully",
             data: { applicant_id: applicantId }
         });
     } catch (error) {
+        console.error('[POST /api/permit-applicant] Error:', error.message);
         res.status(500).json({
             success: false,
             message: error.message
@@ -64,6 +68,62 @@ router.get("/user/:userId", async (req, res) => {
             return res.status(404).json({
                 success: false,
                 message: "Permit applicant not found for this user"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: applicant
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+/**
+ * @route   GET /api/permit-applicant/username/:username
+ * @desc    Get permit applicant by username (for checking existing draft)
+ * @access  Public
+ */
+router.get("/username/:username", async (req, res) => {
+    try {
+        const applicant = await getPermitApplicantByUsername(req.params.username);
+        
+        if (!applicant) {
+            return res.status(404).json({
+                success: false,
+                message: "Permit applicant not found for this username"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: applicant
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+/**
+ * @route   GET /api/permit-applicant/id/:id
+ * @desc    Get permit applicant by ID (for verifying applicant exists)
+ * @access  Public
+ */
+router.get("/id/:id", async (req, res) => {
+    try {
+        const applicant = await getPermitApplicantById(req.params.id);
+        
+        if (!applicant) {
+            return res.status(404).json({
+                success: false,
+                message: "Permit applicant not found"
             });
         }
 
