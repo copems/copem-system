@@ -34,12 +34,6 @@ export const opamRoutes = [
         component: () =>
           import("@/pages/applicant/OPAM/OPapplication/OPsignatories.vue"),
       },
-      {
-        path: "op-type",
-        name: "OPtype",
-        component: () =>
-          import("@/pages/applicant/OPAM/OPapplication/OPtype.vue"),
-      },
     ],
   },
 
@@ -70,6 +64,11 @@ export const opamRoutes = [
         name: "OPFormsSection",
         component: () =>
           import("@/pages/applicant/OPAM/OPforms/FormsSection.vue"),
+      },
+      {
+        path: "testing",
+        name: "testing",
+        component: () => import("@/pages/applicant/OPAM/OPforms/testing.vue"),
       },
     ],
   },

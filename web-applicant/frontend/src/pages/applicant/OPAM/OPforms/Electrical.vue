@@ -1972,10 +1972,6 @@ export default {
   padding-top: 0;
 }
 
-.main-content-padded {
-  padding-top: 88px; /* Height of the header */
-}
-
 .save-btn-custom {
   background-color: #0000cd !important;
   color: white !important;

@@ -7,11 +7,7 @@
             <v-card
               flat
               class="pa-4 quick-guide-card d-flex flex-column justify-space-between elevation-2"
-              style="
-                border-right: 1px solid #e0e0e0;
-                height: 100%;
-                background: #fcfcff;
-              "
+              style="border-right: 1px solid #e0e0e0; height: 100%; background: #fcfcff"
             >
               <div>
                 <h4 class="mb-2 text-h5 font-weight-bold text-blue-darken-3">
@@ -51,19 +47,7 @@
 
               <v-spacer />
 
-              <div class="mt-4">
-                <v-btn
-                  block
-                  color="white"
-                  variant="flat"
-                  to="/login"
-                  class="text-capitalize font-weight-bold logout-btn-white"
-                  @click="handleLogout"
-                >
-                  <v-icon left color="black">mdi-logout</v-icon>
-                  <span style="color: #222; font-weight: bold">Logout</span>
-                </v-btn>
-              </div>
+              <div class="mt-4"></div>
             </v-card>
           </v-col>
 
@@ -86,9 +70,7 @@
                       :value="step.value"
                       :complete="formStepValue > step.value"
                       :color="
-                        formStepValue >= step.value
-                          ? 'blue-darken-1'
-                          : 'grey lighten-2'
+                        formStepValue >= step.value ? 'blue-darken-1' : 'grey lighten-2'
                       "
                       class="stepper-item-custom"
                     />
@@ -105,7 +87,121 @@
                 </v-stepper-header>
               </v-stepper>
 
-              <v-form @submit.prevent="validateAndProceed">
+              <v-form ref="form" @submit.prevent="validateAndProceed">
+                <!-- SELECT APPLICATION Card -->
+                <v-card
+                  class="my-2 pa-4 card-shadow"
+                  :class="{ 'error-card-wrapper': validationFailed }"
+                >
+                  <v-card-title class="text-h6 card-title-responsive mb-2">
+                    SELECT APPLICATION
+                  </v-card-title>
+                  <v-divider class="mb-4"></v-divider>
+                  <v-card-text>
+                    <v-card
+                      class="mb-4 card-section"
+                      :class="{
+                        'error-section':
+                          validationFailed && selectedApplicationType === null,
+                      }"
+                    >
+                      <v-card-title
+                        class="text-h6 card-title-responsive section-title"
+                        :class="{
+                          'text-red-darken-1':
+                            validationFailed && selectedApplicationType === null,
+                        }"
+                      >
+                        <v-icon
+                          left
+                          :color="validationFailed ? 'red-darken-1' : 'blue-darken-3'"
+                          class="mr-2"
+                          >mdi-format-list-bulleted</v-icon
+                        >
+                        TYPE OF APPLICATION
+                      </v-card-title>
+                      <v-divider
+                        :color="validationFailed ? 'red-lighten-3' : 'grey-lighten-2'"
+                      ></v-divider>
+                      <v-card-text>
+                        <v-radio-group
+                          v-model="selectedApplicationType"
+                          :rules="[(v) => !!v || 'Please select an application type.']"
+                          mandatory
+                          class="mt-0 pt-0"
+                          :error="validationFailed"
+                          hide-details
+                        >
+                          <v-row>
+                            <v-col cols="12" md="6">
+                              <v-card
+                                :class="{
+                                  'card-selected': selectedApplicationType === 'partial',
+                                }"
+                                @click="selectedApplicationType = 'partial'"
+                                class="pa-4 custom-radio-card"
+                                flat
+                              >
+                                <div class="d-flex align-center">
+                                  <v-radio :value="'partial'"></v-radio>
+                                  <div class="flex-grow-1 ml-2">
+                                    <div class="text-h6 radio-card-title-responsive">
+                                      Partial
+                                    </div>
+                                  </div>
+                                  <v-icon
+                                    :color="
+                                      selectedApplicationType === 'partial'
+                                        ? 'blue'
+                                        : 'grey'
+                                    "
+                                    >mdi-home</v-icon
+                                  >
+                                </div>
+                              </v-card>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                              <v-card
+                                :class="{
+                                  'card-selected': selectedApplicationType === 'complete',
+                                }"
+                                @click="selectedApplicationType = 'complete'"
+                                class="pa-4 custom-radio-card"
+                                flat
+                              >
+                                <div class="d-flex align-center">
+                                  <v-radio :value="'complete'"></v-radio>
+                                  <div class="flex-grow-1 ml-2">
+                                    <div class="text-h6 radio-card-title-responsive">
+                                      Full
+                                    </div>
+                                  </div>
+                                  <v-icon
+                                    :color="
+                                      selectedApplicationType === 'complete'
+                                        ? 'blue'
+                                        : 'grey'
+                                    "
+                                    >mdi-truck</v-icon
+                                  >
+                                </div>
+                              </v-card>
+                            </v-col>
+                          </v-row>
+                        </v-radio-group>
+                      </v-card-text>
+                    </v-card>
+                    <v-row v-if="validationFailed && selectedApplicationType === null">
+                      <v-col cols="12" class="pt-0 pb-2">
+                        <span class="text-caption text-red-darken-1">
+                          Please select an application type.
+                        </span>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+
+                <!-- OWNER/APPLICANT DETAILS Card -->
                 <v-card class="my-2 pa-4 card-shadow">
                   <v-card-title class="text-h6 card-title-responsive mb-2">
                     OWNER/APPLICANT DETAILS
@@ -186,11 +282,7 @@
                 </v-card>
 
                 <div class="d-flex justify-end mt-6 mb-8">
-                  <v-btn
-                    class="btn-rounded mr-2"
-                    variant="tonal"
-                    @click="goBack"
-                  >
+                  <v-btn class="btn-rounded mr-2" variant="tonal" @click="goBack">
                     <v-icon left>mdi-arrow-left</v-icon>Back
                   </v-btn>
                   <v-btn
@@ -218,12 +310,11 @@ export default defineComponent({
   name: "OccupancyOwnerPage",
   data() {
     return {
-      formStepValue: 2,
+      formStepValue: 1,
       formSteps: [
-        { title: "Application", value: 1 },
-        { title: "Owner/Applicant", value: 2 },
-        { title: "Application Details", value: 3 },
-        { title: "Signatories Details", value: 4 },
+        { title: "Owner/Applicant", value: 1 },
+        { title: "Application Details", value: 2 },
+        { title: "Signatories Details", value: 3 },
       ],
       sidebarStep: 0,
       sidebarSteps: [
@@ -239,6 +330,8 @@ export default defineComponent({
         city: "",
         contactNo: "",
       },
+      selectedApplicationType: null,
+      validationFailed: false,
     };
   },
   methods: {
@@ -246,7 +339,7 @@ export default defineComponent({
       this.$router.push("/opam/op-application/op-location");
     },
     goBack() {
-      this.$router.push("/opam/op-application/op-type");
+      this.$router.push("/opam/op-application/op-apply");
     },
     handleLogout() {
       this.$router.push({ name: "Login" });
@@ -308,6 +401,7 @@ export default defineComponent({
 
 .content-area {
   flex: 1;
+  overflow: auto;
 }
 
 .main-content-bg {
@@ -401,5 +495,40 @@ export default defineComponent({
   height: 100vh;
   overflow: hidden !important;
   padding-top: 88px;
+}
+
+.error-card-wrapper {
+  border: 1.5px solid #ef9a9a !important;
+}
+
+.error-section {
+  background: #ffebee !important;
+  border: 1px solid #e57373 !important;
+}
+
+.custom-radio-card {
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  border-radius: 10px;
+}
+
+.custom-radio-card:hover {
+  border-color: #bbdefb;
+  box-shadow: 0 0 8px rgba(25, 118, 210, 0.1);
+}
+
+.card-selected {
+  border: 2px solid #1976d2;
+  box-shadow: 0 0 12px rgba(25, 118, 210, 0.2);
+  background-color: #e3f2fd !important;
+}
+
+.radio-card-title-responsive {
+  font-size: 1rem;
+}
+
+.card-title-responsive {
+  font-size: 1rem;
 }
 </style>
