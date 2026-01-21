@@ -1,4 +1,4 @@
-import pool from "../congig/database.js";
+import pool from "../config/database.js";
 
 class LotOwnerGovId {
     constructor(log_id, bpacs_lot_owner_id) {

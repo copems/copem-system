@@ -5,7 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:migrate": "node migrate-sql.js",
+    "db:reset": "node reset-db.js",
+    "db:reset-migrate": "node reset-db.js && node migrate-sql.js",
+    "db:verify": "node verify-migration.js",
+    "db:seed": "node create-sample-users.js"
   },
   "keywords": [],
   "author": "",

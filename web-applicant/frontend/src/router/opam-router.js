@@ -1,27 +1,75 @@
-// occupancy permit application module (OPAM) router 
-
-const opamRoutes = [
-  // Add OPAM routes here when needed
-  // Example structure:
+export const opamRoutes = [
+  // OPAM Application
   {
-    path: "/opam/",
+    path: "/opam/op-application/",
     component: () => import("@/layouts/ApplicantLayout.vue"),
     children: [
       {
-        path: "bp-inquiry",
-        name: "BpInquiry",
-        component: () => import("@/pages/applicant/OPAM/BpInquiry.vue"),
-      },{
-        path: "forgot-password",
-        name: "ForgotPW",
-        component: () => import("@/pages/applicant/OPAM/ForgotPW.vue"),
-      },{
-        path: "op-inquiry",
-        name: "OpInquiry",
-        component: () => import("@/pages/applicant/OPAM/OpInquiry.vue"),
-      }
+        path: "op-apply",
+        name: "OPapply",
+        component: () =>
+          import("@/pages/applicant/OPAM/OPapplication/Opapply.vue"),
+      },
+      {
+        path: "op-location",
+        name: "OPlocation",
+        component: () =>
+          import("@/pages/applicant/OPAM/OPapplication/Oploaction.vue"),
+      },
+      {
+        path: "op-owner",
+        name: "OPowner",
+        component: () =>
+          import("@/pages/applicant/OPAM/OPapplication/OPowner.vue"),
+      },
+      {
+        path: "op-portal",
+        name: "OPportal",
+        component: () =>
+          import("@/pages/applicant/OPAM/OPapplication/OPportal.vue"),
+      },
+      {
+        path: "op-signatories",
+        name: "OPsignatories",
+        component: () =>
+          import("@/pages/applicant/OPAM/OPapplication/OPsignatories.vue"),
+      },
+    ],
+  },
+
+  // OPAM Forms
+  {
+    path: "/opam/op-forms/",
+    component: () => import("@/layouts/ApplicantLayout.vue"),
+    children: [
+      {
+        path: "completion",
+        name: "OPCompletion",
+        component: () =>
+          import("@/pages/applicant/OPAM/OPforms/Completion.vue"),
+      },
+      {
+        path: "electrical",
+        name: "OPElectrical",
+        component: () =>
+          import("@/pages/applicant/OPAM/OPforms/Electrical.vue"),
+      },
+      {
+        path: "unified",
+        name: "OPUnified",
+        component: () => import("@/pages/applicant/OPAM/OPforms/Unified.vue"),
+      },
+      {
+        path: "forms-section",
+        name: "OPFormsSection",
+        component: () =>
+          import("@/pages/applicant/OPAM/OPforms/FormsSection.vue"),
+      },
+      {
+        path: "testing",
+        name: "testing",
+        component: () => import("@/pages/applicant/OPAM/OPforms/testing.vue"),
+      },
     ],
   },
 ];
-
-export default opamRoutes;

@@ -27,16 +27,20 @@ export const savePermitApplicant = async (applicantData) => {
         street
     } = applicantData;
 
+    let conn;
     try {
-        const [result] = await pool.query(
-            `CALL sp_InsertPermitApplicant(?, ?, ?, ?, ?, ?, ?, ?, ?, @p_applicant_id)`,
+        conn = await pool.getConnection();
+        const result = await conn.query(
+            `INSERT INTO Permit_Applicant (user_id, lastname, firstname, middlename, contact_no, tin_no, brgy_code, house_no, street)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [user_id, lastname, firstname, middlename, contact_no, tin_no, brgy_code, house_no, street]
         );
 
-        const [rows] = await pool.query('SELECT @p_applicant_id AS applicant_id');
-        return rows[0].applicant_id;
+        return Number(result.insertId);
     } catch (error) {
         throw new Error(`Error saving permit applicant: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };
 
@@ -46,15 +50,19 @@ export const savePermitApplicant = async (applicantData) => {
  * @returns {Promise<Object|null>} The applicant record or null if not found
  */
 export const getPermitApplicantById = async (applicantId) => {
+    let conn;
     try {
-        const [rows] = await pool.query(
-            `CALL sp_GetPermitApplicantById(?)`,
+        conn = await pool.getConnection();
+        const rows = await conn.query(
+            `SELECT * FROM Permit_Applicant WHERE applicant_id = ?`,
             [applicantId]
         );
 
-        return rows[0]?.[0] || null;
+        return rows[0] || null;
     } catch (error) {
         throw new Error(`Error fetching permit applicant: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };
 
@@ -77,15 +85,19 @@ export const updatePermitApplicant = async (applicantId, applicantData) => {
         street
     } = applicantData;
 
+    let conn;
     try {
-        await pool.query(
-            `CALL sp_UpdatePermitApplicant(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [applicantId, user_id, lastname, firstname, middlename, contact_no, tin_no, brgy_code, house_no, street]
+        conn = await pool.getConnection();
+        await conn.query(
+            `UPDATE Permit_Applicant SET user_id = ?, lastname = ?, firstname = ?, middlename = ?, contact_no = ?, tin_no = ?, brgy_code = ?, house_no = ?, street = ? WHERE applicant_id = ?`,
+            [user_id, lastname, firstname, middlename, contact_no, tin_no, brgy_code, house_no, street, applicantId]
         );
 
         return true;
     } catch (error) {
         throw new Error(`Error updating permit applicant: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };
 
@@ -95,15 +107,19 @@ export const updatePermitApplicant = async (applicantId, applicantData) => {
  * @returns {Promise<Object|null>} The applicant record or null if not found
  */
 export const getPermitApplicantByUserId = async (userId) => {
+    let conn;
     try {
-        const [rows] = await pool.query(
-            `SELECT * FROM tbl_permit_applicant WHERE user_id = ? LIMIT 1`,
+        conn = await pool.getConnection();
+        const rows = await conn.query(
+            `SELECT * FROM Permit_Applicant WHERE user_id = ? LIMIT 1`,
             [userId]
         );
 
         return rows[0] || null;
     } catch (error) {
         throw new Error(`Error fetching permit applicant by user ID: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };
 
@@ -112,13 +128,17 @@ export const getPermitApplicantByUserId = async (userId) => {
  * @returns {Promise<Array>} Array of all applicant records
  */
 export const getAllPermitApplicants = async () => {
+    let conn;
     try {
-        const [rows] = await pool.query(
-            `SELECT * FROM tbl_permit_applicant ORDER BY applicant_id DESC`
+        conn = await pool.getConnection();
+        const rows = await conn.query(
+            `SELECT * FROM Permit_Applicant ORDER BY applicant_id DESC`
         );
 
         return rows;
     } catch (error) {
         throw new Error(`Error fetching all permit applicants: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
     }
 };

@@ -8,6 +8,13 @@ import cityMunRoutes from './gb_routes/CityMunRoute.js';
 import barangayRoutes from './gb_routes/BarangayRoute.js';
 import permitApplicantRoutes from './gb_routes/PermitApplicantRoute.js';
 import applicantGovIdRoutes from './gb_routes/ApplicantGovIdRoute.js';
+import bpaConstructionRoutes from './bp_routes/BpaConstructionRoute.js';
+import bpaConstructionSiteRoutes from './bp_routes/BpaConstructionSiteRoute.js';
+import bpaCsLotOwnerRoutes from './bp_routes/BpaCsLotOwnerRoute.js';
+import bpacSupervisorsRoutes from './bp_routes/BpacSupervisorsRoute.js';
+import bpApplicationStatusRoutes from './bp_routes/BpApplicationStatusRoute.js';
+import ownershipTypeRoutes from './bp_routes/OwnershipTypeRoute.js';
+import workScopeTypeRoutes from './bp_routes/WorkScopeTypeRoute.js';
 
 dotenv.config();
 
@@ -47,6 +54,27 @@ app.use('/api/permit-applicant', permitApplicantRoutes);
 
 // Applicant Gov ID routes
 app.use('/api/applicant-gov-id', applicantGovIdRoutes);
+
+// BPA Construction routes
+app.use('/api/bpa-construction', bpaConstructionRoutes);
+
+// BPA Construction Site routes
+app.use('/api/bpa-construction-site', bpaConstructionSiteRoutes);
+
+// BPA CS Lot Owner routes
+app.use('/api/bpa-cs-lot-owner', bpaCsLotOwnerRoutes);
+
+// BPAC Supervisors routes
+app.use('/api/bpac-supervisors', bpacSupervisorsRoutes);
+
+// BP Application Status routes
+app.use('/api/bp-application-status', bpApplicationStatusRoutes);
+
+// Ownership Type routes
+app.use('/api/ownership-type', ownershipTypeRoutes);
+
+// Work Scope Type routes
+app.use('/api/work-scope-type', workScopeTypeRoutes);
 
 const PORT = process.env.PORT || 3000;  
 app.listen(PORT, () => {
