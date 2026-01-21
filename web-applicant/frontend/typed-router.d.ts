@@ -44,6 +44,7 @@ declare module 'vue-router/auto-routes' {
     '/applicant/OPAM/OPforms/Completion': RouteRecordInfo<'/applicant/OPAM/OPforms/Completion', '/applicant/OPAM/OPforms/Completion', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPforms/Electrical': RouteRecordInfo<'/applicant/OPAM/OPforms/Electrical', '/applicant/OPAM/OPforms/Electrical', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPforms/FormsSection': RouteRecordInfo<'/applicant/OPAM/OPforms/FormsSection', '/applicant/OPAM/OPforms/FormsSection', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPforms/testing': RouteRecordInfo<'/applicant/OPAM/OPforms/testing', '/applicant/OPAM/OPforms/testing', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPforms/Unified': RouteRecordInfo<'/applicant/OPAM/OPforms/Unified', '/applicant/OPAM/OPforms/Unified', Record<never, never>, Record<never, never>>,
     '/applicant/Opinquiry': RouteRecordInfo<'/applicant/Opinquiry', '/applicant/Opinquiry', Record<never, never>, Record<never, never>>,
     '/auth/ForgotPW': RouteRecordInfo<'/auth/ForgotPW', '/auth/ForgotPW', Record<never, never>, Record<never, never>>,
@@ -167,6 +168,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/applicant/OPAM/OPforms/FormsSection.vue': {
       routes: '/applicant/OPAM/OPforms/FormsSection'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPforms/testing.vue': {
+      routes: '/applicant/OPAM/OPforms/testing'
       views: never
     }
     'src/pages/applicant/OPAM/OPforms/Unified.vue': {

@@ -398,7 +398,7 @@
             @click="closeDialog"
             class="text-capitalize font-weight-bold"
             size="large"
-            to="/opam/FormsSection"
+            to="/opam/op-forms/forms-section"
           >
             SAVE
           </v-btn>

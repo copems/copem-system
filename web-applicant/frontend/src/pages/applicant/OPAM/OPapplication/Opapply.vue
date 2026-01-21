@@ -123,35 +123,6 @@ body,
 
                 <v-divider class="my-4"></v-divider>
 
-                <v-row dense class="mb-4">
-                  <v-col cols="12" sm="6">
-                    <div
-                      class="text-caption font-weight-medium text-uppercase text-grey-darken-1 mb-1"
-                    >
-                      PERMIT STATUS
-                    </div>
-                    <div class="d-flex align-center text-body-1" style="color: #2e7d32">
-                      <v-icon size="10" class="mr-2" color="#2e7d32">mdi-circle</v-icon>
-                      <span class="font-weight-bold" style="color: #2e7d32"
-                        >Active & Valid</span
-                      >
-                    </div>
-                  </v-col>
-
-                  <v-col cols="12" sm="6">
-                    <div
-                      class="text-caption font-weight-medium text-uppercase text-grey-darken-1 mb-1"
-                    >
-                      VALIDITY PERIOD
-                    </div>
-                    <div class="text-body-1 text-grey-darken-3 font-weight-medium">
-                      March 20, 2026
-                    </div>
-                  </v-col>
-                </v-row>
-
-                <v-divider class="my-4"></v-divider>
-
                 <div class="mb-6">
                   <div
                     class="text-caption font-weight-medium text-uppercase text-grey-darken-1 mb-1"

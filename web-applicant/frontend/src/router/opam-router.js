@@ -65,6 +65,11 @@ export const opamRoutes = [
         component: () =>
           import("@/pages/applicant/OPAM/OPforms/FormsSection.vue"),
       },
+      {
+        path: "testing",
+        name: "testing",
+        component: () => import("@/pages/applicant/OPAM/OPforms/testing.vue"),
+      },
     ],
   },
 ];
