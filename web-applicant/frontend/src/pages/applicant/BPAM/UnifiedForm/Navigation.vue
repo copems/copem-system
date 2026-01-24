@@ -68,19 +68,6 @@
         </v-card>
       </div>
       <v-spacer></v-spacer>
-      <div class="mt-4">
-        <v-btn
-          block
-          color="white"
-          outlined
-          to="/login"
-          class="text-capitalize font-weight-bold"
-          @click="handleLogout"
-        >
-          <v-icon left>mdi-logout</v-icon>
-          Logout
-        </v-btn>
-      </div>
     </v-card>
   </v-col>
 </template>

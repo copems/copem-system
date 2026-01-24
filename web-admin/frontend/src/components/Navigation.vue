@@ -34,7 +34,7 @@ const navItems = [
   {
     title: "Building Permit",
     icon: "mdi-home-city-outline",
-    to: "/bpam/testing/Administrative",
+    to: "/bpam/AA-approval/administrative",
   },
   {
     title: "Compliance Monitoring",

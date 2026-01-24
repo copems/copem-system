@@ -280,23 +280,12 @@
                 color="blue-darken-3"
                 class="btn-rounded"
                 elevation="2"
-                @click="saveForm"
+                @click="validateAndProceed"
                 variant="elevated"
                 :loading="saving"
                 :disabled="saving"
               >
-                {{ saving ? "Saving..." : isSaved ? "Update" : "Save" }}
-                <v-icon right>mdi-content-save</v-icon>
-              </v-btn>
-              <v-btn
-                v-if="isSaved"
-                color="green-darken-2"
-                class="btn-rounded"
-                elevation="2"
-                @click="proceedToNext"
-                variant="elevated"
-              >
-                Next
+                {{ saving ? "Saving..." : "Next" }}
                 <v-icon right>mdi-arrow-right</v-icon>
               </v-btn>
             </div>

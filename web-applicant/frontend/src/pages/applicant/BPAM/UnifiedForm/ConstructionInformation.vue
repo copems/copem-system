@@ -565,15 +565,14 @@ export default defineComponent({
 
       // Location Data
       barangay: null, // Will be set after fetching barangays
-      lotNo: "15",
-      blkNo: "3",
-      street: "Rizal Street",
-      cityMunicipality: "Naga City",
+      lotNo: "",
+      blkNo: "",
+      street: "",
+      cityMunicipality: "",
 
       // Lot Information
-      tctNo: "123456",
-      taxDecNo: "98765",
-
+      tctNo: "",
+      taxDecNo: "",
       // Feedback UI
       errorMessage: "",
       successMessage: "",
@@ -592,7 +591,7 @@ export default defineComponent({
       loadingWorkScopeTypes: false,
 
       otherDetails: "",
-      remarks: "New construction for residential building",
+      remarks: "",
 
       // Location Reference
       barangays: [],
@@ -641,18 +640,18 @@ export default defineComponent({
 
       // Project Details Fields
       occupancyClassified: "",
-      numberOfUnits: "4",
-      numberOfStorey: "2",
-      totalFloorArea: "250.50",
-      lotArea: "300.00",
-      costBuilding: "1,500,000.00",
-      costElectrical: "150,000.00",
-      costMechanical: "100,000.00",
-      costElectronics: "75,000.00",
-      costPlumbing: "80,000.00",
-      costOthers: "50,000.00",
-      proposedDate: "2026-02-15",
-      expectedDate: "2026-12-31",
+      numberOfUnits: "",
+      numberOfStorey: "",
+      totalFloorArea: "",
+      lotArea: "",
+      costBuilding: "",
+      costElectrical: "",
+      costMechanical: "",
+      costElectronics: "",
+      costPlumbing: "",
+      costOthers: "",
+      proposedDate: "",
+      expectedDate: "",
 
       // Sidebar Progress
       sidebarStep: 0,

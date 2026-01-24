@@ -1,13 +1,43 @@
 export const bpamRoutes = [
   // BPAM
   {
-    path: "/bpam/testing/",
+    path: "/bpam/AA-approval/",
     component: () => import("@/layouts/AdminLayout.vue"),
     children: [
       {
         path: "administrative",
         name: "administrative",
-        component: () => import("@/pages/Admin/BPAM/Administrative.vue"),
+        component: () => import("@/pages/Admin/BPAM/AAapproval/Administrative.vue"),
+      },
+      {
+        path: "approvedplans",
+        name: "approvedplans",
+        component: () => import("@/pages/Admin/BPAM/AAapproval/ApprovedPlans.vue"),
+      },
+    ],
+  },
+  // BPAM Evaluator
+  {
+    path: "/bpam/Plan-evaluator/",
+    component: () => import("@/layouts/OBOLayout.vue"),
+    children: [
+      {
+        path: "list-plan",
+        name: "ListPlan",
+        component: () =>
+          import("@/pages/Admin/BPAM/PlanEvaluator/ListPlan.vue"),
+      },
+      {
+        path: "plan-information",
+        name: "PlanInformation",
+        component: () =>
+          import("@/pages/Admin/BPAM/PlanEvaluator/PlanInformation.vue"),
+      },
+      {
+        path: "plan-evaluation",
+        name: "PlanEvaluation",
+        component: () =>
+          import("@/pages/Admin/BPAM/PlanEvaluator/PlanEvaluation.vue"),
       },
     ],
   },
