@@ -30,10 +30,10 @@ declare module 'vue-router/auto-routes' {
     '/applicant/BPAM/UnifiedForm/ApplicantInformation': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/ApplicantInformation', '/applicant/BPAM/UnifiedForm/ApplicantInformation', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/BPADetails': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/BPADetails', '/applicant/BPAM/UnifiedForm/BPADetails', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/ConstructionInformation': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/ConstructionInformation', '/applicant/BPAM/UnifiedForm/ConstructionInformation', Record<never, never>, Record<never, never>>,
-    '/applicant/BPAM/UnifiedForm/CoOccupancy': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/CoOccupancy', '/applicant/BPAM/UnifiedForm/CoOccupancy', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/Navigation': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/Navigation', '/applicant/BPAM/UnifiedForm/Navigation', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/PlanUpload': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/PlanUpload', '/applicant/BPAM/UnifiedForm/PlanUpload', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/Signatories': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/Signatories', '/applicant/BPAM/UnifiedForm/Signatories', Record<never, never>, Record<never, never>>,
+    '/applicant/BPAM/UnifiedForm/Stepper': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/Stepper', '/applicant/BPAM/UnifiedForm/Stepper', Record<never, never>, Record<never, never>>,
     '/applicant/Bpinquiry': RouteRecordInfo<'/applicant/Bpinquiry', '/applicant/Bpinquiry', Record<never, never>, Record<never, never>>,
     '/applicant/Homepage': RouteRecordInfo<'/applicant/Homepage', '/applicant/Homepage', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPapplication/Opapply': RouteRecordInfo<'/applicant/OPAM/OPapplication/Opapply', '/applicant/OPAM/OPapplication/Opapply', Record<never, never>, Record<never, never>>,
@@ -114,10 +114,6 @@ declare module 'vue-router/auto-routes' {
       routes: '/applicant/BPAM/UnifiedForm/ConstructionInformation'
       views: never
     }
-    'src/pages/applicant/BPAM/UnifiedForm/CoOccupancy.vue': {
-      routes: '/applicant/BPAM/UnifiedForm/CoOccupancy'
-      views: never
-    }
     'src/pages/applicant/BPAM/UnifiedForm/Navigation.vue': {
       routes: '/applicant/BPAM/UnifiedForm/Navigation'
       views: never
@@ -128,6 +124,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/applicant/BPAM/UnifiedForm/Signatories.vue': {
       routes: '/applicant/BPAM/UnifiedForm/Signatories'
+      views: never
+    }
+    'src/pages/applicant/BPAM/UnifiedForm/Stepper.vue': {
+      routes: '/applicant/BPAM/UnifiedForm/Stepper'
       views: never
     }
     'src/pages/applicant/Bpinquiry.vue': {

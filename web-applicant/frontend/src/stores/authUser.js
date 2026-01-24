@@ -2,17 +2,18 @@ import { defineStore } from 'pinia'
 
 export const useAuthUserStore = defineStore('authUser', {
   state: () => ({
-    user: null, // { first_name, last_name, ... }
+    user: null, // { first_name, middle_name, last_name, ... }
     token: null,
   }),
   getters: {
     isLoggedIn: (state) => !!state.token && !!state.user,
     userInitials: (state) => {
       if (!state.user) return ''
-      const { first_name = '', last_name = '' } = state.user
+      const { first_name = '', middle_name = '', last_name = '' } = state.user
       const first = first_name.trim()[0] || ''
+      const middle = middle_name.trim()[0] || ''
       const last = last_name.trim()[0] || ''
-      return (first + last).toUpperCase()
+      return (first + middle + last).toUpperCase()
     },
   },
   actions: {

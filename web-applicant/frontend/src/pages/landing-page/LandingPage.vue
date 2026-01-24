@@ -368,6 +368,27 @@ export default {
 };
 </script>
 
+<style>
+/* Global styles for scrolling - must be unscoped to work with Vuetify */
+.v-application {
+  overflow-y: auto !important;
+  height: 100% !important;
+}
+
+.v-application__wrap {
+  min-height: 100vh !important;
+  height: auto !important;
+}
+
+.v-main {
+  height: auto !important;
+}
+
+.v-main__wrap {
+  height: auto !important;
+}
+</style>
+
 <style scoped>
 /* App Bar */
 .appbar-title-1 {

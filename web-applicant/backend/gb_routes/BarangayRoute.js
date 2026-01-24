@@ -30,6 +30,27 @@ router.post("/", async (req, res) => {
 });
 
 /**
+ * @route   GET /api/barangay/city-mun/:citymunId
+ * @desc    Get all barangays by city/municipality ID
+ * @access  Public
+ */
+router.get("/city-mun/:citymunId", async (req, res) => {
+    try {
+        const barangays = await getBarangaysByCityMun(req.params.citymunId);
+        
+        res.status(200).json({
+            success: true,
+            data: barangays
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+/**
  * @route   GET /api/barangay/:id
  * @desc    Get barangay by ID
  * @access  Public
@@ -76,27 +97,6 @@ router.put("/:id", async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Barangay updated successfully"
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-});
-
-/**
- * @route   GET /api/barangay/city-mun/:citymunId
- * @desc    Get all barangays by city/municipality ID
- * @access  Public
- */
-router.get("/city-mun/:citymunId", async (req, res) => {
-    try {
-        const barangays = await getBarangaysByCityMun(req.params.citymunId);
-        
-        res.status(200).json({
-            success: true,
-            data: barangays
         });
     } catch (error) {
         res.status(500).json({

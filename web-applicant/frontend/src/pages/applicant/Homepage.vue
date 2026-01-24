@@ -265,6 +265,10 @@ const requirementLists = [
   margin: 0;
   padding: 0;
   background-color: #f9f9f9;
+  overflow: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Navbar */

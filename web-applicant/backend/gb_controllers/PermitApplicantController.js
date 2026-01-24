@@ -3,10 +3,7 @@ import pool from "../config/database.js";
 /**
  * Save a new permit applicant record
  * @param {Object} applicantData - The applicant data
- * @param {number} applicantData.user_id - User ID
- * @param {string} applicantData.lastname - Last name
- * @param {string} applicantData.firstname - First name
- * @param {string} applicantData.middlename - Middle name
+ * @param {string} applicantData.username - Username
  * @param {string} applicantData.contact_no - Contact number
  * @param {string} applicantData.tin_no - TIN number
  * @param {string} applicantData.brgy_code - Barangay Code
@@ -16,10 +13,7 @@ import pool from "../config/database.js";
  */
 export const savePermitApplicant = async (applicantData) => {
     const {
-        user_id,
-        lastname,
-        firstname,
-        middlename,
+        username,
         contact_no,
         tin_no,
         brgy_code,
@@ -31,12 +25,15 @@ export const savePermitApplicant = async (applicantData) => {
     try {
         conn = await pool.getConnection();
         const result = await conn.query(
-            `INSERT INTO Permit_Applicant (user_id, lastname, firstname, middlename, contact_no, tin_no, brgy_code, house_no, street)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [user_id, lastname, firstname, middlename, contact_no, tin_no, brgy_code, house_no, street]
+            `CALL sp_InsertPermitApplicant(?, ?, ?, ?, ?, ?, @p_applicant_id)`,
+            [username, contact_no, tin_no, brgy_code, house_no, street]
         );
 
-        return Number(result.insertId);
+        // Get the output parameter
+        const outputResult = await conn.query('SELECT @p_applicant_id as applicant_id');
+        const applicantId = outputResult[0].applicant_id;
+
+        return Number(applicantId);
     } catch (error) {
         throw new Error(`Error saving permit applicant: ${error.message}`);
     } finally {
@@ -66,6 +63,50 @@ export const getPermitApplicantById = async (applicantId) => {
     }
 };
 
+export const getPermitApplicantDetails = async (username) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query(
+            `CALL sp_GetPermitApplicantDetailsByUsername(?)`,
+            [username]
+        );
+
+        return rows[0] || null;
+    } catch (error) {
+        throw new Error(`Error fetching permit applicant: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
+    }
+};
+
+/**
+ * Get permit applicant by username (returns existing applicant if found)
+ * @param {string} username - The username
+ * @returns {Promise<Object|null>} The applicant record or null if not found
+ */
+export const getPermitApplicantByUsername = async (username) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query(
+            `SELECT pa.*, b.brgy_name 
+             FROM Permit_Applicant pa
+             LEFT JOIN Barangay b ON pa.brgy_code = b.brgy_code
+             WHERE pa.username = ?
+             ORDER BY pa.applicant_id DESC
+             LIMIT 1`,
+            [username]
+        );
+
+        return rows[0] || null;
+    } catch (error) {
+        throw new Error(`Error fetching permit applicant by username: ${error.message}`);
+    } finally {
+        if (conn) conn.release();
+    }
+};
+
 /**
  * Update permit applicant record
  * @param {number} applicantId - The applicant ID
@@ -74,10 +115,7 @@ export const getPermitApplicantById = async (applicantId) => {
  */
 export const updatePermitApplicant = async (applicantId, applicantData) => {
     const {
-        user_id,
-        lastname,
-        firstname,
-        middlename,
+        username,
         contact_no,
         tin_no,
         brgy_code,
@@ -89,8 +127,8 @@ export const updatePermitApplicant = async (applicantId, applicantData) => {
     try {
         conn = await pool.getConnection();
         await conn.query(
-            `UPDATE Permit_Applicant SET user_id = ?, lastname = ?, firstname = ?, middlename = ?, contact_no = ?, tin_no = ?, brgy_code = ?, house_no = ?, street = ? WHERE applicant_id = ?`,
-            [user_id, lastname, firstname, middlename, contact_no, tin_no, brgy_code, house_no, street, applicantId]
+            `CALL sp_UpdatePermitApplicant(?, ?, ?, ?, ?, ?, ?)`,
+            [applicantId, username, contact_no, tin_no, brgy_code, house_no, street]
         );
 
         return true;
@@ -111,11 +149,11 @@ export const getPermitApplicantByUserId = async (userId) => {
     try {
         conn = await pool.getConnection();
         const rows = await conn.query(
-            `SELECT * FROM Permit_Applicant WHERE user_id = ? LIMIT 1`,
+            `CALL sp_get_applicant_details_by_user_id(?)`,
             [userId]
         );
 
-        return rows[0] || null;
+        return rows[0][0] || null;
     } catch (error) {
         throw new Error(`Error fetching permit applicant by user ID: ${error.message}`);
     } finally {

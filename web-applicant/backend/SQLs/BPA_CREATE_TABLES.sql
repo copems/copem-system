@@ -4,9 +4,12 @@ CREATE TABLE IF NOT EXISTS User_Account
 (
     user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) UNIQUE NOT NULL,
-	user_password VARCHAR(255) NOT NULL,
-    account_type INTEGER DEFAULT(3),  #0 -> admin, 1 -> evaluator, 2 -> inspector, 3 -> applicant
-	is_active BOOLEAN DEFAULT(TRUE)
+    user_password VARCHAR(255) NOT NULL,
+    account_type INTEGER NOT NULL DEFAULT 3,  -- 0 -> admin, 1 -> evaluator, 2 -> inspector, 3 -> applicant
+    is_active BOOLEAN NOT NULL DEFAULT true,
+    first_name VARCHAR(50) NOT NULL,
+    middle_name VARCHAR(50) NOT NULL DEFAULT '',
+    last_name VARCHAR(50) NOT NULL
 );
 
 DROP TABLE IF EXISTS Barangay;
@@ -40,20 +43,19 @@ CREATE TABLE IF NOT EXISTS Barangay
     citymun_code VARCHAR(16) NOT NULL
 );
 
+DROP TABLE IF EXISTS Gov_ID_Type;
 CREATE TABLE IF NOT EXISTS Gov_ID_Type
 (
-	git_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	git_id VARCHAR(2) PRIMARY KEY,
 	git_desc VARCHAR(255) NOT NULL
 );
 
+DROP TABLE IF EXISTS Permit_Applicant;
 CREATE TABLE IF NOT EXISTS Permit_Applicant
 (
     applicant_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    user_id INTEGER NOT NULL,
-    	FOREIGN KEY(user_id) REFERENCES User_Account(user_id),
-    lastname VARCHAR(50) NOT NULL,
-    firstname VARCHAR(50) NOT NULL,
-	middlename VARCHAR(50) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    	FOREIGN KEY(username) REFERENCES User_Account(username),
 	contact_no VARCHAR (50) NOT NULL,
 	tin_no VARCHAR(12) NOT NULL,
 	brgy_code VARCHAR(16) NOT NULL,
@@ -61,9 +63,12 @@ CREATE TABLE IF NOT EXISTS Permit_Applicant
 	street VARCHAR(255) NOT NULL
 );
 
+DROP TABLE IF EXISTS Applicant_Gov_ID;
 CREATE TABLE IF NOT EXISTS Applicant_Gov_ID
 (
 	agid_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	git_id VARCHAR(2) NOT NULL,
+		FOREIGN KEY (git_id) REFERENCES Gov_ID_Type(git_id),
 	id_no VARCHAR(255) NOT NULL,
 	date_issued DATETIME NOT NULL,
 	place_issued VARCHAR(255) NOT NULL,
@@ -74,27 +79,26 @@ CREATE TABLE IF NOT EXISTS Applicant_Gov_ID
 
 CREATE TABLE IF NOT EXISTS Work_Scope_Type
 (
-	ws_type_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	ws_type_id VARCHAR(2) PRIMARY KEY ,
 	scope_desc VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Ownership_Type
 (
-	ot_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	ot_id VARCHAR(2) PRIMARY KEY,
 	ot_desc VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Occupancy_Use_Group
 (
-	ou_group_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	ou_group_code VARCHAR(10) NOT NULL,
+	ou_group_id VARCHAR(2) PRIMARY KEY,
 	ou_group_desc VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Occupancy_Use_Type
 (
-	ou_type_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	ou_group_id INTEGER NOT NULL,
+	ou_type_id VARCHAR(2) PRIMARY KEY,
+	ou_group_id VARCHAR(2) NOT NULL,
 		FOREIGN KEY (ou_group_id) REFERENCES Occupancy_Use_Group(ou_group_id),
 	ou_type_desc VARCHAR(255) NOT NULL
 );
@@ -104,7 +108,7 @@ CREATE TABLE IF NOT EXISTS BPA_Construction_Site
 (
 	bpac_site_id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	applicant_id INTEGER NOT NULL,
-		FOREIGN KEY (applicant_id) REFERENCES Permit_Applicant(applicant_id),
+	FOREIGN KEY (applicant_id) REFERENCES Permit_Applicant(applicant_id),
 	lot_no VARCHAR(255) NOT NULL,
 	block_no VARCHAR(255) NOT NULL,
 	tct_no VARCHAR(255) NOT NULL,
@@ -152,7 +156,6 @@ CREATE TABLE IF NOT EXISTS BPAC_Supervisors
 	tin_no VARCHAR(12) NOT NULL
 );
 
-DROP TABLE IF EXISTS BP_Construction;
 CREATE TABLE IF NOT EXISTS BPA_Construction
 (
 	bpac_id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -160,14 +163,14 @@ CREATE TABLE IF NOT EXISTS BPA_Construction
 	applicant_id INTEGER NOT NULL,
 		FOREIGN KEY (applicant_id) REFERENCES Permit_Applicant(applicant_id),
 	area_no VARCHAR(10) NOT NULL,
-	ownership_type_id INTEGER,
+	ownership_type_id VARCHAR(2) NOT NULL,
 		FOREIGN KEY (ownership_type_id) REFERENCES Ownership_Type(ot_id),
 	bpac_site_id INTEGER NOT NULL,
 		FOREIGN KEY (bpac_site_id) REFERENCES BPA_Construction_Site(bpac_site_id),
-	work_scope_type_id INTEGER NOT NULL,
+	work_scope_type_id VARCHAR(2) NOT NULL,
 		FOREIGN KEY (work_scope_type_id) REFERENCES Work_Scope_Type(ws_type_id),
 	workscope_remarks VARCHAR(255) NOT NULL,
-	ou_type_id INTEGER NOT NULL,
+	ou_type_id VARCHAR(2) NOT NULL,
 		FOREIGN KEY (ou_type_id) REFERENCES Occupancy_Use_Type(ou_type_id),
 	ou_type_others VARCHAR(255),
 	num_units INTEGER NOT NULL,

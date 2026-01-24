@@ -10,13 +10,29 @@ export const saveOwnershipType = async (ownershipTypeData) => {
     const { ot_desc } = ownershipTypeData;
 
     try {
-        const [result] = await pool.query(
+        const result = await pool.query(
             `CALL sp_InsertOwnershipType(?, @p_ot_id)`,
             [ot_desc]
         );
 
-        const [rows] = await pool.query('SELECT @p_ot_id AS ot_id');
-        return rows[0].ot_id;
+        // For stored procedures with mysql2/promise, result is [rows, fields]
+        let rows = result[0];
+        
+        console.log("DB Result structure (OwnershipType):", { rows, rowsType: Array.isArray(rows), rowsLength: rows?.length });
+        
+        if (!Array.isArray(rows) || rows.length === 0) {
+            if (rows && typeof rows === 'object' && !Array.isArray(rows)) {
+                const otId = rows.ot_id;
+                if (otId) return otId;
+            }
+            throw new Error("Failed to retrieve ownership type ID from database. Ensure stored procedure returns the ID.");
+        }
+        
+        const firstRow = rows[0];
+        if (!firstRow || !firstRow.ot_id) {
+            throw new Error("Failed to retrieve ownership type ID from database. Returned data is invalid.");
+        }
+        return firstRow.ot_id;
     } catch (error) {
         throw new Error(`Error saving ownership type: ${error.message}`);
     }
@@ -71,7 +87,7 @@ export const getAllOwnershipTypes = async () => {
             `CALL sp_GetAllOwnershipTypes()`
         );
 
-        return rows[0] || [];
+        return rows || [];
     } catch (error) {
         throw new Error(`Error fetching all ownership types: ${error.message}`);
     }

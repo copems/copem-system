@@ -86,7 +86,7 @@ class AuthService {
      * @returns {Promise<Object>}
      */
     static async register(userData) {
-        const { username, password, email, role, first_name, last_name } = userData;
+        const { username, password, email, role, first_name, middle_name, last_name } = userData;
 
         // Validate input
         if (!username || !password) {
@@ -121,6 +121,7 @@ class AuthService {
                 email || null,
                 role || 'permit_applicant',
                 first_name,
+                middle_name,
                 last_name
             );
 
@@ -130,6 +131,7 @@ class AuthService {
                 accountType: user.account_type,
                 role: user.role,
                 first_name: user.first_name,
+                middle_name: user.middle_name || '',
                 last_name: user.last_name
             };
         } catch (error) {
@@ -149,7 +151,7 @@ class AuthService {
      * @returns {Promise<Object>}
      */
     static async login(username, password, ipAddress, userAgent) {
-        // Get user from database
+        // Get user from database (try username or email)
         const user = await Auth.authenticateUser(username);
 
         if (!user) {
@@ -170,6 +172,7 @@ class AuthService {
             accountType: user.account_type,
             role: user.role,
             first_name: user.first_name,
+            middle_name: user.middle_name || '',
             last_name: user.last_name
         });
 
@@ -212,6 +215,7 @@ class AuthService {
                 accountType: user.account_type,
                 role: user.role,
                 first_name: user.first_name,
+                middle_name: user.middle_name || '',
                 last_name: user.last_name
             }
         };

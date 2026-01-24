@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <Header />
-    <div>
-      <Navigation />
-      <v-main>
+    <Navigation />
+    <v-main class="main-content">
+      <div class="scrollable-content">
         <router-view />
-      </v-main>
-    </div>
+      </div>
+    </v-main>
   </v-app>
 </template>
 
@@ -16,5 +16,14 @@ import Navigation from "@/components/Navigation.vue";
 </script>
 
 <style scoped>
-/* Additional layout styles if needed */
+.main-content {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.scrollable-content {
+  height: calc(100vh - 88px);
+  overflow-y: auto;
+  background-color: #f5f6fa;
+}
 </style>

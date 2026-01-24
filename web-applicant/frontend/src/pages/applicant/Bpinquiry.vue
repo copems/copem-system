@@ -3,9 +3,9 @@
     <v-container fluid class="pa-0 content-area">
       <v-row no-gutters class="fill-height">
         <v-col cols="12" class="pa-6 main-content-bg">
-          <v-btn text color="white" @click="goBack" class="mb-4">
-            <v-icon left>mdi-arrow-left</v-icon>
-            Back
+          <v-btn @click="goBack" class="back-pill mb-4" text>
+            <v-icon size="20" class="mr-2">mdi-arrow-left</v-icon>
+            <span class="back-pill-text">Back</span>
           </v-btn>
           <v-card
             flat
@@ -548,7 +548,7 @@ export default {
   border-radius: 14px;
 }
 .important-info-wrapper {
-  background: #fff9e6;
+  background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 2px 10px 0 rgba(255, 193, 7, 0.06);
 }
@@ -591,6 +591,7 @@ export default {
     border-radius: 0;
     padding: 2px !important;
   }
+
   .process-title {
     font-size: 1.1rem !important;
   }
@@ -601,5 +602,35 @@ export default {
   .step-label {
     font-size: 1rem !important;
   }
+}
+
+/* Back button pill style */
+.back-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #f1f6fb; /* light pill background */
+  color: #23407c; /* text color */
+  border: 1px solid rgba(35, 64, 124, 0.08);
+  text-transform: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.06s ease;
+}
+.back-pill .v-icon {
+  color: #23407c;
+}
+.back-pill:hover {
+  background: #e8f2ff;
+  box-shadow: 0 6px 18px rgba(35, 64, 124, 0.06);
+  transform: translateY(-1px);
+}
+.back-pill:active {
+  transform: translateY(0);
+}
+.back-pill-text {
+  font-size: 0.95rem;
 }
 </style>

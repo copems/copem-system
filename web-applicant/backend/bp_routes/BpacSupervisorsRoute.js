@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
         res.status(201).json({
             success: true,
             message: "BPAC supervisor created successfully",
-            data: { bpac_supervisor_id: bpacSupervisorId }
+            data: { bpacs_id: bpacSupervisorId }
         });
     } catch (error) {
         res.status(500).json({

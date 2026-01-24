@@ -10,41 +10,11 @@
 
       <v-col cols="12" md="9" class="main-content-wrapper d-flex flex-column">
         <div class="stepper-fixed-header pa-6 pb-2">
-          <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-            <v-stepper
-              v-model="formStepValue"
-              alt-labels
-              flat
-              class="stepper-elevated"
-            >
-              <v-stepper-header>
-                <v-stepper-item
-                  v-for="(step, index) in formSteps"
-                  :key="`step-${index}`"
-                  :title="step.title"
-                  :value="step.value"
-                  :complete="formStepValue > step.value"
-                  :color="
-                    formStepValue >= step.value
-                      ? 'blue-darken-1'
-                      : 'grey-lighten-2'
-                  "
-                  class="stepper-item-custom"
-                >
-                  <template v-if="index < formSteps.length - 1" #divider>
-                    <v-divider
-                      :thickness="3"
-                      :style="{
-                        'border-color':
-                          formStepValue > step.value ? '#1976D2' : '#e0e0e0',
-                      }"
-                      class="mx-2"
-                    ></v-divider>
-                  </template>
-                </v-stepper-item>
-              </v-stepper-header>
-            </v-stepper>
-          </v-container>
+          <Stepper
+            :model-value="formStepValue"
+            :steps="formSteps"
+            @update:model-value="formStepValue = $event"
+          />
         </div>
 
         <div class="scrollable-form-area pa-6 pt-0 pb-12">
@@ -78,7 +48,7 @@
                             prepend-inner-icon="mdi-account"
                             color="blue-darken-3"
                             hide-details="auto"
-                            required
+                            disabled
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
@@ -91,7 +61,7 @@
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-account"
                             hide-details="auto"
-                            required
+                            disabled
                           ></v-text-field>
                         </v-col>
 
@@ -107,7 +77,7 @@
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-alpha-m-box-outline"
                             hide-details="auto"
-                            required
+                            disabled
                           ></v-text-field>
                         </v-col>
                       </v-row>
@@ -211,10 +181,13 @@
                             label="Contact No."
                             variant="outlined"
                             density="comfortable"
-                            :rules="[rules.required]"
+                            :rules="[rules.required, rules.contactNo]"
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-phone"
                             hide-details="auto"
+                            placeholder="09XXXXXXXXX"
+                            maxlength="11"
+                            @input="formatContactNo"
                             required
                           ></v-text-field>
                         </v-col>
@@ -240,16 +213,22 @@
                             label="TIN"
                             variant="outlined"
                             density="comfortable"
-                            :rules="[rules.required]"
+                            :rules="[rules.required, rules.tin]"
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-numeric"
                             hide-details="auto"
+                            placeholder="XXX-XXX-XXX-XXX"
+                            maxlength="15"
+                            @input="formatTin"
                             required
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="3">
-                          <v-text-field
+                          <v-select
                             v-model="formData.govt_issued_id"
+                            :items="govIdTypes"
+                            item-title="git_desc"
+                            item-value="git_id"
                             label="Gov't Issued ID"
                             variant="outlined"
                             density="comfortable"
@@ -257,8 +236,9 @@
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-card-account-details-outline"
                             hide-details="auto"
+                            :loading="loadingGovIdTypes"
                             required
-                          ></v-text-field>
+                          ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6" md="3">
                           <v-text-field
@@ -268,6 +248,7 @@
                             density="comfortable"
                             type="date"
                             :rules="[rules.required]"
+                            :max="maxDate"
                             color="blue-darken-3"
                             prepend-inner-icon="mdi-calendar"
                             hide-details="auto"
@@ -294,29 +275,17 @@
               </v-card-text>
             </v-card>
 
-            <div class="d-flex justify-end mt-6 mb-8">
+            <div class="d-flex justify-end mt-6 mb-8 ga-3">
               <v-btn
-                v-if="!isSaved"
                 color="blue-darken-3"
                 class="btn-rounded"
                 elevation="2"
-                @click="saveForm"
+                @click="validateAndProceed"
                 variant="elevated"
                 :loading="saving"
                 :disabled="saving"
               >
-                {{ saving ? "Saving..." : "Save" }}
-                <v-icon right>mdi-content-save</v-icon>
-              </v-btn>
-              <v-btn
-                v-else
-                color="blue-darken-3"
-                class="btn-rounded"
-                elevation="2"
-                @click="proceedToNext"
-                variant="elevated"
-              >
-                Next
+                {{ saving ? "Saving..." : "Next" }}
                 <v-icon right>mdi-arrow-right</v-icon>
               </v-btn>
             </div>
@@ -346,12 +315,13 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 import Navigation from "./Navigation.vue";
+import Stepper from "./Stepper.vue";
 import Header from "@/components/Header.vue";
 import { useAuthStore } from "@/stores/auth";
 import { useAuthUserStore } from "@/stores/authUser";
 
 export default defineComponent({
-  components: { Navigation, Header },
+  components: { Navigation, Stepper, Header },
   name: "BuildingPermitPage",
   data() {
     return {
@@ -359,8 +329,7 @@ export default defineComponent({
       formSteps: [
         { title: "Applicant Information", value: 1 },
         { title: "Construction Information", value: 2 },
-        { title: "Use or Character of Occupancy", value: 3 },
-        { title: "Signatories Details", value: 4 },
+        { title: "Signatories Details", value: 3 },
       ],
       sidebarStep: 0,
       sidebarSteps: [
@@ -391,9 +360,16 @@ export default defineComponent({
       provinces: [],
       cityMunicipalities: [],
       barangays: [],
+      govIdTypes: [],
       loadingProvinces: false,
       loadingCities: false,
       loadingBarangays: false,
+      loadingGovIdTypes: false,
+
+      // Draft management
+      existingApplicantId: null,
+      existingGovIdId: null,
+      isLoadingDraft: false,
 
       saving: false,
       isSaved: false,
@@ -402,14 +378,241 @@ export default defineComponent({
       snackbarColor: "success",
       rules: {
         required: (value) => !!value || "This field is required.",
+        tin: (value) => {
+          if (!value) return true;
+          const tinPattern = /^\d{3}-\d{3}-\d{3}-\d{3}$/;
+          return (
+            tinPattern.test(value) || "TIN must be in format XXX-XXX-XXX-XXX"
+          );
+        },
+        contactNo: (value) => {
+          if (!value) return true;
+          const contactPattern = /^09\d{9}$/;
+          return (
+            contactPattern.test(value) ||
+            "Contact No. must start with 09 and be exactly 11 digits"
+          );
+        },
       },
     };
   },
+  computed: {
+    maxDate() {
+      // Get today's date in YYYY-MM-DD format
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    },
+  },
   mounted() {
     this.fetchProvinces();
+    this.fetchGovIdTypes();
     this.loadUserData();
+    // Load existing draft from database if exists
+    this.loadExistingDraft();
   },
   methods: {
+    async loadExistingDraft() {
+      this.isLoadingDraft = true;
+      try {
+        // First check if applicant_id exists in localStorage
+        const savedApplicantId = localStorage.getItem("applicant_id");
+        const savedGovIdId = localStorage.getItem("applicant_gov_id");
+
+        if (savedApplicantId) {
+          // Verify the applicant actually exists in the database
+          try {
+            const verifyResponse = await fetch(
+              `http://localhost:3000/api/permit-applicant/id/${savedApplicantId}`
+            );
+
+            if (verifyResponse.ok) {
+              const verifyResult = await verifyResponse.json();
+              if (verifyResult.success && verifyResult.data) {
+                // Applicant exists in database, load from localStorage
+                this.existingApplicantId = savedApplicantId;
+                this.existingGovIdId = savedGovIdId;
+                this.isSaved = true;
+
+                // Load applicant data from localStorage
+                this.loadFormDataFromStorage();
+
+                // Load location data if province was selected
+                if (this.formData.province) {
+                  await this.fetchCityMunicipalities(this.formData.province);
+                  if (this.formData.city_municipality) {
+                    await this.fetchBarangays(this.formData.city_municipality);
+                  }
+                }
+                console.log(
+                  "Draft loaded from localStorage (verified in DB):",
+                  {
+                    applicantId: savedApplicantId,
+                    govIdId: savedGovIdId,
+                  }
+                );
+                return;
+              }
+            }
+
+            // If we get here, the applicant doesn't exist in DB - clear stale localStorage
+            console.log("Applicant ID in localStorage is stale, clearing...");
+            localStorage.removeItem("applicant_id");
+            localStorage.removeItem("applicant_gov_id");
+            localStorage.removeItem("applicant_form_data");
+            localStorage.removeItem("bpac_id");
+            localStorage.removeItem("bpac_site_id");
+          } catch (error) {
+            console.log(
+              "Error verifying applicant, clearing stale data:",
+              error.message
+            );
+            localStorage.removeItem("applicant_id");
+            localStorage.removeItem("applicant_gov_id");
+          }
+        }
+
+        // If no localStorage data, try to fetch from database by username
+        const authStore = useAuthStore();
+        const authUserStore = useAuthUserStore();
+
+        let username = authStore.user?.username || authUserStore.user?.username;
+        if (!username) {
+          const userStr = localStorage.getItem("user");
+          if (userStr) {
+            try {
+              const userObj = JSON.parse(userStr);
+              username = userObj.username;
+            } catch (e) {
+              console.error("Error parsing user from localStorage:", e);
+            }
+          }
+        }
+
+        if (!username) {
+          username = localStorage.getItem("username");
+        }
+
+        if (username) {
+          try {
+            const response = await fetch(
+              `http://localhost:3000/api/permit-applicant/username/${username}`
+            );
+
+            if (response.ok) {
+              const result = await response.json();
+              if (result.success && result.data) {
+                const applicant = result.data;
+                console.log("Found existing applicant:", applicant);
+
+                // Store in localStorage and local state
+                this.existingApplicantId = applicant.applicant_id;
+                localStorage.setItem("applicant_id", applicant.applicant_id);
+
+                // Populate form with existing data
+                this.formData.contact_no = applicant.contact_no || "";
+                this.formData.tin = applicant.tin_no || "";
+                this.formData.house_no = applicant.house_no || "";
+                this.formData.street = applicant.street || "";
+
+                // Try to get the gov ID if exists
+                if (applicant.applicant_id) {
+                  const govIdResponse = await fetch(
+                    `http://localhost:3000/api/applicant-gov-id/applicant/${applicant.applicant_id}`
+                  );
+                  if (govIdResponse.ok) {
+                    const govIdResult = await govIdResponse.json();
+                    if (
+                      govIdResult.success &&
+                      govIdResult.data &&
+                      govIdResult.data.length > 0
+                    ) {
+                      const govId = govIdResult.data[0];
+                      this.existingGovIdId = govId.agid_id;
+                      localStorage.setItem("applicant_gov_id", govId.agid_id);
+                      this.formData.govt_issued_id = govId.git_id || "";
+                      this.formData.date_issued = govId.date_issued
+                        ? govId.date_issued.split("T")[0]
+                        : "";
+                      this.formData.place_issued = govId.place_issued || "";
+                    }
+                  }
+                }
+
+                this.isSaved = true;
+                this.saveFormDataToStorage();
+              }
+            }
+          } catch (error) {
+            console.log(
+              "No existing applicant found, starting fresh:",
+              error.message
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Error loading draft:", error);
+      } finally {
+        this.isLoadingDraft = false;
+      }
+    },
+
+    saveFormDataToStorage() {
+      // Save current form data to localStorage
+      const formDataToSave = { ...this.formData };
+      localStorage.setItem(
+        "applicant_form_data",
+        JSON.stringify(formDataToSave)
+      );
+      console.log("Form data saved to localStorage:", formDataToSave);
+    },
+
+    loadFormDataFromStorage() {
+      // Load form data from localStorage if it exists
+      const savedFormData = localStorage.getItem("applicant_form_data");
+      if (savedFormData) {
+        try {
+          const parsedData = JSON.parse(savedFormData);
+          // Merge saved data with current form data, excluding applicant_id fields
+          Object.assign(this.formData, parsedData);
+          console.log("Form data loaded from localStorage:", parsedData);
+        } catch (error) {
+          console.error("Error parsing saved form data:", error);
+        }
+      }
+    },
+
+    formatTin(event) {
+      // Remove all non-digit characters
+      let value = this.formData.tin.replace(/\D/g, "");
+
+      // Limit to 12 digits
+      value = value.substring(0, 12);
+
+      // Format as XXX-XXX-XXX-XXX
+      let formatted = "";
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 3 === 0) {
+          formatted += "-";
+        }
+        formatted += value[i];
+      }
+
+      this.formData.tin = formatted;
+    },
+
+    formatContactNo(event) {
+      // Remove all non-digit characters
+      let value = this.formData.contact_no.replace(/\D/g, "");
+
+      // Limit to 11 digits
+      value = value.substring(0, 11);
+
+      this.formData.contact_no = value;
+    },
+
     loadUserData() {
       // Load user data from auth stores
       const authStore = useAuthStore();
@@ -430,6 +633,7 @@ export default defineComponent({
           user.contact_no || user.contactNo || user.phone || "";
       }
     },
+
     async fetchProvinces() {
       this.loadingProvinces = true;
       try {
@@ -445,6 +649,26 @@ export default defineComponent({
         this.snackbar = true;
       } finally {
         this.loadingProvinces = false;
+      }
+    },
+
+    async fetchGovIdTypes() {
+      this.loadingGovIdTypes = true;
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/gov-id-type"
+        );
+        if (response.data.success) {
+          console.log("Government ID Types fetched:", response.data);
+          this.govIdTypes = response.data.data;
+        }
+      } catch (error) {
+        console.error("Error fetching government ID types:", error);
+        this.snackbarMessage = "Failed to load government ID types";
+        this.snackbarColor = "error";
+        this.snackbar = true;
+      } finally {
+        this.loadingGovIdTypes = false;
       }
     },
 
@@ -556,12 +780,38 @@ export default defineComponent({
           return false;
         }
 
+        // Get username from multiple sources
+        let username = authStore.user?.username || authUserStore.user?.username;
+
+        // Try from localStorage if not found in stores
+        if (!username) {
+          const userStr = localStorage.getItem("user");
+          if (userStr) {
+            try {
+              const userObj = JSON.parse(userStr);
+              username = userObj.username;
+            } catch (e) {
+              console.error("Error parsing user from localStorage:", e);
+            }
+          }
+        }
+
+        // Also try direct username from localStorage
+        if (!username) {
+          username = localStorage.getItem("username");
+        }
+
+        if (!username) {
+          this.snackbarMessage = "Username not found. Please login again.";
+          this.snackbarColor = "error";
+          this.snackbar = true;
+          this.saving = false;
+          return false;
+        }
+
         // Prepare permit applicant data
         const applicantData = {
-          user_id: parseInt(userId),
-          lastname: this.formData.last_name,
-          firstname: this.formData.first_name,
-          middlename: this.formData.middle_initial,
+          username: username,
           contact_no: this.formData.contact_no,
           tin_no: this.formData.tin,
           brgy_code: brgyCode,
@@ -569,58 +819,136 @@ export default defineComponent({
           street: this.formData.street,
         };
 
-        // Save permit applicant
-        const applicantResponse = await fetch(
-          "http://localhost:3000/api/permit-applicant",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(applicantData),
-          }
-        );
+        let applicantId;
 
-        const applicantResult = await applicantResponse.json();
-
-        if (!applicantResult.success) {
-          throw new Error(
-            applicantResult.message || "Failed to save applicant information"
+        // Check if we're updating an existing applicant or creating a new one
+        if (this.existingApplicantId) {
+          // Update existing applicant
+          const applicantResponse = await fetch(
+            `http://localhost:3000/api/permit-applicant/${this.existingApplicantId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(applicantData),
+            }
           );
+
+          const applicantResult = await applicantResponse.json();
+
+          if (!applicantResult.success) {
+            throw new Error(
+              applicantResult.message ||
+                "Failed to update applicant information"
+            );
+          }
+
+          applicantId = this.existingApplicantId;
+          console.log("Updated existing applicant:", applicantId);
+        } else {
+          // Create new applicant
+          console.log(
+            "[ApplicantInformation] Creating new applicant with data:",
+            JSON.stringify(applicantData)
+          );
+
+          const applicantResponse = await fetch(
+            "http://localhost:3000/api/permit-applicant",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(applicantData),
+            }
+          );
+
+          console.log(
+            "[ApplicantInformation] Response status:",
+            applicantResponse.status
+          );
+          const applicantResult = await applicantResponse.json();
+          console.log(
+            "[ApplicantInformation] Response body:",
+            JSON.stringify(applicantResult)
+          );
+
+          if (!applicantResult.success) {
+            throw new Error(
+              applicantResult.message || "Failed to save applicant information"
+            );
+          }
+
+          applicantId = applicantResult.data.applicant_id;
+          this.existingApplicantId = applicantId;
+          console.log("Created new applicant:", applicantId);
         }
 
-        const applicantId = applicantResult.data.applicant_id;
-
-        // Save government ID information
+        // Save or update government ID information
         const govIdData = {
           applicant_id: applicantId,
-          id_no: this.formData.govt_issued_id,
+          git_id: this.formData.govt_issued_id,
+          id_no: this.formData.govt_issued_id, // TODO: Need to add a separate field for actual ID number
           date_issued: this.formData.date_issued,
           place_issued: this.formData.place_issued,
         };
 
-        const govIdResponse = await fetch(
-          "http://localhost:3000/api/applicant-gov-id",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(govIdData),
-          }
-        );
+        let govIdId;
 
-        const govIdResult = await govIdResponse.json();
-
-        if (!govIdResult.success) {
-          throw new Error(
-            govIdResult.message || "Failed to save government ID information"
+        if (this.existingGovIdId) {
+          // Update existing gov ID
+          const govIdResponse = await fetch(
+            `http://localhost:3000/api/applicant-gov-id/${this.existingGovIdId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(govIdData),
+            }
           );
+
+          const govIdResult = await govIdResponse.json();
+
+          if (!govIdResult.success) {
+            throw new Error(
+              govIdResult.message ||
+                "Failed to update government ID information"
+            );
+          }
+
+          govIdId = this.existingGovIdId;
+          console.log("Updated existing gov ID:", govIdId);
+        } else {
+          // Create new gov ID
+          const govIdResponse = await fetch(
+            "http://localhost:3000/api/applicant-gov-id",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(govIdData),
+            }
+          );
+
+          const govIdResult = await govIdResponse.json();
+
+          if (!govIdResult.success) {
+            throw new Error(
+              govIdResult.message || "Failed to save government ID information"
+            );
+          }
+
+          govIdId = govIdResult.data.agid_id;
+          this.existingGovIdId = govIdId;
+          console.log("Created new gov ID:", govIdId);
         }
 
         // Store applicant_id and gov_id for next steps
         localStorage.setItem("applicant_id", applicantId);
-        localStorage.setItem("applicant_gov_id", govIdResult.data.agid_id);
+        localStorage.setItem("applicant_gov_id", govIdId);
 
         this.snackbarMessage = "Applicant information saved successfully!";
         this.snackbarColor = "success";
@@ -643,6 +971,8 @@ export default defineComponent({
     async saveForm() {
       const { valid } = await this.$refs.entryForm.validate();
       if (valid) {
+        // Save form data to localStorage before submitting
+        this.saveFormDataToStorage();
         await this.saveApplicantInformation();
       } else {
         this.snackbarMessage = "Please fill in all required fields";
@@ -652,6 +982,8 @@ export default defineComponent({
     },
 
     proceedToNext() {
+      // Save form data before navigating
+      this.saveFormDataToStorage();
       this.$router.push(
         "/bpam/applicant/unified-form/construction-information"
       );
@@ -660,6 +992,8 @@ export default defineComponent({
     async validateAndProceed() {
       const { valid } = await this.$refs.entryForm.validate();
       if (valid) {
+        // Save form data to localStorage before submitting
+        this.saveFormDataToStorage();
         const saved = await this.saveApplicantInformation();
         if (saved) {
           // Delay navigation slightly to show success message
@@ -689,6 +1023,7 @@ export default defineComponent({
       if (!newVal) this.formData.form_of_ownership = null;
     },
     "formData.province"(newVal) {
+      this.saveFormDataToStorage();
       if (newVal) {
         this.fetchCityMunicipalities(newVal);
       } else {
@@ -699,12 +1034,46 @@ export default defineComponent({
       }
     },
     "formData.city_municipality"(newVal) {
+      this.saveFormDataToStorage();
       if (newVal) {
         this.fetchBarangays(newVal);
       } else {
         this.barangays = [];
         this.formData.barangay = "";
       }
+    },
+    "formData.barangay"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.first_name"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.last_name"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.middle_initial"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.house_no"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.street"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.contact_no"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.tin"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.govt_issued_id"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.date_issued"(newVal) {
+      this.saveFormDataToStorage();
+    },
+    "formData.place_issued"(newVal) {
+      this.saveFormDataToStorage();
     },
   },
 });
@@ -723,15 +1092,34 @@ export default defineComponent({
   background: #fafdff;
 }
 
+/* Main Container */
+.content-area {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.fill-height {
+  height: 100vh;
+}
+
+.main-content-wrapper {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .stepper-fixed-header {
   flex-shrink: 0;
   background: #fafdff;
   z-index: 50;
+  overflow: hidden;
 }
 
 .scrollable-form-area {
   flex-grow: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
 }
 

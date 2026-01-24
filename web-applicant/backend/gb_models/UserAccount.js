@@ -6,6 +6,9 @@ class UserAccount {
         this.username = username;
         this.user_password = user_password;
         this.account_type = account_type;
+        this.last_name='';
+        this.first_name='';
+        this.middle_name='';
     }
     static async findByUsername(username){
         let conn;

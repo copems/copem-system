@@ -32,13 +32,35 @@ export const saveBpacSupervisor = async (supervisorData) => {
     } = supervisorData;
 
     try {
-        const [result] = await pool.query(
-            `CALL sp_InsertBpacSupervisor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_bpac_supervisor_id)`,
+        const result = await pool.query(
+            "CALL sp_InsertBpacSupervisor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_bpac_supervisor_id)",
             [lastname, firstname, middlename, address_details, brgy_code, prc_no, validity, ptr_no, issued_date, issued_at, tin_no]
         );
 
-        const [rows] = await pool.query('SELECT @p_bpac_supervisor_id AS bpac_supervisor_id');
-        return rows[0].bpac_supervisor_id;
+        // For stored procedures with mysql2/promise, result is [rows, fields]
+        // rows contains array of result sets from the procedure
+        let rows = result[0];
+        
+        console.log("DB Result structure (BpacSupervisors):", { result, rows, rowsType: Array.isArray(rows), rowsLength: rows?.length });
+        
+        // Handle case where stored procedure returns output parameter without SELECT
+        // In that case, rows might be the metadata object or empty array
+        if (!Array.isArray(rows) || rows.length === 0) {
+            // Try to get the value from rows directly if it's an object
+            if (rows && typeof rows === 'object' && !Array.isArray(rows)) {
+                const bpacSupervisorId = rows.bpac_supervisor_id;
+                if (bpacSupervisorId) return bpacSupervisorId;
+            }
+            throw new Error("Failed to retrieve supervisor ID from database. Ensure stored procedure returns the ID as SELECT statement.");
+        }
+        
+        // If rows is an array, get first element
+        const firstRow = rows[0];
+        if (!firstRow || !firstRow.bpac_supervisor_id) {
+            throw new Error("Failed to retrieve supervisor ID from database. Returned data is invalid.");
+        }
+        
+        return firstRow.bpac_supervisor_id;
     } catch (error) {
         throw new Error(`Error saving BPAC supervisor: ${error.message}`);
     }

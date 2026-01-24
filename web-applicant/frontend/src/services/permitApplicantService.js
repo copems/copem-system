@@ -52,6 +52,16 @@ export const getPermitApplicantByUserId = async (userId) => {
     }
 };
 
+export const getPermitApplicantDetails = async (username) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/permit-applicant/${username}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching permit applicant details:', error);
+        throw error.response?.data || error;
+    }
+};
+
 /**
  * Update permit applicant
  * @param {number} applicantId - The applicant ID
@@ -87,5 +97,6 @@ export default {
     getPermitApplicantById,
     getPermitApplicantByUserId,
     updatePermitApplicant,
-    getAllPermitApplicants
+    getAllPermitApplicants,
+    getPermitApplicantDetails
 };

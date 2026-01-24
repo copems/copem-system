@@ -13,18 +13,39 @@ import pool from "../config/database.js";
  * @returns {Promise<number>} The newly created bpac_site_id
  */
 export const saveBpaConstructionSite = async (siteData) => {
-    const { applicant_id, lot_no, block_no, tct_no, street, brgy_code, applicant_owned } = siteData;
-
+    const { applicant_id, lot_no, block_no, tct_no, tax_dec_no, street, brgy_code, applicant_owned } = siteData;
+    
+    let conn;
     try {
-        const [result] = await pool.query(
-            `CALL sp_InsertBpaConstructionSite(?, ?, ?, ?, ?, ?, ?, @p_bpac_site_id)`,
-            [applicant_id, lot_no, block_no, tct_no, street, brgy_code, applicant_owned]
+        // Get a connection to maintain session variables
+        conn = await pool.getConnection();
+        
+        // Call the stored procedure with output parameter
+        await conn.query(
+            `CALL sp_InsertBpaConstructionSite(?, ?, ?, ?, ?, ?, ?, ?, @p_bpac_site_id)`,
+            [applicant_id, lot_no, block_no, tct_no, tax_dec_no, street, brgy_code, applicant_owned ? 1 : 0]
         );
 
-        const [rows] = await pool.query('SELECT @p_bpac_site_id AS bpac_site_id');
+        // Get the output parameter value using same connection (MariaDB returns directly, not as array)
+        const result = await conn.query('SELECT @p_bpac_site_id AS bpac_site_id');
+        
+        // MariaDB returns the result directly as an array or wrapped array
+        let rows = result;
+        if (Array.isArray(result) && result.length > 0 && Array.isArray(result[0])) {
+            rows = result[0];
+        }
+        
+        if (!Array.isArray(rows) || rows.length === 0) {
+            throw new Error('Failed to retrieve inserted site ID');
+        }
+        
         return rows[0].bpac_site_id;
     } catch (error) {
         throw new Error(`Error saving BPA construction site: ${error.message}`);
+    } finally {
+        if (conn) {
+            conn.release();
+        }
     }
 };
 
@@ -53,12 +74,12 @@ export const getBpaConstructionSiteById = async (bpacSiteId) => {
  * @returns {Promise<boolean>} True if update was successful
  */
 export const updateBpaConstructionSite = async (bpacSiteId, siteData) => {
-    const { applicant_id, lot_no, block_no, tct_no, street, brgy_code, applicant_owned } = siteData;
+    const { applicant_id, lot_no, block_no, tct_no, tax_dec_no, street, brgy_code } = siteData;
 
     try {
         await pool.query(
-            `CALL sp_UpdateBpaConstructionSite(?, ?, ?, ?, ?, ?, ?, ?)`,
-            [bpacSiteId, applicant_id, lot_no, block_no, tct_no, street, brgy_code, applicant_owned]
+            `CALL sp_UpdateBpaConstructionSite(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [bpacSiteId, applicant_id, lot_no, block_no, tct_no, tax_dec_no, street, brgy_code, applicant_owned]
         );
 
         return true;

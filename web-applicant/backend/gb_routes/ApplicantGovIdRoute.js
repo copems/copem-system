@@ -31,6 +31,28 @@ router.post("/", async (req, res) => {
 });
 
 /**
+ * @route   GET /api/applicant-gov-id/applicant/:applicantId
+ * @desc    Get all government IDs by applicant ID
+ * @access  Public
+ * NOTE: This route must come BEFORE /:id to avoid route conflicts
+ */
+router.get("/applicant/:applicantId", async (req, res) => {
+    try {
+        const govIds = await getApplicantGovIdsByApplicant(req.params.applicantId);
+        
+        res.status(200).json({
+            success: true,
+            data: govIds
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+/**
  * @route   GET /api/applicant-gov-id/:id
  * @desc    Get applicant government ID by ID
  * @access  Public
@@ -77,27 +99,6 @@ router.put("/:id", async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Applicant government ID updated successfully"
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-});
-
-/**
- * @route   GET /api/applicant-gov-id/applicant/:applicantId
- * @desc    Get all government IDs by applicant ID
- * @access  Public
- */
-router.get("/applicant/:applicantId", async (req, res) => {
-    try {
-        const govIds = await getApplicantGovIdsByApplicant(req.params.applicantId);
-        
-        res.status(200).json({
-            success: true,
-            data: govIds
         });
     } catch (error) {
         res.status(500).json({
