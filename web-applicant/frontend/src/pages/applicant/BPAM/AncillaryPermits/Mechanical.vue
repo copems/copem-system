@@ -41,8 +41,10 @@
                   <input
                     type="text"
                     maxlength="1"
-                    v-for="n in 8"
+                    v-for="(char, n) in applicationNumberArray"
                     :key="'app-no-' + n"
+                    :value="char"
+                    readonly
                     class="box-input"
                   />
                 </div>
@@ -80,42 +82,53 @@
                   <div class="cell owner-label">OWNER/APPLICANT</div>
                   <div class="cell name-field">
                     <span class="sub-label">LAST NAME</span>
+                    <div class="filled-value">{{ formData.lastName || "" }}</div>
                   </div>
                   <div class="cell name-field">
                     <span class="sub-label">FIRST NAME</span>
+                    <div class="filled-value">{{ formData.firstName || "" }}</div>
                   </div>
                   <div class="cell mi-field">
                     <span class="sub-label">M.I.</span>
+                    <div class="filled-value">{{ formData.middleInitial || "" }}</div>
                   </div>
                   <div class="cell tin-field">
                     <span class="sub-label">TIN</span>
+                    <div class="filled-value">{{ formData.tin || "" }}</div>
                   </div>
                 </div>
                 <div class="box-row">
                   <div class="cell enterprise-label">FOR CONSTRUCTION OWNED BY AN ENTERPRISE</div>
                   <div class="cell ownership-field">
                     <span class="sub-label">FORM OF OWNERSHIP</span>
+                    <div class="filled-value">{{ formData.ownershipType || "" }}</div>
                   </div>
                   <div class="cell occupancy-field">
                     <span class="sub-label">USE OR CHARACTER OF OCCUPANCY</span>
+                    <div class="filled-value">{{ formData.occupancyType || "" }}</div>
                   </div>
                 </div>
                 <div class="box-row">
                   <div class="cell address-label">ADDRESS:</div>
                   <div class="cell address-no-street">
                     <span class="sub-label">NO., STREET,</span>
+                    <div class="filled-value">{{ formData.addressStreet || "" }}</div>
                   </div>
                   <div class="cell address-barangay">
                     <span class="sub-label">BARANGAY,</span>
+                    <div class="filled-value">{{ formData.addressBarangay || "" }}</div>
                   </div>
                   <div class="cell address-city">
                     <span class="sub-label">CITY/MUNICIPALITY</span>
+                    <div class="filled-value">{{ formData.addressCity || "" }}</div>
                   </div>
                   <div class="cell address-zip">
                     <span class="sub-label">ZIP CODE</span>
+                    <div class="filled-value">{{ formData.zipCode || "" }}</div>
                   </div>
                   <div class="cell address-tel">
                     <span class="sub-label">TELEPHONE NO</span>
+                    <div class="filled-value">{{ formData.contactNo || "" }}</div>
                   </div>
                 </div>
                 <div class="box-row no-bottom-border">
@@ -123,27 +136,27 @@
                   <div class="cell location-details">
                     <div class="location-line">
                       <div class="field-group">
-                        LOT NO.<span class="underline loc-short"></span>
+                        LOT NO.<span class="underline loc-short">{{ formData.lotNo || "" }}</span>
                       </div>
                       <div class="field-group">
-                        BLK NO.<span class="underline loc-short"></span>
+                        BLK NO.<span class="underline loc-short">{{ formData.blkNo || "" }}</span>
                       </div>
                       <div class="field-group">
-                        TCT NO.<span class="underline loc-medium"></span>
+                        TCT NO.<span class="underline loc-medium">{{ formData.tctNo || "" }}</span>
                       </div>
                       <div class="field-group">
-                        TAX DEC. NO.<span class="underline loc-medium"></span>
+                        TAX DEC. NO.<span class="underline loc-medium">{{ formData.taxDecNo || "" }}</span>
                       </div>
                     </div>
                     <div class="location-line">
                       <div class="field-group flex-1">
-                        STREET<span class="underline flex-fill"></span>
+                        STREET<span class="underline flex-fill">{{ formData.constructionStreet || "" }}</span>
                       </div>
                       <div class="field-group flex-1">
-                        BARANGAY<span class="underline flex-fill"></span>
+                        BARANGAY<span class="underline flex-fill">{{ formData.constructionBarangay || "" }}</span>
                       </div>
                       <div class="field-group flex-1">
-                        CITY/ MUNICIPALITY OF<span class="underline flex-fill"></span>
+                        CITY/ MUNICIPALITY OF<span class="underline flex-fill">{{ formData.constructionCity || "" }}</span>
                       </div>
                     </div>
                   </div>
@@ -540,11 +553,14 @@
 </template>
 
 <script>
+import { ancillaryFormMixin } from "@/mixins/ancillaryFormMixin";
+
 export default {
   name: 'MechanicalPermitForm',
+  mixins: [ancillaryFormMixin],
   data() {
     return {
-      isFormComplete: true, // Set to false if you want to add validation
+      isFormComplete: true,
     }
   },
   methods: {
@@ -736,6 +752,15 @@ export default {
   text-transform: uppercase;
   color: #333;
   font-weight: normal;
+}
+.filled-value {
+  font-size: 8pt;
+  font-weight: normal;
+  color: #000;
+  margin-top: 2px;
+  min-height: 14px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1px;
 }
 .section-title {
   font-weight: bold;
