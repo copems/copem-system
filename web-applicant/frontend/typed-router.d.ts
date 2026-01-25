@@ -36,11 +36,12 @@ declare module 'vue-router/auto-routes' {
     '/applicant/BPAM/UnifiedForm/Stepper': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/Stepper', '/applicant/BPAM/UnifiedForm/Stepper', Record<never, never>, Record<never, never>>,
     '/applicant/Bpinquiry': RouteRecordInfo<'/applicant/Bpinquiry', '/applicant/Bpinquiry', Record<never, never>, Record<never, never>>,
     '/applicant/Homepage': RouteRecordInfo<'/applicant/Homepage', '/applicant/Homepage', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/components/Step1': RouteRecordInfo<'/applicant/OPAM/OPapplication/components/Step1', '/applicant/OPAM/OPapplication/components/Step1', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/components/Step2': RouteRecordInfo<'/applicant/OPAM/OPapplication/components/Step2', '/applicant/OPAM/OPapplication/components/Step2', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/components/Step3': RouteRecordInfo<'/applicant/OPAM/OPapplication/components/Step3', '/applicant/OPAM/OPapplication/components/Step3', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPapplication/Opapply': RouteRecordInfo<'/applicant/OPAM/OPapplication/Opapply', '/applicant/OPAM/OPapplication/Opapply', Record<never, never>, Record<never, never>>,
-    '/applicant/OPAM/OPapplication/Oploaction': RouteRecordInfo<'/applicant/OPAM/OPapplication/Oploaction', '/applicant/OPAM/OPapplication/Oploaction', Record<never, never>, Record<never, never>>,
-    '/applicant/OPAM/OPapplication/OPowner': RouteRecordInfo<'/applicant/OPAM/OPapplication/OPowner', '/applicant/OPAM/OPapplication/OPowner', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPapplication/OPportal': RouteRecordInfo<'/applicant/OPAM/OPapplication/OPportal', '/applicant/OPAM/OPapplication/OPportal', Record<never, never>, Record<never, never>>,
-    '/applicant/OPAM/OPapplication/OPsignatories': RouteRecordInfo<'/applicant/OPAM/OPapplication/OPsignatories', '/applicant/OPAM/OPapplication/OPsignatories', Record<never, never>, Record<never, never>>,
+    '/applicant/OPAM/OPapplication/OPunified': RouteRecordInfo<'/applicant/OPAM/OPapplication/OPunified', '/applicant/OPAM/OPapplication/OPunified', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPforms/Completion': RouteRecordInfo<'/applicant/OPAM/OPforms/Completion', '/applicant/OPAM/OPforms/Completion', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPforms/Electrical': RouteRecordInfo<'/applicant/OPAM/OPforms/Electrical', '/applicant/OPAM/OPforms/Electrical', Record<never, never>, Record<never, never>>,
     '/applicant/OPAM/OPforms/FormsSection': RouteRecordInfo<'/applicant/OPAM/OPforms/FormsSection', '/applicant/OPAM/OPforms/FormsSection', Record<never, never>, Record<never, never>>,
@@ -138,24 +139,28 @@ declare module 'vue-router/auto-routes' {
       routes: '/applicant/Homepage'
       views: never
     }
+    'src/pages/applicant/OPAM/OPapplication/components/Step1.vue': {
+      routes: '/applicant/OPAM/OPapplication/components/Step1'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPapplication/components/Step2.vue': {
+      routes: '/applicant/OPAM/OPapplication/components/Step2'
+      views: never
+    }
+    'src/pages/applicant/OPAM/OPapplication/components/Step3.vue': {
+      routes: '/applicant/OPAM/OPapplication/components/Step3'
+      views: never
+    }
     'src/pages/applicant/OPAM/OPapplication/Opapply.vue': {
       routes: '/applicant/OPAM/OPapplication/Opapply'
-      views: never
-    }
-    'src/pages/applicant/OPAM/OPapplication/Oploaction.vue': {
-      routes: '/applicant/OPAM/OPapplication/Oploaction'
-      views: never
-    }
-    'src/pages/applicant/OPAM/OPapplication/OPowner.vue': {
-      routes: '/applicant/OPAM/OPapplication/OPowner'
       views: never
     }
     'src/pages/applicant/OPAM/OPapplication/OPportal.vue': {
       routes: '/applicant/OPAM/OPapplication/OPportal'
       views: never
     }
-    'src/pages/applicant/OPAM/OPapplication/OPsignatories.vue': {
-      routes: '/applicant/OPAM/OPapplication/OPsignatories'
+    'src/pages/applicant/OPAM/OPapplication/OPunified.vue': {
+      routes: '/applicant/OPAM/OPapplication/OPunified'
       views: never
     }
     'src/pages/applicant/OPAM/OPforms/Completion.vue': {

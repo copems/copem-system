@@ -1,19 +1,19 @@
 <template>
   <v-app>
     <v-main class="grey-background main-content-padded">
+      <!-- Print Form button outside and above the card -->
+      <div class="print-btn-row">
+        <v-btn
+          rounded="pill"
+          elevation="3"
+          size="large"
+          class="download-btn-custom print-btn-top"
+          @click="printForm"
+        >
+          PRINT FORM
+        </v-btn>
+      </div>
       <v-container fluid class="pa-4" style="max-width: 1000px; min-height: 700px">
-        <div class="card-header-row">
-          <v-spacer></v-spacer>
-          <v-btn
-            rounded="pill"
-            elevation="3"
-            size="large"
-            class="download-btn-custom print-btn-top"
-            @click="printForm"
-          >
-            PRINT FORM
-          </v-btn>
-        </div>
         <v-card class="pa-6 printable-form">
           <!-- Header -->
           <div class="text-left mb-2">
@@ -1994,11 +1994,14 @@ export default {
   min-width: 160px;
 }
 
-.card-header-row {
+/* Print button row above card */
+.print-btn-row {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 16px;
+  width: 100%;
+  margin: 16px 0 8px 0;
+  padding-right: 32px;
 }
 
 .print-btn-top {

@@ -10,20 +10,21 @@
         >
         </v-stepper>
       </div>
+      <!-- Print Form button outside and above the card -->
+      <div class="print-btn-row">
+        <v-btn
+          rounded="pill"
+          elevation="3"
+          size="large"
+          class="download-btn-custom print-btn-top"
+          @click="printForm"
+        >
+          PRINT FORM
+        </v-btn>
+      </div>
       <v-container fluid>
         <div class="ui-preview-container">
           <div class="printable-form unified-form">
-            <div class="d-flex justify-end mb-4">
-              <v-btn
-                rounded="pill"
-                elevation="3"
-                size="large"
-                class="download-btn-custom"
-                @click="printForm"
-              >
-                PRINT FORM
-              </v-btn>
-            </div>
             <div class="header-section">
               <div class="gov-title">Republic of the Philippines</div>
               <div class="gov-title">City/Municipality of Naga</div>
@@ -433,6 +434,16 @@ export default {
 </script>
 
 <style scoped>
+/* Print button row above card */
+.print-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin: 16px 0 8px 0;
+  padding-right: 32px;
+}
+
 .application-number-box {
   background-color: #e3f2fd;
   border: 1px solid #90caf9;

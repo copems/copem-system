@@ -2,46 +2,7 @@
   <v-app>
     <v-main class="bg-grey-lighten-5">
       <v-container style="max-width: 1300px" class="pt-0 pb-6 px-6" fluid>
-        <div class="mb-2">
-          <h2 class="text-h6 font-weight-bold text-grey-darken-3 mb-1">
-            Application OP-2025-001
-          </h2>
-        </div>
-        <v-card flat border class="mb-4 rounded-lg">
-          <v-card-text class="pa-4">
-            <v-row dense>
-              <v-col cols="6" md="3">
-                <div class="text-caption text-grey mb-1">Submission Date</div>
-                <div class="text-body-2 font-weight-medium text-grey-darken-3">
-                  Jan 15, 2024
-                </div>
-              </v-col>
-              <v-col cols="6" md="3">
-                <div class="text-caption text-grey mb-1">Application Type</div>
-                <div class="text-body-2 font-weight-medium text-grey-darken-3">
-                  New Construction
-                </div>
-              </v-col>
-              <v-col cols="6" md="3">
-                <div class="text-caption text-grey mb-1">Current Status</div>
-                <v-chip
-                  color="success"
-                  variant="tonal"
-                  size="x-small"
-                  class="font-weight-medium rounded-sm"
-                >
-                  Submitted
-                </v-chip>
-              </v-col>
-              <v-col cols="6" md="3">
-                <div class="text-caption text-grey mb-1">Last Updated</div>
-                <div class="text-body-2 font-weight-medium text-grey-darken-3">
-                  2h ago
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <div class="mb-2"></div>
 
         <v-card flat border class="rounded-lg mb-4">
           <div class="d-flex justify-space-between align-center px-6 pt-4 pb-2">
@@ -100,35 +61,6 @@
                     >mdi-calendar-check</v-icon
                   >
                   <span class="font-weight-medium">March 20, 2024</span>
-                </div>
-              </v-col>
-            </v-row>
-
-            <v-divider class="my-3"></v-divider>
-
-            <v-row dense class="mb-2">
-              <v-col cols="12" sm="6">
-                <div
-                  class="text-caption font-weight-medium text-uppercase text-grey-darken-1 mb-1"
-                >
-                  PERMIT STATUS
-                </div>
-                <div class="d-flex align-center text-body-1" style="color: #2e7d32">
-                  <v-icon size="10" class="mr-2" color="#2e7d32">mdi-circle</v-icon>
-                  <span class="font-weight-bold" style="color: #2e7d32"
-                    >Active & Valid</span
-                  >
-                </div>
-              </v-col>
-
-              <v-col cols="12" sm="6">
-                <div
-                  class="text-caption font-weight-medium text-uppercase text-grey-darken-1 mb-1"
-                >
-                  VALIDITY PERIOD
-                </div>
-                <div class="text-body-1 text-grey-darken-3 font-weight-medium">
-                  March 20, 2025
                 </div>
               </v-col>
             </v-row>
@@ -331,8 +263,7 @@ const handleLogout = () => {
 :deep(.v-app) {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
 :deep(.v-app-bar) {

@@ -1,11 +1,3 @@
-<style>
-html,
-body,
-.v-application {
-  height: 100% !important;
-  overflow: hidden !important;
-}
-</style>
 <template>
   <v-app>
     <v-main>
@@ -236,8 +228,7 @@ export default {
 }
 
 .no-scroll {
-  height: 100vh;
-  overflow: hidden !important;
+  min-height: 100vh;
   padding-top: 88px;
 }
 .v-main.no-scroll {

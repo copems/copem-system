@@ -139,9 +139,9 @@
                           elevation="2"
                           size="x-large"
                           class="rounded-pill font-weight-bold px-8 btn-rounded-custom"
-                          to="/opam/OPportal"
+                          to="/opam/op-application/op-portal"
                         >
-                          Save
+                          Next
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -169,6 +169,10 @@ export default {
       ],
       constructionTypes: [
         {
+          title: "UNIFIED APPLICATION FORM",
+          forms: ["Required for all Occupancy Permit applications"],
+        },
+        {
           title: "COMPLETION FORMS",
           forms: ["Required for all Occupancy Permit applications"],
         },
@@ -184,19 +188,19 @@ export default {
       ],
       ancillaryForms: [
         {
-          title: "Completion Certificate",
+          title: "Unified Application",
+          icon: "mdi-file-document-edit-outline",
+          to: "/opam/op-forms/unified",
+        },
+        {
+          title: "Certificate Completion",
           icon: "mdi-hammer",
           to: "/opam/op-forms/completion",
         },
         {
-          title: "Electrical Certificate",
+          title: "Electrical Completion",
           icon: "mdi-lightning-bolt",
           to: "/opam/op-forms/electrical",
-        },
-        {
-          title: "Unified Application",
-          icon: "mdi-file-document-edit-outline",
-          to: "/opam/op-forms/unified",
         },
       ],
     };
@@ -274,8 +278,7 @@ export default {
 }
 
 .no-scroll {
-  height: 100vh;
-  overflow: hidden !important;
+  min-height: 100vh;
 }
 .v-main.no-scroll {
   display: flex;
@@ -284,12 +287,12 @@ export default {
 }
 .content-area {
   flex: 1;
-  overflow: hidden;
+  overflow: auto;
 }
 .main-content-bg {
   background: #f6fafd;
   border-radius: 0 24px 24px 0;
-  overflow: hidden;
+  overflow: auto;
 }
 .page-title-gradient {
   color: white;
@@ -416,13 +419,5 @@ export default {
     width: 100% !important;
     height: 140px !important;
   }
-}
-</style>
-<style>
-html,
-body,
-.v-application {
-  height: 100% !important;
-  overflow: hidden !important;
 }
 </style>

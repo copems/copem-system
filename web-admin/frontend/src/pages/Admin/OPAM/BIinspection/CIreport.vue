@@ -45,12 +45,9 @@
             <v-icon start icon="mdi-file-document-outline" class="mr-2"></v-icon>
             Applicant Details
           </v-tab>
-          <v-tab
-            value="evaluation"
-            class="text-body-2 font-weight-medium text-capitalize"
-          >
+          <v-tab value="report" class="text-body-2 font-weight-medium text-capitalize">
             <v-icon start icon="mdi-clipboard-check-outline" class="mr-2"></v-icon>
-            Evaluation Summary
+            Report Summary
           </v-tab>
           <v-tab value="plans" class="text-body-2 font-weight-medium text-capitalize">
             <v-icon start icon="mdi-file-check-outline" class="mr-2"></v-icon>
@@ -333,7 +330,7 @@
               </v-row>
             </v-window-item>
 
-            <v-window-item value="evaluation">
+            <v-window-item value="report">
               <div class="print-section mb-6">
                 <div class="d-flex justify-space-between align-center mb-4">
                   <div></div>
@@ -576,7 +573,7 @@ import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-const activeTab = ref("evaluation");
+const activeTab = ref("report");
 
 const permitInfo = ref({
   bpNo: "",

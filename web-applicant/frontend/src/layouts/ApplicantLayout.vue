@@ -12,5 +12,4 @@ import Header from "@/components/Header.vue";
 </script>
 
 <style scoped>
-/* Additional layout styles if needed */
 </style>

@@ -11,16 +11,10 @@ export const opamRoutes = [
           import("@/pages/applicant/OPAM/OPapplication/Opapply.vue"),
       },
       {
-        path: "op-location",
-        name: "OPlocation",
+        path: "op-unified",
+        name: "OPunified",
         component: () =>
-          import("@/pages/applicant/OPAM/OPapplication/Oploaction.vue"),
-      },
-      {
-        path: "op-owner",
-        name: "OPowner",
-        component: () =>
-          import("@/pages/applicant/OPAM/OPapplication/OPowner.vue"),
+          import("@/pages/applicant/OPAM/OPapplication/OPunified.vue"),
       },
       {
         path: "op-portal",
@@ -28,11 +22,18 @@ export const opamRoutes = [
         component: () =>
           import("@/pages/applicant/OPAM/OPapplication/OPportal.vue"),
       },
+
+      {
+        path: "op-owner",
+        redirect: { name: "OPunified" },
+      },
+      {
+        path: "op-location",
+        redirect: { name: "OPunified" },
+      },
       {
         path: "op-signatories",
-        name: "OPsignatories",
-        component: () =>
-          import("@/pages/applicant/OPAM/OPapplication/OPsignatories.vue"),
+        redirect: { name: "OPunified" },
       },
     ],
   },
