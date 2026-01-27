@@ -27,19 +27,6 @@
                 </div>
                 <h2 class="login-title">Staff Login</h2>
                 <v-form @submit.prevent="handleLogin" ref="loginForm">
-                  <v-select
-                    label="Role"
-                    :items="[
-                      'Administrative Aide',
-                      'Engineer',
-                      'Architect',
-                      'Building Inspector',
-                      'Chief Inspector',
-                      'Building Official',
-                    ]"
-                    class="mb-3"
-                  ></v-select>
-
                   <v-text-field
                     v-model="email"
                     label="Email Address"
@@ -112,7 +99,6 @@
 </template>
 
 <script>
-import { useAuthStore } from "@/stores/auth";
 import nagaImage from "@/assets/naga.png";
 
 export default {
@@ -132,6 +118,51 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "Email must be valid",
       ],
       passwordRules: [(v) => !!v || "Password is required"],
+      // Static user credentials with role-based routing
+      staticUsers: [
+        {
+          email: "admin@copems.com",
+          password: "admin123",
+          role: "Administrative Aide",
+          redirect: "/bpam/AA-approval/administrative",
+        },
+        {
+          email: "engineer@copems.com",
+          password: "engineer123",
+          role: "Engineer",
+          redirect: "/opam/ts-scheduling/ts-dashboard",
+        },
+        {
+          email: "evaluator@copems.com",
+          password: "evaluator123",
+          role: "Evaluator",
+          redirect: "/bpam/Plan-evaluator/list-plan",
+        },
+        {
+          email: "architect@copems.com",
+          password: "architect123",
+          role: "Architect",
+          redirect: "/bpam/Plan-evaluator/list-plan",
+        },
+        {
+          email: "inspector@copems.com",
+          password: "inspector123",
+          role: "Building Inspector",
+          redirect: "/opam/bi-inspection/bi-dashboard",
+        },
+        {
+          email: "chief@copems.com",
+          password: "chief123",
+          role: "Chief Inspector",
+          redirect: "/opam/bi-inspection/ci-dashboard",
+        },
+        {
+          email: "official@copems.com",
+          password: "official123",
+          role: "Building Official",
+          redirect: "/opam/bi-inspection/ci-dashboard",
+        },
+      ],
     };
   },
   mounted() {
@@ -152,25 +183,33 @@ export default {
       this.loading = true;
       this.alertMessage = "";
 
-      try {
-        const authStore = useAuthStore();
-        const success = await authStore.login(this.email, this.password);
+      // Find matching user from static credentials
+      const user = this.staticUsers.find(
+        (u) => u.email === this.email && u.password === this.password
+      );
 
-        if (success) {
-          this.alertType = "success";
-          this.alertMessage = "Login successful!";
+      if (user) {
+        this.alertType = "success";
+        this.alertMessage = `Login successful! Welcome, ${user.role}`;
 
-          setTimeout(() => {
-            this.$router.push("/applicant/OPapply");
-          }, 1000);
-        }
-      } catch (error) {
+        // Store user info in localStorage for session persistence
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            email: user.email,
+            role: user.role,
+          })
+        );
+
+        setTimeout(() => {
+          this.$router.push(user.redirect);
+        }, 1000);
+      } else {
         this.alertType = "error";
-        this.alertMessage =
-          error.message || "Login failed. Please check your credentials.";
-      } finally {
-        this.loading = false;
+        this.alertMessage = "Invalid email or password. Please try again.";
       }
+
+      this.loading = false;
     },
     goToLogin() {
       window.location.href = "/alogin";

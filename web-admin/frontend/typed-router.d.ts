@@ -26,10 +26,18 @@ declare module 'vue-router/auto-routes' {
     '/Admin/CMM/Compliance': RouteRecordInfo<'/Admin/CMM/Compliance', '/Admin/CMM/Compliance', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/AAverification/AAchecklist': RouteRecordInfo<'/Admin/OPAM/AAverification/AAchecklist', '/Admin/OPAM/AAverification/AAchecklist', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/AAverification/AAdashboard': RouteRecordInfo<'/Admin/OPAM/AAverification/AAdashboard', '/Admin/OPAM/AAverification/AAdashboard', Record<never, never>, Record<never, never>>,
+    '/Admin/OPAM/AAverification/tabs/Checklist': RouteRecordInfo<'/Admin/OPAM/AAverification/tabs/Checklist', '/Admin/OPAM/AAverification/tabs/Checklist', Record<never, never>, Record<never, never>>,
+    '/Admin/OPAM/ApplicantDetails': RouteRecordInfo<'/Admin/OPAM/ApplicantDetails', '/Admin/OPAM/ApplicantDetails', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/BIinspection/BIdashboard': RouteRecordInfo<'/Admin/OPAM/BIinspection/BIdashboard', '/Admin/OPAM/BIinspection/BIdashboard', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/BIinspection/BIreport': RouteRecordInfo<'/Admin/OPAM/BIinspection/BIreport', '/Admin/OPAM/BIinspection/BIreport', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/BIinspection/CIdashboard': RouteRecordInfo<'/Admin/OPAM/BIinspection/CIdashboard', '/Admin/OPAM/BIinspection/CIdashboard', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/BIinspection/CIreport': RouteRecordInfo<'/Admin/OPAM/BIinspection/CIreport', '/Admin/OPAM/BIinspection/CIreport', Record<never, never>, Record<never, never>>,
+    '/Admin/OPAM/BIinspection/tabs/InspectionReportTab': RouteRecordInfo<'/Admin/OPAM/BIinspection/tabs/InspectionReportTab', '/Admin/OPAM/BIinspection/tabs/InspectionReportTab', Record<never, never>, Record<never, never>>,
+    '/Admin/OPAM/BIinspection/tabs/PdfPlansTab': RouteRecordInfo<'/Admin/OPAM/BIinspection/tabs/PdfPlansTab', '/Admin/OPAM/BIinspection/tabs/PdfPlansTab', Record<never, never>, Record<never, never>>,
+    '/Admin/OPAM/BIinspection/tabs/ReportSummaryTab': RouteRecordInfo<'/Admin/OPAM/BIinspection/tabs/ReportSummaryTab', '/Admin/OPAM/BIinspection/tabs/ReportSummaryTab', Record<never, never>, Record<never, never>>,
+    '/Admin/OPAM/TSscheduling/modal/SchedulingModal': RouteRecordInfo<'/Admin/OPAM/TSscheduling/modal/SchedulingModal', '/Admin/OPAM/TSscheduling/modal/SchedulingModal', Record<never, never>, Record<never, never>>,
+    '/Admin/OPAM/TSscheduling/tabs/ChecklistTab': RouteRecordInfo<'/Admin/OPAM/TSscheduling/tabs/ChecklistTab', '/Admin/OPAM/TSscheduling/tabs/ChecklistTab', Record<never, never>, Record<never, never>>,
+    '/Admin/OPAM/TSscheduling/tabs/InspectionScheduleTab': RouteRecordInfo<'/Admin/OPAM/TSscheduling/tabs/InspectionScheduleTab', '/Admin/OPAM/TSscheduling/tabs/InspectionScheduleTab', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/TSscheduling/TSdashboard': RouteRecordInfo<'/Admin/OPAM/TSscheduling/TSdashboard', '/Admin/OPAM/TSscheduling/TSdashboard', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/TSscheduling/TSinspection': RouteRecordInfo<'/Admin/OPAM/TSscheduling/TSinspection', '/Admin/OPAM/TSscheduling/TSinspection', Record<never, never>, Record<never, never>>,
     '/auth/Login': RouteRecordInfo<'/auth/Login', '/auth/Login', Record<never, never>, Record<never, never>>,
@@ -78,6 +86,14 @@ declare module 'vue-router/auto-routes' {
       routes: '/Admin/OPAM/AAverification/AAdashboard'
       views: never
     }
+    'src/pages/Admin/OPAM/AAverification/tabs/Checklist.vue': {
+      routes: '/Admin/OPAM/AAverification/tabs/Checklist'
+      views: never
+    }
+    'src/pages/Admin/OPAM/ApplicantDetails.vue': {
+      routes: '/Admin/OPAM/ApplicantDetails'
+      views: never
+    }
     'src/pages/Admin/OPAM/BIinspection/BIdashboard.vue': {
       routes: '/Admin/OPAM/BIinspection/BIdashboard'
       views: never
@@ -92,6 +108,30 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/Admin/OPAM/BIinspection/CIreport.vue': {
       routes: '/Admin/OPAM/BIinspection/CIreport'
+      views: never
+    }
+    'src/pages/Admin/OPAM/BIinspection/tabs/InspectionReportTab.vue': {
+      routes: '/Admin/OPAM/BIinspection/tabs/InspectionReportTab'
+      views: never
+    }
+    'src/pages/Admin/OPAM/BIinspection/tabs/PdfPlansTab.vue': {
+      routes: '/Admin/OPAM/BIinspection/tabs/PdfPlansTab'
+      views: never
+    }
+    'src/pages/Admin/OPAM/BIinspection/tabs/ReportSummaryTab.vue': {
+      routes: '/Admin/OPAM/BIinspection/tabs/ReportSummaryTab'
+      views: never
+    }
+    'src/pages/Admin/OPAM/TSscheduling/modal/SchedulingModal.vue': {
+      routes: '/Admin/OPAM/TSscheduling/modal/SchedulingModal'
+      views: never
+    }
+    'src/pages/Admin/OPAM/TSscheduling/tabs/ChecklistTab.vue': {
+      routes: '/Admin/OPAM/TSscheduling/tabs/ChecklistTab'
+      views: never
+    }
+    'src/pages/Admin/OPAM/TSscheduling/tabs/InspectionScheduleTab.vue': {
+      routes: '/Admin/OPAM/TSscheduling/tabs/InspectionScheduleTab'
       views: never
     }
     'src/pages/Admin/OPAM/TSscheduling/TSdashboard.vue': {

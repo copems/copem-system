@@ -100,7 +100,6 @@ const userInitials = computed(() => {
 });
 
 const handleLogout = () => {
-  // Log out and redirect to root
   console.log("Log Out clicked");
   router.push("/");
 };

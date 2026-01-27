@@ -57,9 +57,7 @@
                       <div class="d-flex align-center">
                         <v-radio :value="'partial'"></v-radio>
                         <div class="flex-grow-1 ml-2">
-                          <div class="text-h6 radio-card-title-responsive">
-                            Partial
-                          </div>
+                          <div class="text-h6 radio-card-title-responsive">Partial</div>
                         </div>
                         <v-icon
                           :color="selectedApplicationType === 'partial' ? 'blue' : 'grey'"
@@ -81,12 +79,12 @@
                       <div class="d-flex align-center">
                         <v-radio :value="'complete'"></v-radio>
                         <div class="flex-grow-1 ml-2">
-                          <div class="text-h6 radio-card-title-responsive">
-                            Full
-                          </div>
+                          <div class="text-h6 radio-card-title-responsive">Full</div>
                         </div>
                         <v-icon
-                          :color="selectedApplicationType === 'complete' ? 'blue' : 'grey'"
+                          :color="
+                            selectedApplicationType === 'complete' ? 'blue' : 'grey'
+                          "
                         >
                           mdi-truck
                         </v-icon>
@@ -117,9 +115,7 @@
         <v-card-text>
           <v-card class="mb-4 card-section">
             <v-card-title class="text-h6 section-title">
-              <v-icon left color="blue-darken-3" class="mr-2">
-                mdi-account
-              </v-icon>
+              <v-icon left color="blue-darken-3" class="mr-2"> mdi-account </v-icon>
               OWNER/APPLICANT
             </v-card-title>
             <v-divider />
@@ -149,9 +145,7 @@
 
           <v-card class="card-section">
             <v-card-title class="text-h6 section-title">
-              <v-icon left color="blue-darken-3" class="mr-2">
-                mdi-map-marker
-              </v-icon>
+              <v-icon left color="blue-darken-3" class="mr-2"> mdi-map-marker </v-icon>
               ADDRESS
             </v-card-title>
             <v-divider />
@@ -191,12 +185,7 @@
         <v-btn class="btn-rounded mr-2" variant="tonal" @click="$emit('back')">
           <v-icon left>mdi-arrow-left</v-icon>Back
         </v-btn>
-        <v-btn
-          color="blue-darken-3"
-          class="btn-rounded"
-          variant="elevated"
-          type="submit"
-        >
+        <v-btn color="blue-darken-3" class="btn-rounded" variant="elevated" type="submit">
           Next<v-icon right>mdi-arrow-right</v-icon>
         </v-btn>
       </div>

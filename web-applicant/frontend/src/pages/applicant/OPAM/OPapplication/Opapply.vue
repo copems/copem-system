@@ -180,12 +180,10 @@ export default {
 </script>
 
 <style scoped>
-/* Government Standard Font Styles */
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Body */
 .app-container,
 .v-application {
   font-family: Arial, Helvetica, sans-serif;
@@ -194,7 +192,6 @@ export default {
   line-height: 1.7;
 }
 
-/* Header (H1) - 36px */
 .page-header,
 .text-h4 {
   font-size: 2.25rem;
@@ -202,7 +199,6 @@ export default {
   line-height: 1.25;
 }
 
-/* Subheader (H2) - 24px */
 .section-header,
 .text-h5 {
   font-size: 1.5rem;
@@ -210,7 +206,6 @@ export default {
   line-height: 1.35;
 }
 
-/* Label/Title - 14px */
 .form-label,
 .table-header,
 .ui-label {
@@ -218,8 +213,6 @@ export default {
   font-weight: 600;
   line-height: 1.5;
 }
-
-/* Small/Helper Text - 13px */
 .helper-text,
 .text-caption {
   font-size: 13px;
@@ -238,7 +231,7 @@ export default {
 }
 
 .full-height {
-  min-height: calc(100vh - 88px); /* 88px header height */
+  min-height: calc(100vh - 88px);
   height: calc(100vh - 88px);
   display: flex;
 }

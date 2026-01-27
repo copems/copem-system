@@ -131,19 +131,13 @@
     <div :style="s.pageContainer">
       <v-row class="mb-6">
         <v-col v-for="card in statCards" :key="card.key" cols="12" sm="6" md="3">
-          <div
-            :style="s.statCard"
-            role="button"
+          <StatsCard
+            :label="card.label"
+            :value="card.value"
+            :icon="card.icon"
+            :icon-color="card.iconColor"
             @click="filterByStatus(card.clickStatus)"
-          >
-            <div :style="s.statLabel">{{ card.label }}</div>
-            <div :style="s.statValueGroup">
-              <div :style="s.statValue">{{ card.value }}</div>
-              <v-icon :style="s.statInlineIcon" :color="card.iconColor">{{
-                card.icon
-              }}</v-icon>
-            </div>
-          </div>
+          />
         </v-col>
       </v-row>
 
@@ -185,59 +179,44 @@
         </v-col>
       </v-row>
 
-      <v-card class="elevation-1" :style="s.tableCard">
-        <v-table class="custom-data-table">
-          <thead>
-            <tr>
-              <th
-                v-for="header in appHeaders"
-                :key="header.key"
-                class="text-left"
-                :style="[
-                  s.tableHeader,
-                  header.key === 'action' ? { width: '120px' } : {},
-                ]"
-              >
-                {{ header.title }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in filteredApplicants" :key="item.applicationNumber">
-              <td class="text-left">{{ item.applicationNumber }}</td>
-              <td class="text-left py-2">
-                <div class="d-flex align-center">
-                  <v-avatar
-                    size="36"
-                    :color="getAvatarColor(item.initials)"
-                    class="me-2 text-white"
-                    >{{ item.initials }}</v-avatar
-                  >
-                  <span>{{ item.name }}</span>
-                </div>
-              </td>
-              <td class="text-left">{{ item.date }}</td>
-              <td class="text-left">{{ item.time }}</td>
-              <td class="text-left">
-                <span :style="[s.statusPill, statusStyles[applicantStatus(item)]]">
-                  {{ applicantStatus(item) }}
-                </span>
-              </td>
-              <td class="text-left">
-                <v-btn size="small" :style="s.viewBtn" @click="viewDetails(item)"
-                  >View Details</v-btn
-                >
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-        <div
-          v-if="!filteredApplicants.length"
-          class="text-center pa-4 text-medium-emphasis"
-        >
-          No applicants found matching the search or filter criteria.
-        </div>
-      </v-card>
+      <DataTable
+        :headers="appHeaders"
+        :items="filteredApplicants"
+        item-key="applicationNumber"
+        empty-message="No applicants found matching the search or filter criteria."
+      >
+        <template #cell-applicationNumber="{ value }">
+          {{ value }}
+        </template>
+        <template #cell-name="{ item }">
+          <div class="d-flex align-center py-2">
+            <v-avatar
+              size="36"
+              :color="getAvatarColor(item.initials)"
+              class="me-2 text-white"
+            >
+              {{ item.initials }}
+            </v-avatar>
+            <span>{{ item.name }}</span>
+          </div>
+        </template>
+        <template #cell-date="{ value }">
+          {{ value }}
+        </template>
+        <template #cell-time="{ value }">
+          {{ value }}
+        </template>
+        <template #cell-status="{ item }">
+          <span :style="[s.statusPill, statusStyles[applicantStatus(item)]]">
+            {{ applicantStatus(item) }}
+          </span>
+        </template>
+        <template #cell-action="{ item }">
+          <v-btn size="small" :style="s.viewBtn" @click="viewDetails(item)">
+            View Details
+          </v-btn>
+        </template>
+      </DataTable>
     </div>
   </div>
 </template>
@@ -245,6 +224,8 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import StatsCard from "@/components/StatsCard.vue";
+import DataTable from "@/components/DataTable.vue";
 
 const search = ref("");
 const activeFilterApps = ref("Total");
@@ -425,61 +406,19 @@ const viewDetails = (item) => {
 };
 
 const appHeaders = [
-  { title: "Application Number", key: "applicationNumber", sortable: false },
-  { title: "Applicant Name", key: "name", sortable: false },
-  { title: "Date", key: "date", sortable: true },
-  { title: "Time", key: "time", sortable: false },
-  { title: "Status", key: "status", sortable: true },
-  { title: "Action", key: "action", sortable: false },
+  { title: "Application Number", key: "applicationNumber" },
+  { title: "Applicant Name", key: "name" },
+  { title: "Date", key: "date" },
+  { title: "Time", key: "time" },
+  { title: "Status", key: "status" },
+  { title: "Action", key: "action", width: "120px" },
 ];
 
 const s = {
-  topToolbar: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "12px 24px",
-    background: "#fff",
-    borderBottom: "1px solid #e8eaf0",
-  },
-  textToolbar: { color: "#111827" },
   pageContainer: {
     maxWidth: "1460px",
     margin: "16px auto 0",
     padding: "0 12px",
-  },
-  statCard: {
-    background: "#fff",
-    borderRadius: "8px",
-    boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-    padding: "16px",
-    minHeight: "100px",
-    cursor: "pointer",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    transition: "transform 0.1s ease-in-out",
-  },
-  statLabel: {
-    fontSize: "15px",
-    color: "#475467",
-    fontWeight: 500,
-    marginBottom: "8px",
-  },
-  statValueGroup: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-  },
-  statValue: {
-    fontSize: "36px",
-    color: "#111827",
-    fontWeight: 800,
-    lineHeight: 1,
-  },
-  statInlineIcon: {
-    fontSize: "40px",
-    lineHeight: 1,
   },
   filterBtn: {
     background: "#e5e7eb",
@@ -495,14 +434,6 @@ const s = {
     maxWidth: "350px",
     marginRight: "8px",
   },
-  tableCard: { borderRadius: "12px", overflow: "hidden" },
-  tableHeader: {
-    background: "#f8fafc",
-    color: "#334155",
-    fontSize: "12px",
-    fontWeight: 700,
-    textTransform: "uppercase",
-  },
   statusPill: {
     padding: "4px 10px",
     borderRadius: "16px",
@@ -516,47 +447,6 @@ const s = {
     fontWeight: 600,
     borderRadius: "4px",
   },
-  profileBtn: {
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    padding: 0,
-    minWidth: "unset",
-  },
-  dialogCard: {
-    borderRadius: "10px",
-  },
-  dialogHeader: {
-    background: "#3b82f6",
-    color: "#fff",
-    padding: "16px 24px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  label: {
-    fontSize: "12px",
-    fontWeight: 500,
-    color: "#6b7280",
-    textTransform: "uppercase",
-    marginBottom: "4px",
-  },
-  dialogValue: {
-    fontSize: "16px",
-    fontWeight: 600,
-    color: "#1f2937",
-  },
-  approveBtn: {
-    background: "#22c55e",
-    color: "#fff",
-    textTransform: "capitalize",
-    fontWeight: 600,
-  },
-  rejectBtn: {
-    background: "#ef4444",
-    color: "#fff",
-    textTransform: "capitalize",
-    fontWeight: 600,
-  },
 };
 
 const statusStyles = {
@@ -567,43 +457,6 @@ const statusStyles = {
 </script>
 
 <style scoped>
-.header-subtitle {
-  font-size: 12px;
-  font-weight: 400;
-  color: #111827;
-  line-height: 1.2;
-}
-
-.header-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: #111827;
-  line-height: 1.2;
-}
-
-.profile-btn {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  min-width: unset !important;
-}
-
-.profile-name {
-  color: #555 !important;
-}
-
-.profile-role {
-  color: #888 !important;
-}
-
-.custom-data-table tr:hover {
-  background-color: #f5f5f5 !important;
-}
-
-.custom-data-table tr td {
-  border-bottom: 1px solid #e5e7eb;
-}
-
 /* Schedule Dialog Styles */
 .schedule-dialog-card {
   border-radius: 12px !important;

@@ -2,15 +2,13 @@
   <div :style="s.pageContainer">
     <v-row class="mb-6">
       <v-col v-for="card in statCards" :key="card.key" cols="12" sm="6" md="3">
-        <div :style="s.statCard" role="button" @click="filterByStatus(card.clickStatus)">
-          <div :style="s.statLabel">{{ card.label }}</div>
-          <div :style="s.statValueGroup">
-            <div :style="s.statValue">{{ card.value }}</div>
-            <v-icon :style="s.statInlineIcon" :color="card.iconColor">{{
-              card.icon
-            }}</v-icon>
-          </div>
-        </div>
+        <StatsCard
+          :label="card.label"
+          :value="card.value"
+          :icon="card.icon"
+          :icon-color="card.iconColor"
+          @click="filterByStatus(card.clickStatus)"
+        />
       </v-col>
     </v-row>
 
@@ -52,61 +50,53 @@
       </v-col>
     </v-row>
 
-    <v-card class="elevation-1" :style="s.tableCard">
-      <v-table class="custom-data-table">
-        <thead>
-          <tr>
-            <th
-              v-for="header in appHeaders"
-              :key="header.key"
-              class="text-left"
-              :style="[s.tableHeader, header.key === 'action' ? { width: '120px' } : {}]"
-            >
-              {{ header.title }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in filteredApplicants" :key="item.applicationNumber">
-            <td class="text-left">{{ item.applicationNumber }}</td>
-            <td class="text-left py-2">
-              <div class="d-flex align-center">
-                <v-avatar
-                  size="36"
-                  :color="getAvatarColor(item.initials)"
-                  class="me-2 text-white"
-                  >{{ item.initials }}</v-avatar
-                >
-                <span>{{ item.name }}</span>
-              </div>
-            </td>
-            <td class="text-left">{{ item.dateSubmitted }}</td>
-            <td class="text-left">
-              <span :style="[s.statusPill, statusStyles[applicantStatus(item)]]">
-                {{ applicantStatus(item) }}
-              </span>
-            </td>
-            <td class="text-left">
-              <v-btn size="small" :style="s.viewBtn" @click="viewDetails(item)"
-                >View Details</v-btn
-              >
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
-      <div
-        v-if="!filteredApplicants.length"
-        class="text-center pa-4 text-medium-emphasis"
-      >
-        No applicants found matching the search or filter criteria.
-      </div>
-    </v-card>
+    <DataTable
+      :headers="appHeaders"
+      :items="filteredApplicants"
+      item-key="applicationNumber"
+      empty-message="No applicants found matching the search or filter criteria."
+    >
+      <template #cell-applicationNumber="{ value }">
+        {{ value }}
+      </template>
+
+      <template #cell-name="{ item }">
+        <div class="d-flex align-center py-2">
+          <v-avatar
+            size="36"
+            :color="getAvatarColor(item.initials)"
+            class="me-2 text-white"
+          >
+            {{ item.initials }}
+          </v-avatar>
+          <span>{{ item.name }}</span>
+        </div>
+      </template>
+
+      <template #cell-dateSubmitted="{ value }">
+        {{ value }}
+      </template>
+
+      <template #cell-status="{ item }">
+        <span :style="[s.statusPill, statusStyles[applicantStatus(item)]]">
+          {{ applicantStatus(item) }}
+        </span>
+      </template>
+
+      <template #cell-action="{ item }">
+        <v-btn size="small" :style="s.viewBtn" @click="viewDetails(item)">
+          View Details
+        </v-btn>
+      </template>
+    </DataTable>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import StatsCard from "@/components/StatsCard.vue";
+import DataTable from "@/components/DataTable.vue";
 
 const activeTab = ref("applications");
 const search = ref("");
@@ -125,7 +115,7 @@ const applicants = ref([
 
 const applicantStatus = (applicant) => {
   const statusMap = {
-    Pending: "Unsubmitted",
+    Pending: "Pending",
     Verified: "Complete",
     Return: "Incomplete",
   };
@@ -134,8 +124,7 @@ const applicantStatus = (applicant) => {
 
 const statCards = computed(() => {
   const total = applicants.value.length;
-  const unsubmitted = applicants.value.filter((a) => applicantStatus(a) === "Unsubmitted")
-    .length;
+  const pending = applicants.value.filter((a) => applicantStatus(a) === "Pending").length;
   const complete = applicants.value.filter((a) => applicantStatus(a) === "Complete")
     .length;
   const incomplete = applicants.value.filter((a) => applicantStatus(a) === "Incomplete")
@@ -167,12 +156,12 @@ const statCards = computed(() => {
       clickStatus: "Incomplete",
     },
     {
-      key: "unsubmitted",
-      label: "Unsubmitted",
-      value: unsubmitted,
+      key: "Pending",
+      label: "Pending",
+      value: pending,
       icon: "mdi-clock-outline",
       iconColor: "#f59e0b",
-      clickStatus: "Unsubmitted",
+      clickStatus: "Pending",
     },
   ];
 });
@@ -203,7 +192,7 @@ const filterByStatus = (status) => {
   activeFilterApps.value = status;
 };
 
-const filterOptions = computed(() => ["Total", "Complete", "Incomplete", "Unsubmitted"]);
+const filterOptions = computed(() => ["Total", "Complete", "Incomplete", "Pending"]);
 
 const stringToHslColor = (str, s, l) => {
   let hash = 0;
@@ -223,7 +212,7 @@ const getAvatarColor = (initials) => {
 
 const getRouteForStatus = (status) => {
   switch (status) {
-    case "Unsubmitted":
+    case "Pending":
       return "/opam/AA-verification/aa-checklist";
     case "Complete":
       return "/opam/AA-verification/aa-checklist";
@@ -250,7 +239,7 @@ const appHeaders = [
   { title: "Applicant Name", key: "name", sortable: false },
   { title: "Date Submitted", key: "dateSubmitted", sortable: true },
   { title: "Status", key: "status", sortable: true },
-  { title: "Action", key: "action", sortable: false },
+  { title: "Action", key: "action", sortable: false, width: "120px" },
 ];
 
 const s = {
@@ -258,39 +247,6 @@ const s = {
     maxWidth: "1460px",
     margin: "16px auto 0",
     padding: "0 12px",
-  },
-  statCard: {
-    background: "#fff",
-    borderRadius: "8px",
-    boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-    padding: "16px",
-    minHeight: "100px",
-    cursor: "pointer",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    transition: "transform 0.1s ease-in-out",
-  },
-  statLabel: {
-    fontSize: "15px",
-    color: "#475467",
-    fontWeight: 500,
-    marginBottom: "8px",
-  },
-  statValueGroup: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-  },
-  statValue: {
-    fontSize: "36px",
-    color: "#111827",
-    fontWeight: 800,
-    lineHeight: 1,
-  },
-  statInlineIcon: {
-    fontSize: "40px",
-    lineHeight: 1,
   },
   filterBtn: {
     background: "#e5e7eb",
@@ -306,14 +262,6 @@ const s = {
     maxWidth: "350px",
     marginRight: "8px",
   },
-  tableCard: { borderRadius: "12px", overflow: "hidden" },
-  tableHeader: {
-    background: "#f8fafc",
-    color: "#334155",
-    fontSize: "12px",
-    fontWeight: 700,
-    textTransform: "uppercase",
-  },
   statusPill: {
     padding: "4px 10px",
     borderRadius: "16px",
@@ -321,35 +269,21 @@ const s = {
     fontWeight: 700,
   },
   viewBtn: {
-    background: "#3b82f6" /* Blue color for primary action */,
+    background: "#3b82f6",
     color: "#fff",
     textTransform: "none",
     fontWeight: 600,
     borderRadius: "4px",
-  },
-  profileBtn: {
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    padding: 0,
-    minWidth: "unset",
   },
 };
 
 const statusStyles = {
   Complete: { background: "#e6f9ee", color: "#067647" },
   Incomplete: { background: "#fee2e2", color: "#991b1b" },
-  Unsubmitted: { background: "#fff7e6", color: "#92400e" },
+  Pending: { background: "#fff7e6", color: "#92400e" },
   Passed: { background: "#d1fae5", color: "#065f46" },
   Violation: { background: "#fee2e2", color: "#991b1b" },
 };
 </script>
 
-<style scoped>
-.custom-data-table tr:hover {
-  background-color: #f5f5f5 !important;
-}
-
-.custom-data-table tr td {
-  border-bottom: 1px solid #e5e7eb;
-}
-</style>
+<style scoped></style>

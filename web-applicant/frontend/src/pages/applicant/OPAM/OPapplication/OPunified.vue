@@ -208,12 +208,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Government Standard Font Styles */
+
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Body */
 .app-container,
 .v-application {
   font-family: Arial, Helvetica, sans-serif;
@@ -222,7 +221,6 @@ export default defineComponent({
   line-height: 1.7;
 }
 
-/* Header (H1) - 36px */
 .page-header,
 .text-h4 {
   font-size: 2.25rem;
@@ -230,7 +228,6 @@ export default defineComponent({
   line-height: 1.25;
 }
 
-/* Subheader (H2) - 24px */
 .section-header,
 .text-h5 {
   font-size: 1.5rem;
@@ -238,7 +235,6 @@ export default defineComponent({
   line-height: 1.35;
 }
 
-/* Label/Title - 14px */
 .form-label,
 .table-header,
 .ui-label {
@@ -247,7 +243,6 @@ export default defineComponent({
   line-height: 1.5;
 }
 
-/* Small/Helper Text - 13px */
 .helper-text,
 .text-caption {
   font-size: 13px;
