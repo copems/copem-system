@@ -80,7 +80,7 @@ const props = defineProps({
   },
   userRole: {
     type: String,
-    default: "Administrative Aide",
+    default: "Building Official Head",
   },
   avatarColor: {
     type: String,

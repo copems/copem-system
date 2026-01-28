@@ -41,4 +41,22 @@ export const bpamRoutes = [
       },
     ],
   },
+    // BPAM
+  {
+    path: "/bpam/Obo-Head/",
+    component: () => import("@/layouts/OBOLayout.vue"),
+    children: [
+      {
+        path: "List-Approval",
+        name: "listapproval",
+        component: () => import("@/pages/Admin/BPAM/OboHead/ListApproval.vue"),
+      },
+            {
+        path: "Evaluated-Plans/:applicationNumber",
+        name: "evaluatedplans",
+        component: () => import("@/pages/Admin/BPAM/OboHead/EvaluatedPlans.vue"),
+      },
+
+    ],
+  },
 ];

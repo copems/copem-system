@@ -207,3 +207,95 @@ CREATE TABLE IF NOT EXISTS BP_Application_Status
 	remarks VARCHAR(255),
 	date_conducted DATETIME NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS Release_BP_Certificate
+(
+	release_bp_certificate_no INTEGER PRIMARY KEY AUTO_INCREMENT,
+	application_no VARCHAR(10) NOT NULL,
+	building_permit_no VARCHAR(50),
+	FSEC_no VARCHAR(50),
+	date_issued DATETIME,
+	release_date DATETIME,
+	official_receipt_no VARCHAR(50),
+	date_paid DATETIME,
+	bpac_id INTEGER,
+		FOREIGN KEY (bpac_id) REFERENCES BPA_Construction(bpac_id),
+	bpac_site_id INTEGER,
+		FOREIGN KEY (bpac_site_id) REFERENCES BPA_Construction_Site(bpac_site_id)
+);
+
+CREATE TABLE IF NOT EXISTS BPA_Doc_Req
+(
+	bpa_dr_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	bpa_dr_description VARCHAR(255) NOT NULL,
+	num_copy TINYINT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS BPA_Doc_Req_Submission
+(
+	bpa_drs_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	bpa_dr_id INTEGER NOT NULL,
+		FOREIGN KEY (bpa_dr_id) REFERENCES BPA_Doc_Req(bpa_dr_id),
+	bpac_id INTEGER NOT NULL,
+		FOREIGN KEY (bpac_id) REFERENCES BPA_Construction(bpac_id),
+	date_submitted DATETIME NOT NULL,
+	document_no VARCHAR(255),
+	issued_at VARCHAR(255),
+	issued_date DATETIME
+);
+
+CREATE TABLE IF NOT EXISTS Bldg_Plan_File
+(
+	bldg_plan_file_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	file_path VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Bldg_Official
+(
+	bldg_official_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	user_id INTEGER NOT NULL,
+		FOREIGN KEY (user_id) REFERENCES User_Account(user_id),
+	is_active BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS Bldg_Plan_Type
+(
+	bldg_plan_type_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	bldg_plan_desc VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Bldg_Plan_Checklist
+(
+	bldg_plan_checklist_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	bldg_plan_checklist_desc VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Bldg_Plan_Evaluator
+(
+	bldg_plan_evaluator_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	bldg_official_id INTEGER NOT NULL,
+		FOREIGN KEY (bldg_official_id) REFERENCES Bldg_Official(bldg_official_id),
+	bldg_plan_type_id INTEGER NOT NULL,
+		FOREIGN KEY (bldg_plan_type_id) REFERENCES Bldg_Plan_Type(bldg_plan_type_id),
+	is_active BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS Bldg_Plan_Evaluation
+(
+	bldg_plan_eval_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	bldg_plan_checklist_id INTEGER NOT NULL,
+		FOREIGN KEY (bldg_plan_checklist_id) REFERENCES Bldg_Plan_Checklist(bldg_plan_checklist_id),
+	is_compliant BOOLEAN NOT NULL,
+	no_compliant_remarks VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Bldg_Plan_Submission
+(
+	bldg_plan_submission_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	bldg_plan_evaluator_id INTEGER NOT NULL,
+		FOREIGN KEY (bldg_plan_evaluator_id) REFERENCES Bldg_Plan_Evaluator(bldg_plan_evaluator_id),
+	bldg_plan_file_id INTEGER NOT NULL,
+		FOREIGN KEY (bldg_plan_file_id) REFERENCES Bldg_Plan_File(bldg_plan_file_id),
+	date_submitted DATETIME NOT NULL,
+	status TINYINT NOT NULL
+);

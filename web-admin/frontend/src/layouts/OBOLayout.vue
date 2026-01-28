@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <Header />
+    <OboHeader />
+    <OboNavigation />
     <v-main class="main-content">
       <div class="scrollable-content">
         <router-view />
@@ -10,7 +11,8 @@
 </template>
 
 <script setup>
-import Header from "@/components/Header.vue";
+import OboHeader from "@/components/OboHeader.vue";
+import OboNavigation from "@/components/OboNavigation.vue";
 </script>
 
 <style scoped>

@@ -13,6 +13,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     Header: typeof import('./src/components/Header.vue')['default']
     Navigation: typeof import('./src/components/Navigation.vue')['default']
+    OboHeader: typeof import('./src/components/OboHeader.vue')['default']
+    OboNavigation: typeof import('./src/components/OboNavigation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
