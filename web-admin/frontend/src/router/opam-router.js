@@ -7,14 +7,12 @@ export const opamRoutes = [
       {
         path: "aa-checklist",
         name: "AAchecklist",
-        component: () =>
-          import("@/pages/Admin/OPAM/AAverification/AAchecklist.vue"),
+        component: () => import("@/pages/Admin/OPAM/AAverification/AAchecklist.vue"),
       },
       {
         path: "aa-dashboard",
         name: "AAdashboard",
-        component: () =>
-          import("@/pages/Admin/OPAM/AAverification/AAdashboard.vue"),
+        component: () => import("@/pages/Admin/OPAM/AAverification/AAdashboard.vue"),
       },
     ],
   },
@@ -26,14 +24,12 @@ export const opamRoutes = [
       {
         path: "ts-dashboard",
         name: "TSdashboard",
-        component: () =>
-          import("@/pages/Admin/OPAM/TSscheduling/TSdashboard.vue"),
+        component: () => import("@/pages/Admin/OPAM/TSscheduling/TSdashboard.vue"),
       },
       {
         path: "ts-inspection",
         name: "TSinspection",
-        component: () =>
-          import("@/pages/Admin/OPAM/TSscheduling/TSinspection.vue"),
+        component: () => import("@/pages/Admin/OPAM/TSscheduling/TSinspection.vue"),
       },
     ],
   },
@@ -46,8 +42,7 @@ export const opamRoutes = [
       {
         path: "bi-dashboard",
         name: "BIdashboard",
-        component: () =>
-          import("@/pages/Admin/OPAM/BIinspection/BIdashboard.vue"),
+        component: () => import("@/pages/Admin/OPAM/BIinspection/BIdashboard.vue"),
       },
       {
         path: "bi-report",
@@ -57,8 +52,7 @@ export const opamRoutes = [
       {
         path: "ci-dashboard",
         name: "CIdashboard",
-        component: () =>
-          import("@/pages/Admin/OPAM/BIinspection/CIdashboard.vue"),
+        component: () => import("@/pages/Admin/OPAM/BIinspection/CIdashboard.vue"),
       },
       {
         path: "ci-report",

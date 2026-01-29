@@ -75,7 +75,7 @@
               />
             </v-window-item>
 
-            <v-window-item value="plans">
+            <v-window-item value="plans">==
               <PdfPlansTab
                 :plans="pdfPlans"
                 v-model="selectedPlan"
