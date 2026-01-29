@@ -20,6 +20,8 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/Admin/BPAM/AAapproval/Administrative': RouteRecordInfo<'/Admin/BPAM/AAapproval/Administrative', '/Admin/BPAM/AAapproval/Administrative', Record<never, never>, Record<never, never>>,
     '/Admin/BPAM/AAapproval/ApprovedPlans': RouteRecordInfo<'/Admin/BPAM/AAapproval/ApprovedPlans', '/Admin/BPAM/AAapproval/ApprovedPlans', Record<never, never>, Record<never, never>>,
+    '/Admin/BPAM/OboHead/EvaluatedPlans': RouteRecordInfo<'/Admin/BPAM/OboHead/EvaluatedPlans', '/Admin/BPAM/OboHead/EvaluatedPlans', Record<never, never>, Record<never, never>>,
+    '/Admin/BPAM/OboHead/ListApproval': RouteRecordInfo<'/Admin/BPAM/OboHead/ListApproval', '/Admin/BPAM/OboHead/ListApproval', Record<never, never>, Record<never, never>>,
     '/Admin/BPAM/PlanEvaluator/ListPlan': RouteRecordInfo<'/Admin/BPAM/PlanEvaluator/ListPlan', '/Admin/BPAM/PlanEvaluator/ListPlan', Record<never, never>, Record<never, never>>,
     '/Admin/BPAM/PlanEvaluator/PlanEvaluation': RouteRecordInfo<'/Admin/BPAM/PlanEvaluator/PlanEvaluation', '/Admin/BPAM/PlanEvaluator/PlanEvaluation', Record<never, never>, Record<never, never>>,
     '/Admin/BPAM/PlanEvaluator/PlanInformation': RouteRecordInfo<'/Admin/BPAM/PlanEvaluator/PlanInformation', '/Admin/BPAM/PlanEvaluator/PlanInformation', Record<never, never>, Record<never, never>>,
@@ -60,6 +62,14 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/Admin/BPAM/AAapproval/ApprovedPlans.vue': {
       routes: '/Admin/BPAM/AAapproval/ApprovedPlans'
+      views: never
+    }
+    'src/pages/Admin/BPAM/OboHead/EvaluatedPlans.vue': {
+      routes: '/Admin/BPAM/OboHead/EvaluatedPlans'
+      views: never
+    }
+    'src/pages/Admin/BPAM/OboHead/ListApproval.vue': {
+      routes: '/Admin/BPAM/OboHead/ListApproval'
       views: never
     }
     'src/pages/Admin/BPAM/PlanEvaluator/ListPlan.vue': {

@@ -14,6 +14,8 @@ declare module 'vue' {
     DataTable: typeof import('./src/components/DataTable.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
     Navigation: typeof import('./src/components/Navigation.vue')['default']
+    OboHeader: typeof import('./src/components/OboHeader.vue')['default']
+    OboNavigation: typeof import('./src/components/OboNavigation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StatsCard: typeof import('./src/components/StatsCard.vue')['default']

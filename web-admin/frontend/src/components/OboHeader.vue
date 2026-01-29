@@ -80,7 +80,7 @@ const props = defineProps({
   },
   userRole: {
     type: String,
-    default: "Administrative Aide",
+    default: "Building Official Head",
   },
   avatarColor: {
     type: String,
@@ -100,6 +100,7 @@ const userInitials = computed(() => {
 });
 
 const handleLogout = () => {
+  // Log out and redirect to root
   console.log("Log Out clicked");
   router.push("/");
 };
