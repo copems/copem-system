@@ -791,7 +791,7 @@ const approvedApplicants = computed(() =>
 const filterByStatus = (status) => (activeFilter.value = status);
 const viewDetails = (item) =>
   router.push({
-    path: "/cmm/testing/rqmonitoring",
+    path: "/CMM/ComplianceTab/rqmonitoring",
     state: { complianceData: item },
   });
 const logOut = () => console.log("Logging out...");
