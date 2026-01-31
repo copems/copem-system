@@ -1,12 +1,12 @@
 export const cmmRoutes = [
   // BPAM
   {
-    path: "/CMM/ComplianceFolder/",
+    path: "/CMM/ComplianceTab/",
     component: () => import("@/layouts/AdminLayout.vue"),
     children: [
       {
-        path: "compliancetab",
-        name: "compliancetab",
+        path: "compliance",
+        name: "compliance",
         component: () =>
           import("@/pages/Admin/CMM/ComplianceTab/compliance.vue"), // Or any other component for the root
       },
