@@ -39,7 +39,7 @@ const navItems = [
   {
     title: "Compliance Monitoring",
     icon: "mdi-clipboard-check-multiple-outline",
-    to: "/cmm/testing/Compliance",
+    to: "/CMM/ComplianceFolder/compliancetab",
     hasSubmenu: true,
   },
   {
