@@ -25,7 +25,8 @@ declare module 'vue-router/auto-routes' {
     '/Admin/BPAM/PlanEvaluator/ListPlan': RouteRecordInfo<'/Admin/BPAM/PlanEvaluator/ListPlan', '/Admin/BPAM/PlanEvaluator/ListPlan', Record<never, never>, Record<never, never>>,
     '/Admin/BPAM/PlanEvaluator/PlanEvaluation': RouteRecordInfo<'/Admin/BPAM/PlanEvaluator/PlanEvaluation', '/Admin/BPAM/PlanEvaluator/PlanEvaluation', Record<never, never>, Record<never, never>>,
     '/Admin/BPAM/PlanEvaluator/PlanInformation': RouteRecordInfo<'/Admin/BPAM/PlanEvaluator/PlanInformation', '/Admin/BPAM/PlanEvaluator/PlanInformation', Record<never, never>, Record<never, never>>,
-    '/Admin/CMM/Compliance': RouteRecordInfo<'/Admin/CMM/Compliance', '/Admin/CMM/Compliance', Record<never, never>, Record<never, never>>,
+    '/Admin/CMM/Compliance/compliance': RouteRecordInfo<'/Admin/CMM/Compliance/compliance', '/Admin/CMM/Compliance/compliance', Record<never, never>, Record<never, never>>,
+    '/Admin/CMM/RQMonitoring/rqmonitoring': RouteRecordInfo<'/Admin/CMM/RQMonitoring/rqmonitoring', '/Admin/CMM/RQMonitoring/rqmonitoring', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/AAverification/AAchecklist': RouteRecordInfo<'/Admin/OPAM/AAverification/AAchecklist', '/Admin/OPAM/AAverification/AAchecklist', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/AAverification/AAdashboard': RouteRecordInfo<'/Admin/OPAM/AAverification/AAdashboard', '/Admin/OPAM/AAverification/AAdashboard', Record<never, never>, Record<never, never>>,
     '/Admin/OPAM/AAverification/tabs/Checklist': RouteRecordInfo<'/Admin/OPAM/AAverification/tabs/Checklist', '/Admin/OPAM/AAverification/tabs/Checklist', Record<never, never>, Record<never, never>>,
@@ -84,8 +85,12 @@ declare module 'vue-router/auto-routes' {
       routes: '/Admin/BPAM/PlanEvaluator/PlanInformation'
       views: never
     }
-    'src/pages/Admin/CMM/Compliance.vue': {
-      routes: '/Admin/CMM/Compliance'
+    'src/pages/Admin/CMM/Compliance/compliance.vue': {
+      routes: '/Admin/CMM/Compliance/compliance'
+      views: never
+    }
+    'src/pages/Admin/CMM/RQMonitoring/rqmonitoring.vue': {
+      routes: '/Admin/CMM/RQMonitoring/rqmonitoring'
       views: never
     }
     'src/pages/Admin/OPAM/AAverification/AAchecklist.vue': {
