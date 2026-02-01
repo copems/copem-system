@@ -26,6 +26,12 @@ declare module 'vue-router/auto-routes' {
     '/applicant/BPAM/AncillaryPermits/Plumbing': RouteRecordInfo<'/applicant/BPAM/AncillaryPermits/Plumbing', '/applicant/BPAM/AncillaryPermits/Plumbing', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/AncillaryPermits/Sanitary': RouteRecordInfo<'/applicant/BPAM/AncillaryPermits/Sanitary', '/applicant/BPAM/AncillaryPermits/Sanitary', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/AncillaryPermits/UnifiedApplicationForm': RouteRecordInfo<'/applicant/BPAM/AncillaryPermits/UnifiedApplicationForm', '/applicant/BPAM/AncillaryPermits/UnifiedApplicationForm', Record<never, never>, Record<never, never>>,
+    '/applicant/BPAM/BuildingPermitForm/box1': RouteRecordInfo<'/applicant/BPAM/BuildingPermitForm/box1', '/applicant/BPAM/BuildingPermitForm/box1', Record<never, never>, Record<never, never>>,
+    '/applicant/BPAM/BuildingPermitForm/box2': RouteRecordInfo<'/applicant/BPAM/BuildingPermitForm/box2', '/applicant/BPAM/BuildingPermitForm/box2', Record<never, never>, Record<never, never>>,
+    '/applicant/BPAM/BuildingPermitForm/box3': RouteRecordInfo<'/applicant/BPAM/BuildingPermitForm/box3', '/applicant/BPAM/BuildingPermitForm/box3', Record<never, never>, Record<never, never>>,
+    '/applicant/BPAM/BuildingPermitForm/box5': RouteRecordInfo<'/applicant/BPAM/BuildingPermitForm/box5', '/applicant/BPAM/BuildingPermitForm/box5', Record<never, never>, Record<never, never>>,
+    '/applicant/BPAM/BuildingPermitForm/BPForm': RouteRecordInfo<'/applicant/BPAM/BuildingPermitForm/BPForm', '/applicant/BPAM/BuildingPermitForm/BPForm', Record<never, never>, Record<never, never>>,
+    '/applicant/BPAM/BuildingPermitForm/useorcharacterofoccupancy': RouteRecordInfo<'/applicant/BPAM/BuildingPermitForm/useorcharacterofoccupancy', '/applicant/BPAM/BuildingPermitForm/useorcharacterofoccupancy', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/AncillaryForms': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/AncillaryForms', '/applicant/BPAM/UnifiedForm/AncillaryForms', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/ApplicantInformation': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/ApplicantInformation', '/applicant/BPAM/UnifiedForm/ApplicantInformation', Record<never, never>, Record<never, never>>,
     '/applicant/BPAM/UnifiedForm/BPADetails': RouteRecordInfo<'/applicant/BPAM/UnifiedForm/BPADetails', '/applicant/BPAM/UnifiedForm/BPADetails', Record<never, never>, Record<never, never>>,
@@ -97,6 +103,30 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/applicant/BPAM/AncillaryPermits/UnifiedApplicationForm.vue': {
       routes: '/applicant/BPAM/AncillaryPermits/UnifiedApplicationForm'
+      views: never
+    }
+    'src/pages/applicant/BPAM/BuildingPermitForm/box1.vue': {
+      routes: '/applicant/BPAM/BuildingPermitForm/box1'
+      views: never
+    }
+    'src/pages/applicant/BPAM/BuildingPermitForm/box2.vue': {
+      routes: '/applicant/BPAM/BuildingPermitForm/box2'
+      views: never
+    }
+    'src/pages/applicant/BPAM/BuildingPermitForm/box3.vue': {
+      routes: '/applicant/BPAM/BuildingPermitForm/box3'
+      views: never
+    }
+    'src/pages/applicant/BPAM/BuildingPermitForm/box5.vue': {
+      routes: '/applicant/BPAM/BuildingPermitForm/box5'
+      views: never
+    }
+    'src/pages/applicant/BPAM/BuildingPermitForm/BPForm.vue': {
+      routes: '/applicant/BPAM/BuildingPermitForm/BPForm'
+      views: never
+    }
+    'src/pages/applicant/BPAM/BuildingPermitForm/useorcharacterofoccupancy.vue': {
+      routes: '/applicant/BPAM/BuildingPermitForm/useorcharacterofoccupancy'
       views: never
     }
     'src/pages/applicant/BPAM/UnifiedForm/AncillaryForms.vue': {

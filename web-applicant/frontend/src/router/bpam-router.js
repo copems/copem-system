@@ -69,6 +69,7 @@ export const bpamRoutes = [
     ],
   },
 
+
   // Unified Form
   {
     path: "/bpam/applicant/unified-form/",
@@ -117,6 +118,20 @@ export const bpamRoutes = [
         name: "Signatories",
         component: () =>
           import("@/pages/applicant/BPAM/UnifiedForm/Signatories.vue"),
+      },
+    ],
+  },
+
+  // Building Permit Form
+  {
+    path: "/bpam/applicant/buildingpermit-form/",
+    component: () => import("@/layouts/ApplicantLayout.vue"),
+    children: [
+      {
+        path: "bp-form",
+        name: "bpform",
+        component: () =>
+          import("@/pages/applicant/BPAM/BuildingPermitForm/BPForm.vue"),
       },
     ],
   },
